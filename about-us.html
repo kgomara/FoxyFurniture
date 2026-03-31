@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,128 +13,51 @@
 	<meta name="p:domain_verify" content="4ca1e47f6ec28fccfe680ad39488eb6c"/>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-  </head>
-  <body>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/ff-scripts.js"></script>
+<!--     <script src="js/jquery.bsPhotoGallery.js"></script> -->
+<!--     <script src="js/ff-videoplayer.js"></script> -->
+</head>
+
+<body>
 
     <div class="container-fluid">
 		<div class="row">
-			<!-- ================== Header ================== -->
-			<header class="col-md-12 col-xs-12">
-				<div class="row">
-					<div class="col-md-3">
-						<a href="index.html"><img alt="Foxy Furniture Logo" src="img/head/logo_color.png" class="img-responsive"></a>
-					</div>
-					<div class="col-md-9 hidden-xs">
-						<h2><small>Dungeon Furnishings "Hidden in Plain Sight"</small></h2>
-					</div>
-				</div>
-			</header>
+			<!-- ==================== Header, NavBar ==================== -->
+			<!-- The code for id="header", "navBar", and "footer" are injected in window.eventlistner() in ff-scrips.js -->
+			<div id="header"></div>
+			<div id="navBar"></div>
 			
-			<!-- ================== Navigation bar ================== -->
-			<nav class="col-md-12 col-xs-12 navbar-div">
-				<div class="collapse navbar-collapse">
-					<ul class="nav navbar-nav">
-						<li class="enabled">
-							<a href="index.html"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a>
-						</li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Products <span class="caret hidden-xs"></span></a>
-							<ul class="dropdown-menu">
-								<li class="enabled">
-									<a href="behind-closed-doors.html">Behind Closed Doors</a>
-								</li>
-								<li class="enabled">
-									<a href="flogger-bag.html">Flogger Bag</a>
-								</li>
-								<li class="enabled">
-									<a href="spreader-bar.html">Spreader Bar</a>
-								</li>
-							</ul>
-						</li>
-						<li class="enabled">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Plans<span class="caret hidden-xs"></span></a>
-							<ul class="dropdown-menu">
-								<li class="enabled">
-									<a href="criss-cross.html">Criss Cross</a>
-								</li>
-								<li class="enabled">
-									<a href="pandoras-chest.html">Pandora's Chest</a>
-								</li>
-								<li class="enabled">
-									<a href="versahorse.html">VersaHorse</a>
-								</li>
-								<li class="enabled">
-									<a href="powerpole.html">Power Pole</a>
-								</li>
-							</ul>
-						</li>
-						<li class="enabled">
-							<a href="gallery.html">Gallery</a>
-						</li>
-						<li class="enabled">
-							<a href="about-us.html">About</a>
-						</li>
-					</ul>
-				</div>
-			</nav>
 			
 			<!-- ================== Content area ================== -->
 			<div class="col-md-12 col-xs-12">
 				<div class="row">
 										
-					<!-- ================== Gallery ================== -->
+					<!-- ================== About Us ================== -->
 					<section class="col-md-12 col-xs-12">
 						<div class="row">
-							<div class="col-md-4 col-xs-4">
+							<div class="col-md-6 col-sm-6 col-xs-12">
 								<img class="img-thumbnail center-block" alt="Black Criss-Cross as Pedestal" src="img/cc-black-pedestal.jpg">
-								<span style="position: absolute; left: 30px; top: 20px;">
-									<a data-pin-do="buttonPin" data-pin-count="beside" href="https://www.pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.FoxyFurniture.com%2Fversahorse.htm&media=http%3A%2F%2Fwww.FoxyFurniture.com%2Fimg%2Fcc-black-pedestal.png&description=Black%20CrissCross">
-										<img alt="Pinterest button" src="//assets.pinterest.com/images/pidgets/pinit_fg_en_rect_gray_20.png">
-									</a>
-								</span>
 							</div>
-							<div class="col-md-7 col-xs-7">
+							<div class="col-md-6 col-sm-6 col-xs-12">
 								<h2>About Us</h2>
-								<p>Thanks for your interest in Foxy Furniture.  The DungeonToyMaker and Lady Hera founded the company in 2003 as the result of a snag in Lady Hera's lingerie.  No kidding.  We were playing on a St. Andrew's Cross at a party.  The cross hadn't been properly sanded or finished, and Hera's sexy outfit was ruined.  We got to talking afterward and decided that the world needed better quality Dungeon Furniture, and we were just the right people to deliver it.  And as they say, the rest is history.</p>
-								<div class="row">
-									<form class="form-horizontal ff-mailer"
-										action="http://www.omaraconsultingassoc.com/cgi-sys/FormMail.cgi"
-										method="POST">
-										<fieldset>
-											<legend>Send us an email.</legend>
-											<div class="control-group">
-												<div class="controls">
-													<input type="hidden" name="recipient"
-														value="Craftsman@FoxyFurniture.com"> 
-													<input type="hidden" name="redirect"
-														value="http://www.FoxyFurniture.com/index.html"> 
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="inputEmail">Your Email address</label>
-												<div class="controls">
-													<input id="inputEmail" class="input-xlarge" type="text" name="email" placeholder = "Enter Email address">
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="inputSubject">Subject</label>
-												<div class="controls">
-													<input id="inputSubject" class="input-xlarge" type="text" name="subject" placeholder = "Enter Subject"> 
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="inputMsg">Message</label>
-												<div class="controls">
-													<textarea id="inputMsg" class="input-xlarge" name="message" rows="5"></textarea>
-												</div>
-											</div>
-											<div class="form-actions">
-												<button type="submit" class="btn btn-primary">Submit</button>
-											</div>
-											<br/>
-										</fieldset>
-									</form>
-								</div>
+								<p>Thanks for your interest in Foxy Furniture.  Lady Hera and I founded the company in 2003 as the result of a snag in Lady Hera's lingerie.  A St. Andrew's Cross hadn't been properly finished and Hera's sexy outfit was ruined.  We decided the world needed better quality Dungeon Furniture and we were just the people to deliver it.  We've now retired and decided to give the plans away instead of building the furniture.
+								</p>
+								<p>To reach us, please DM DungeonToyMaker on <a href="https://fetlife.com/">FetLife.com</a>.  Sorry, but I cannot provide another contact method at this time.
+								</p>
+								<h2>If you're going to build...</h2>
+								<p>The plans contain AutoCAD files, construction steps, and parts required.  They were just reminders to me, so allow time and patience to understand the plans, steps, and parts before you start cutting.  The <a href="gallery.html">Gallery</a> pages help too.
+								</p>
+								<p>The PDF set contains the same drawings - but "printed" as PDFs.  They are easier to use (you don't need to find and install a free reader) but can't be modified.
+								</p>
+								<p>To use the drawings you'll need an app that can handle AutoCAD (.dwg) files.  There are free ones - just search for ".dwg editors".  I use eDrawings on my Mac.
+								</p>
+								<h2>If you'd rather buy...</h2>
+								<p>
+									<a href="https://fetishfurniture.org/">Fetish Furniture</a> builds the VersaHorse and Criss-Cross designs.  I haven't seen their work in person, but they get excellent reviews.  
+								</p>
+								
 							</div>
 						</div>
 					</section>
@@ -141,56 +65,9 @@
 			</div>
 			
 			<!-- ================== Footer area ================== -->
-			<footer class="col-md-12 col-xs-12 footer-div">
-				<div class="row">
-					<div class="col-md-4 col-xs-4">
-						<div class="text-center">
-							<!-- AddToAny BEGIN -->
-							<a class="a2a_dd" href="https://www.addtoany.com/share?linkurl=www.foxyfurniture.com/about-us.html&amp;linkname=">
-								<img src="img/share_save_171_16.png" width="171" height="16" style="border:0" alt="Share"/>
-							</a>
-							<script>
-								var a2a_config = a2a_config || {};
-								a2a_config.linkurl = "www.foxyfurniture.com/about-us.html";
-							</script>
-							<script async src="https://static.addtoany.com/menu/page.js"></script>
-							<!-- AddToAny END -->
-						</div>
-					</div>
-					<div class="col-md-4 col-xs-4">
-						<!-- Start of SimpleHitCounter Code -->
-						<div class="text-center">
-							<a class="hit_counter" href="http://www.simplehitcounter.com" target="_blank">
-								<img alt="visitor counter" height="18" src="http://simplehitcounter.com/hit.php?uid=1656110&amp;f=16711680&amp;b=16777215" width="83" />
-							</a>
-							<br />
-							<a href="http://www.simplehitcounter.com" style="text-decoration:none;" target="_blank">Visitors</a>
-						</div>
-					</div>
-					<div class="col-md-4 col-xs-4">
-						<p class="text-center"><small >© 2005-2020 Foxy Furniture.</small></p>
-					</div>
-				</div>					
-			</footer>
+			<div id="footer"></div>
 		</div>
 	</div>
-
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.bsPhotoGallery.js"></script>
-    <script src="js/ff-scripts.js"></script>
-	<script async defer src="//assets.pinterest.com/js/pinit.js"></script>
-	
-	<script type="text/javascript">
-		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-	</script> 
-		
-	<script src="http://www.google-analytics.com/ga.js" type="text/javascript"></script>
-	<script type="text/javascript">
-		var pageTracker = _gat._getTracker("UA-5540320-2");
-		pageTracker._trackPageview();
-	</script>
-
 </body>
+
 </html>

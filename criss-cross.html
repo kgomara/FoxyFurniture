@@ -12,293 +12,167 @@
 	<meta name="p:domain_verify" content="4ca1e47f6ec28fccfe680ad39488eb6c"/>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/ff-scripts.js"></script>
+    <script src="js/ff-videoplayer.js"></script>
   </head>
   <body>
 
     <div class="container-fluid">
 		<div class="row">
-			<!-- ================== Header ================== -->
-			<header class="col-md-12 col-xs-12">
+			<!-- ==================== Header, NavBar ==================== -->
+			<!-- The code for id="header", "navBar", and "footer" are injected in window.eventlistner() in ff-scrips.js -->
+			<div id="header"></div>
+			<div id="navBar"></div>
+			
+			<!-- ================== Plans->Criss Cross ================== -->
+			<section class="col-md-12 col-xs-12">
 				<div class="row">
-					<div class="col-md-3 ">
-						<a href="index.html"><img alt="Foxy Furniture Logo" src="img/head/logo_color.png" class="img-responsive"></a>
+					<!-- Video Container -->
+					<div class=" col-md-3 col-sm-12">
+						<div id="video-container" class="center-block" style="margin-top: 10px; width: 200px; background: #000; position: relative; font-family: sans-serif; overflow: hidden; color: white;">
+							<!-- The code for id="movie" is in ff-videoplayer.js -->
+							<video id="movie" style="width: 100%; height: 100%; object-fit: cover;">
+								<source src="img/home/ThisBecomesThis.mov" type="video/mp4">
+							</video>
+		
+							<!-- Overlay Controls -->
+							<div style="position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.1); display: flex; flex-direction: column; padding: 8px; box-sizing: border-box;">
+								<!-- Progress Bar -->
+								<input type="range" id="seek-bar" value="0" style="width: 100%; cursor: pointer; margin-bottom: 5px;">    
+								<div class="center-block" style="display: flex; justify-content: space-between; align-items: center;">
+									<div style="display: flex; gap: 12px;">
+										<button id="play-pause" class="btn btn-default btn-sm">
+								        	<span id="icon" class="glyphicon glyphicon-play"></span>
+										</button>
+									</div>
+									<!-- This video is in portrait and does not go fullscreen well -->
+<!-- 									<button disabled id="full-screen" style="background: none; border: none; color: white; cursor: pointer; font-weight: bold;">[ ]</button> -->
+								</div>
+							</div>
+						</div>
 					</div>
-					<div class="col-md-9 hidden-xs">
-						<h2><small>Dungeon Furnishings "Hidden in Plain Sight"</small></h2>
+					<div class="col-md-5 col-sm-8 col-xs-12">
+						<!-- Product Description -->
+						<h3>Criss Cross</h3>
+						<p>Hide this beautiful St. Andrew's Cross in plain sight, almost anywhere in your home.</p>
+						<p>A standard Cross mounts 78" (6' 6") above the floor.  You can build a taller Cross if you play with tall people who really like to be stretched out, or a shorter one if that's a better fit.  The Pedestal base is 14" square, and standard height is 46" tall.</p> 
+						<p>Designed as a wall mounted cross, this piece of equipment supports up to 250lbs.</p>
+						<p>The Pedestal and Display Shelf make practical and attractive additions to your living space.  When the mood strikes for play, you're just a few minutes away.  Just remove the shelf to expose the Mounting Bar, roll the Pedestal upside down and unscrew 1 nut to disassemble the Pedestal.  Then re-assemble it as a St. Andrew's Cross, and attach it to the Mounting Bar with 2 Hitch Pins.</p>
+						<p>For additional pictures see the <a href="gallery.html">Gallery</a> page.</p>
+					</div>
+					<div class="col-md-4 col-sm-4 col-xs-12">
+						<h4>Download Free Plans!</h4>
+						<p>Use the <strong>Drawings</strong> button to download plans you can modify. They are in AutoCAD (.dwg) format.</p>
+						<form class="text-center" method="get" action="plans/criss-cross-dwgs.zip">
+							<button class="btn btn-primary btn-lg btn-block center-block" type="submit" style="max-width: 150px">Drawings</button>
+						</form>
+						<br>
+						<p>Use the <strong>PDFs</strong> button to download PDFs of the plans.</p>
+						<form class="text-center" method="get" action="plans/criss-cross-pdfs.zip">
+							<button class="btn btn-primary btn-lg btn-block center-block" type="submit" style="max-width: 150px">PDFs</button>
+						</form>
 					</div>
 				</div>
-			</header>
-			
-			<!-- ================== Navigation bar ================== -->
-			<div class="col-md-12 col-xs-12 navbar-div">
-				<div class="collapse navbar-collapse">
-					<ul class="nav navbar-nav">
-						<li class="enabled">
-							<a href="index.html"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a>
-						</li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Products <span class="caret hidden-xs"></span></a>
-							<ul class="dropdown-menu">
-								<li class="enabled">
-									<a href="behind-closed-doors.html">Behind Closed Doors</a>
-								</li>
-								<li class="enabled">
-									<a href="flogger-bag.html">Flogger Bag</a>
-								</li>
-								<li class="enabled">
-									<a href="spreader-bar.html">Spreader Bar</a>
-								</li>
-							</ul>
-						</li>
-						<li class="enabled">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Plans<span class="caret hidden-xs"></span></a>
-							<ul class="dropdown-menu">
-								<li class="enabled">
-									<a href="criss-cross.html">Criss Cross</a>
-								</li>
-								<li class="enabled">
-									<a href="pandoras-chest.html">Pandora's Chest</a>
-								</li>
-								<li class="enabled">
-									<a href="versahorse.html">VersaHorse</a>
-								</li>
-								<li class="enabled">
-									<a href="powerpole.html">Power Pole</a>
-								</li>
-							</ul>
-						</li>
-						<li class="enabled">
-							<a href="gallery.html">Gallery</a>
-						</li>
-						<li class="enabled">
-							<a href="about-us.html">About</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-			
-			<!-- ================== Content area ================== -->
-			<div class="col-md-12 col-xs-12">
 				<div class="row">
-										
-					<!-- ================== Plans->Criss Cross ================== -->
-					<section class="col-md-12 col-xs-12">
-						<div class="row">
-							<div class="col-md-3 col-xs-3">
-								<img class="img-thumbnail center-block" alt="Criss-Cross" src="img/home/CCAnimation_108x162.gif" style="width:200px">
-								<span style="position: absolute; left: 30px; top: 20px;">
-									<a data-pin-do="buttonPin" data-pin-count="beside" href="https://www.pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.FoxyFurniture.com%2Fcriss-cross.html&media=http%3A%2F%2Fwww.FoxyFurniture.com%2Fimg%2Fcc%2Fcriss-cross.png&description=Criss%20Cross">
-										<img alt="Pinterest button" src="//assets.pinterest.com/images/pidgets/pinit_fg_en_rect_gray_20.png">
-									</a>
-								</span>
-							</div>
-							<div class="col-md-6 col-xs-6">
-								<h3>Criss Cross</h3>
-								<p>Hide this beautiful St. Andrew's Cross in plain sight, almost anywhere in your home.</p>
-								<p>A standard Cross mounts 78" (6' 6") above the floor.  You can build a taller Cross if you play with tall people who really like to be stretched out, or a shorter cross if that's a better fit.  The Pedestal base is 14" square, and at the standard height is 46" tall.</p> 
-								<p>Designed as a wall mounted cross, this piece of equipment supports up to 250 lbs.</p>
-							</div>
-							<div class="col-md-3 col-xs-3">
-								<h4>Download Free Plans!</h4>
-								<p>Use the <strong>Download Drawings</strong> button to download plans you can modify.</p>
-								<form class="text-center" method="get" action="plans/criss-cross-dwgs.zip">
-									<button class="btn btn-primary btn-lg btn-block" type="submit">Download Drawings (.dwg)</button>
-								</form>
-								<br>
-								<p>Use the <strong>Download PDFs</strong> button to download PDFs of the plans.</p>
-								<form class="text-center" method="get" action="plans/criss-cross-pdfs.zip">
-									<button class="btn btn-primary btn-lg btn-block" type="submit">Download Plans (.pdf)</button>
-								</form>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-12 col-xs-12">
-								<br>
-								<p>The Pedestal and Display Shelf make practical and attractive additions to your living space.  When the mood strikes for play, you're just a few minutes away.  Just remove the shelf to expose the Mounting Bar, roll the Pedestal upside down and unscrew 1 nut to disassemble the Pedestal, re-assemble it as a St. Andrew's Cross, and attach it to the Mounting Bar with 2 Hitch Pins.</p>
-								<p>For additional pictures see the <a href="gallery.html">Gallery</a> page.</p>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-12 col-xs-12">
-								<h4>Converting from Pedestal to St. Andrew's Cross.</h4>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-4 col-xs-4">
-								<p><strong>Criss Cross</strong> is easy to use. Click on the left and right arrows to see some examples!</p>
-								<p>The Pedestal disassembles by loosening a single wing-nut, with 4 sides of the column becoming the legs of the cross, and the steel plates making a sandwich to hold it all together.</p>
-								<p>Removing the plate shelf reveals the mounting bar. The cross is simply attached to the bar using hinges!</p>
-							</div>
-							<div class="col-md-4 col-xs-4 block-center">
-								<div class="carousel slide" id="carousel-cc">
-									<ol class="carousel-indicators">
-										<li data-slide-to="0" data-target="#carousel-cc" class="active"></li>
-										<li data-slide-to="1" data-target="#carousel-cc"></li>
-										<li data-slide-to="2" data-target="#carousel-cc"></li>
-										<li data-slide-to="3" data-target="#carousel-cc"></li>
-										<li data-slide-to="4" data-target="#carousel-cc"></li>
-										<li data-slide-to="5" data-target="#carousel-cc"></li>
-										<li data-slide-to="6" data-target="#carousel-cc"></li>
-										<li data-slide-to="7" data-target="#carousel-cc"></li>
-										<li data-slide-to="8" data-target="#carousel-cc"></li>
-										<li data-slide-to="9" data-target="#carousel-cc"></li>
-									</ol>
-									<div class="carousel-inner">
-										<div class="item active">
-											<img class="center-block" alt="Criss Cross overview" src="img/cc/carousel/01_cc-overview.png">
-											<div class="carousel-caption">
-												<p>Criss Cross parts</p>
-											</div>
-										</div>
-										<div class="item">
-											<img class="center-block" alt="removing hitch pins" src="img/cc/carousel/02_cc-remove-hitchpins.png">
-											<div class="carousel-caption">
-												<p>Remove hitch pins,</p>
-											</div>
-										</div>
-										<div class="item">
-											<img class="center-block" alt="spin off wing nuts" src="img/cc/carousel/03_cc-spin-off-wingnuts.png">
-											<div class="carousel-caption">
-												<p>remove wingnuts and plates,</p>
-											</div>
-										</div>
-										<div class="item">
-											<img class="center-block" alt="disassemble cross" src="img/cc/carousel/04_cc-disassemble-cross.png">
-											<div class="carousel-caption">
-												<p>Disassemble cross.</p>
-											</div>
-										</div>
-										<div class="item">
-											<img class="center-block" alt="legs become columns" src="img/cc/carousel/05_cc-legs-become-columns.png">
-											<div class="carousel-caption">
-												<p>Re-assemble upside down, legs become columns.</p>
-											</div>
-										</div>
-										<div class="item">
-											<img class="center-block" alt="slide base over column" src="img/cc/carousel/06_cc-slide-base-over-column.png">
-											<div class="carousel-caption">
-												<p>Slide base over column,</p>
-											</div>
-										</div>
-										<div class="item">
-											<img class="center-block" alt="store plates in base bottom" src="img/cc/carousel/07_cc-plates-and-nut.png">
-											<div class="carousel-caption">
-												<p>Hide plates in base bottom.</p>
-											</div>
-										</div>
-										<div class="item">
-											<img class="center-block" alt="roll upright" src="img/cc/carousel/08_cc-roll-upright.png">
-											<div class="carousel-caption">
-												<p>Roll Redestal upright,</p>
-											</div>
-										</div>
-										<div class="item">
-											<img class="center-block" alt="hide mounting bar" src="img/cc/carousel/09_cc-hide-mounting-bar.png">
-											<div class="carousel-caption">
-												<p>hide mounting bar,</p>
-											</div>
-										</div>
-										<div class="item">
-											<img class="center-block" alt="decorate to taste" src="img/cc/carousel/10_cc-decorate-to-taste.png">
-											<div class="carousel-caption">
-												<p>decorate to taste.</p>
-											</div>
-										</div>
-										<a class="left carousel-control"  href="#carousel-cc" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a> 
-										<a class="right carousel-control" href="#carousel-cc" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+					<div class="col-md-12 col-xs-12">
+						<h4>Converting from Pedestal to St. Andrew's Cross.</h4>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6 col-sm-7 col-xs-12">
+						<p><strong>Criss Cross</strong> is easy to use. Click on the left and right arrows on the slide show to see some examples!</p>
+						<p>The Pedestal disassembles by loosening a single wing-nut; with the 4 sides of the column becoming the legs of the cross, and the steel plates making a sandwich to hold it all together.</p>
+						<p>Removing the plate shelf reveals the mounting bar. The cross is simply attached to the bar using hinges!</p>
+					</div>
+					<!-- ================== Carousel ================== -->
+					<div class="col-md-6 col-sm-5 col-xs-12">
+						<div id="carousel-cc" class="center-block carousel slide" style="max-width: 300px"> 
+							<ol class="carousel-indicators">
+								<li data-slide-to="0" data-target="#carousel-cc" class="active"></li>
+								<li data-slide-to="1" data-target="#carousel-cc"></li>
+								<li data-slide-to="2" data-target="#carousel-cc"></li>
+								<li data-slide-to="3" data-target="#carousel-cc"></li>
+								<li data-slide-to="4" data-target="#carousel-cc"></li>
+								<li data-slide-to="5" data-target="#carousel-cc"></li>
+								<li data-slide-to="6" data-target="#carousel-cc"></li>
+								<li data-slide-to="7" data-target="#carousel-cc"></li>
+								<li data-slide-to="8" data-target="#carousel-cc"></li>
+								<li data-slide-to="9" data-target="#carousel-cc"></li>
+							</ol>
+							<div class="carousel-inner">
+								<div class="item active">
+									<img alt="Criss Cross overview" src="img/cc/carousel/01_cc-overview.png">
+									<div class="carousel-caption">
+										<p>Criss Cross parts</p>
 									</div>
 								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-12 col-xs-12 suggested-accessories">
-								<h3 class="text-center">Suggested Accesories</h3>
-							</div>
-						</div>
-						<div class="row ">
-					     	<div class="col-md-12 col-xs-12 accessory-container">
-								<div id="cc-accessory-list" class="container-inner">
-									<a href="https://www.stockroom.com/women-s-crotchless-leather-thong.html?acc=a684eceee76fc522773286a895bc8436" rel="nofollow" target="_blank">
-										<img class="thumbnail" src="https://d3v0wwxrwjl9f8.cloudfront.net/media/catalog/product/cache/1/small_image/300x/17f82f742ffe127f42dca9de82fb58b1/j/2/j273-c-sm.jpg" alt="womens crotchless leather thong"/>
-									</a>
-									<a href="https://www.stockroom.com/diamond-handle-flogger.html?acc=a684eceee76fc522773286a895bc8436" rel="nofollow" target="_blank">
-										<img class="thumbnail" src="https://d3v0wwxrwjl9f8.cloudfront.net/media/catalog/product/cache/1/small_image/300x/17f82f742ffe127f42dca9de82fb58b1/a/6/a609-sm.jpg" alt="Diamond-Handle Flogger"/>
-									</a>
-									<a href="https://www.stockroom.com/latex-beret.html?acc=a684eceee76fc522773286a895bc8436" rel="nofollow" target="_blank">
-										<img class="thumbnail" src="https://d3v0wwxrwjl9f8.cloudfront.net/media/catalog/product/cache/1/small_image/300x/17f82f742ffe127f42dca9de82fb58b1/y/9/y9769-sm.jpg" alt="latex beret"/>
-									</a>
-									<a href="https://www.stockroom.com/snake-bite-kit.html?acc=a684eceee76fc522773286a895bc8436" rel="nofollow" target="_blank">
-										<img class="thumbnail" src="https://d3v0wwxrwjl9f8.cloudfront.net/media/catalog/product/cache/1/small_image/300x/17f82f742ffe127f42dca9de82fb58b1/a/3/a300-b-sm.jpg" alt="Snake Bite Kit"/>
-									</a>
-									<a href="https://www.stockroom.com/black-toy-bag.html?acc=a684eceee76fc522773286a895bc8436" rel="nofollow" target="_blank">
-										<img class="thumbnail" src="https://d3v0wwxrwjl9f8.cloudfront.net/media/catalog/product/cache/1/small_image/300x/17f82f742ffe127f42dca9de82fb58b1/b/8/b865-b-sm.jpg" alt="Black Toy Bag"/>
-									</a>
-									<a href="https://www.stockroom.com/digital-power-box.html?acc=a684eceee76fc522773286a895bc8436" rel="nofollow" target="_blank">
-										<img class="thumbnail" src="https://d3v0wwxrwjl9f8.cloudfront.net/media/catalog/product/cache/1/small_image/300x/17f82f742ffe127f42dca9de82fb58b1/c/2/c279-sm.jpg" alt="Digital Power Box"/>
-									</a>
-									<a href="https://www.stockroom.com/locking-women-s-chastity-belt-w-thigh-straps.html?acc=a684eceee76fc522773286a895bc8436" rel="nofollow" target="_blank">
-										<img class="thumbnail" src="https://d3v0wwxrwjl9f8.cloudfront.net/media/catalog/product/cache/1/small_image/300x/17f82f742ffe127f42dca9de82fb58b1/b/5/b585-sm.jpg" alt="Locking Womens Chastity Belt w/ Thigh Straps"/>
-									</a>
-									<a href="https://www.stockroom.com/tall-curved-posture-collar-w-locking-buckle.html?acc=a684eceee76fc522773286a895bc8436" rel="nofollow" target="_blank">
-										<img class="thumbnail" src="https://d3v0wwxrwjl9f8.cloudfront.net/media/catalog/product/cache/1/small_image/300x/17f82f742ffe127f42dca9de82fb58b1/j/1/j151-c-sm.jpg" alt="Tall Curved Posture Collar w/Locking Buckle"/>
-									</a>
+								<div class="item">
+									<img alt="removing hitch pins" src="img/cc/carousel/02_cc-remove-hitchpins.png">
+									<div class="carousel-caption">
+										<p>Remove hitch pins,</p>
+									</div>
 								</div>
+								<div class="item">
+									<img alt="spin off wing nuts" src="img/cc/carousel/03_cc-spin-off-wingnuts.png">
+									<div class="carousel-caption">
+										<p>remove wing-nuts and plates,</p>
+									</div>
+								</div>
+								<div class="item">
+									<img alt="disassemble cross" src="img/cc/carousel/04_cc-disassemble-cross.png">
+									<div class="carousel-caption">
+										<p>Disassemble cross.</p>
+									</div>
+								</div>
+								<div class="item">
+									<img alt="legs become columns" src="img/cc/carousel/05_cc-legs-become-columns.png">
+									<div class="carousel-caption">
+										<p>Re-assemble upside down, legs become columns.</p>
+									</div>
+								</div>
+								<div class="item">
+									<img alt="slide base over column" src="img/cc/carousel/06_cc-slide-base-over-column.png">
+									<div class="carousel-caption">
+										<p>Slide base over column,</p>
+									</div>
+								</div>
+								<div class="item">
+									<img alt="store plates in base bottom" src="img/cc/carousel/07_cc-plates-and-nut.png">
+									<div class="carousel-caption">
+										<p>Hide plates in base bottom.</p>
+									</div>
+								</div>
+								<div class="item">
+									<img alt="roll upright" src="img/cc/carousel/08_cc-roll-upright.png">
+									<div class="carousel-caption">
+										<p>Roll Pedestal upright,</p>
+									</div>
+								</div>
+								<div class="item">
+									<img alt="hide mounting bar" src="img/cc/carousel/09_cc-hide-mounting-bar.png">
+									<div class="carousel-caption">
+										<p>hide mounting bar,</p>
+									</div>
+								</div>
+								<div class="item">
+									<img alt="decorate to taste" src="img/cc/carousel/10_cc-decorate-to-taste.png">
+									<div class="carousel-caption">
+										<p>decorate to taste.</p>
+									</div>
+								</div>
+								<a class="left carousel-control"  href="#carousel-cc" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a> 
+								<a class="right carousel-control" href="#carousel-cc" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
 							</div>
 						</div>
-					</section>
+					</div>
 				</div>
-			</div>
-			
+			</section>
+
 			<!-- ================== Footer area ================== -->
-			<footer class="col-md-12 col-xs-12 footer-div">
-				<div class="row">
-					<div class="col-md-4 col-xs-4">
-						<div class="text-center">
-							<!-- AddToAny BEGIN -->
-							<a class="a2a_dd" href="https://www.addtoany.com/share?linkurl=www.foxyfurniture.com/criss-cross.html&amp;linkname=">
-								<img src="img/share_save_171_16.png" width="171" height="16" style="border:0" alt="Share"/>
-							</a>
-							<script>
-							var a2a_config = a2a_config || {};
-							a2a_config.linkurl = "www.foxyfurniture.com/criss-cross.html";
-							</script>
-							<script async src="https://static.addtoany.com/menu/page.js"></script>
-							<!-- AddToAny END -->
-						</div>
-					</div>
-					<div class="col-md-4 col-xs-4">
-						<!-- Start of SimpleHitCounter Code -->
-						<div class="text-center">
-							<a class="hit_counter" href="http://www.simplehitcounter.com" target="_blank">
-								<img alt="visitor counter" height="18" src="http://simplehitcounter.com/hit.php?uid=1656110&amp;f=16711680&amp;b=16777215" width="83" />
-							</a>
-							<br />
-							<a href="http://www.simplehitcounter.com" style="text-decoration:none;" target="_blank">Visitors</a>
-						</div>
-					</div>
-					<div class="col-md-4 col-xs-4">
-						<p class="text-center"><small >© 2005-2020 Foxy Furniture.</small></p>
-					</div>
-				</div>					
-			</footer>
+			<div id="footer"></div>
 		</div>
 	</div>
-
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/ff-scripts.js"></script>
-	<script async defer src="//assets.pinterest.com/js/pinit.js"></script>
-	
-	<script type="text/javascript">
-		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-	</script> 
-		
-	<script src="http://www.google-analytics.com/ga.js" type="text/javascript"></script>
-	<script type="text/javascript">
-		var pageTracker = _gat._getTracker("UA-5540320-2");
-		pageTracker._trackPageview();
-	</script>
-
 </body>
 </html>

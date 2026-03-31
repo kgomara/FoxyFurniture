@@ -33,6 +33,7 @@ h4 {
 }
 
 .footer-div {
+	margin-top: 	10px;
 	padding-top:	4px;
 	border-top:		2px solid 	#996600;
 }
@@ -43,7 +44,9 @@ h4 {
 }
 
 #carousel-hm {
-	margin-right: 20px;
+	width:	 	240px;
+	height: 	240px;
+	max-width: 	100%;
 }
 
 .accessory-container {
@@ -76,11 +79,6 @@ h4 {
 	border-width: 		1px;
 }
 
-.carousel-indicators {
-	width:			90%;
-	margin-left: 	-45%;
-}
-
 .navbar-collapse.collapse{
   display: block !important;
 }
@@ -96,7 +94,6 @@ h4 {
 .navbar-right{
   float: right !important;
 }
-
 	
 .center-table {
   margin: 	0 auto !important;
@@ -108,15 +105,17 @@ h4 {
  *********************/
  
 .ff-gallery-btn {
-    box-shadow: 	0px 0px 30px black;
+    box-shadow: 	0px 0px 20px black;
     margin-top: 	10px;
 	margin-bottom: 	10px;
 }
  
+/*
 .btn-thumbnail img {
 	width:	190px;
 	height:	190px;
 }
+*/
 
 .gallery ul {
 	padding:	0 0 0 0;
