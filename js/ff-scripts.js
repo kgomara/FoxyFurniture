@@ -30,7 +30,7 @@ window.addEventListener('load', function() {
 	mainFooter.innerHTML = `
 		<footer class="col-md-12 col-xs-12 footer-div">
 			<div class="row">
-				<div class="pull-left col-md-auto">
+				<div class="pull-left">
 					<div class="text-center">
 						<a class="a2a_dd" href="https://www.addtoany.com/share?linkurl=www.foxyfurniture.com&amp;linkname=">
 							<img src="img/share_save_171_16.png" width="171" height="16" style="border:0" alt="Share"/>

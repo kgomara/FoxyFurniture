@@ -22,14 +22,7 @@ h4 {
 
 .navbar-div {
 	border-bottom:	2px solid #996600;
-}
-
-#stockroom-ref {
-	margin-top: 10px;
-}
-
-.hit-counter img {
-	border: 0;
+	margin-bottom:  5px;
 }
 
 .footer-div {
@@ -38,19 +31,10 @@ h4 {
 	border-top:		2px solid 	#996600;
 }
 
-.suggested-accessories {
-	margin-top:		4px;
-	border-top:		2px solid 	#996600;
-}
-
 #carousel-hm {
 	width:	 	240px;
 	height: 	240px;
 	max-width: 	100%;
-}
-
-.accessory-container {
-	overflow: scroll;
 }
 
 .container-inner {
@@ -104,19 +88,14 @@ h4 {
 	Gallery styles	
  *********************/
  
-.ff-gallery-btn {
-    box-shadow: 	0px 0px 20px black;
-    margin-top: 	10px;
-	margin-bottom: 	10px;
+.ff-gallery-img {
+    box-shadow: 	0px 0px 10px black;
+}
+
+.ff-gallery-img a img {
+	margin-top: 5px;
 }
  
-/*
-.btn-thumbnail img {
-	width:	190px;
-	height:	190px;
-}
-*/
-
 .gallery ul {
 	padding:	0 0 0 0;
 	margin:		0 0 0 0;
@@ -134,14 +113,3 @@ h4 {
 	float: right;
 }
 
-/**************************
-	About Us stypes
- **************************/
-
-.ff-mailer textarea {
-	width:	80%;
-}
-
-.ff-mailer input {
-	width:	60%;
-}
