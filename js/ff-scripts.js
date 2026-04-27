@@ -30,7 +30,7 @@ window.addEventListener('load', function() {
 	mainFooter.innerHTML = `
 		<footer class="col-md-12 col-xs-12 footer-div">
 			<div class="row">
-				<div class="pull-left">
+				<div class="col-md-4 col-sm-4 col-xs-12">
 					<div class="text-center">
 						<a class="a2a_dd" href="https://www.addtoany.com/share?linkurl=www.foxyfurniture.com&amp;linkname=">
 							<img src="img/share_save_171_16.png" width="171" height="16" style="border:0" alt="Share"/>
@@ -42,14 +42,18 @@ window.addEventListener('load', function() {
 						<script async src="https://static.addtoany.com/menu/page.js"></script>
 					</div>
 				</div>
-<!--
-				<div class="center-block col-md-2">
-					 <a href="https://www.counters-free.net/">Visitors</a> <script type="text/javascript" src="https://www.freevisitorcounters.com/auth.php?id=5ec466a285c95c15edb8e5a7fd5423619c2a66a0"></script>
-<script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1525814/t/2"></script>
+				<div class="col-md-4 col-sm-4 col-xs-6 text-center">
+					<a href='https://www.counter12.com'>
+						<img src='https://www.counter12.com/img-z0AB8Z3B5dwWb48C-29.gif' border='0' alt='free counter'>
+					</a>
+					Visitors
+					<script type='text/javascript' src='https://www.counter12.com/ad.js?id=z0AB8Z3B5dwWb48C'></script>
+					<a href='https://meuip.page/qual-e-o-meu-ip/' target='_blank'>
+						<img src='https://img.meuip.page/selo-aZa1Z7W50d3b7CwD.gif' alt='IP' border='0'>
+					</a>
 				</div>
--->
-				<div class="pull-right col">
-					<p class="text-center"><small >©2005-2026 Foxy Furniture</small></p>
+				<div class="col-md-4 col-sm-4 col-xs-6">
+					<p class="text-center"><small>©2005-2026 Foxy Furniture</small></p>
 				</div>
 			</div>					
 		</footer>
