@@ -1,4 +1,4 @@
 FoxyFurniture - Website
 ===========
 
-Code for www.FoxyFurniture.com
+Code for www.FoxyFurniture.net
