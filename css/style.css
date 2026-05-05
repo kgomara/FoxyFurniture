@@ -23,6 +23,18 @@ h4 {
 .navbar-div {
 	border-bottom:	2px solid #996600;
 	margin-bottom:  5px;
+	padding:		0;
+}
+
+.navbar-div .nav-link {
+	color:			#337ab7;
+	padding:		10px 15px;
+}
+
+.navbar-div .nav-link:focus,
+.navbar-div .nav-link:hover {
+	background-color:	#eeeeee;
+	color:				#23527c;
 }
 
 .footer-div {
@@ -31,14 +43,8 @@ h4 {
 	border-top:		2px solid 	#996600;
 }
 
-#carousel-hm {
-	width:	 	240px;
-	height: 	240px;
-	max-width: 	100%;
-}
-
 .container-inner {
-	height:	210px;
+	height:			210px;
 }
 
 .container-inner a img {
@@ -48,40 +54,35 @@ h4 {
 }
 
 .footer-div li {
-    display: inline;
+    display: 		inline;
+}
+
+#carousel-hm,
+#carousel-cc,
+#carousel-pc,
+#carousel-pp,
+#carousel-vh {
+	width:	 		300px;
+	height: 		450px;
+	max-width: 		300px;
 }
 
 .carousel-caption-darker-color {
-	/* Behind Closed Doors images have strong white backgrounds, override color for contrast */
+	/* Some images have strong white backgrounds, override color for contrast */
 	color:			#000;
 	text-shadow: 	3px 2px #ffffff;
 }
 
-.carousel-indicators-darker-color li {
+.carousel-indicators-darker-color li,
+.carousel-indicators-darker-color button {
 	background-color: 	#666666;
 	border-style: 		solid;
 	border-width: 		1px;
 }
 
-.navbar-collapse.collapse{
-  display: block !important;
-}
-
-.navbar-nav>li, .navbar-nav{
-  float: left !important;
-}
-
-.navbar-nav.navbar-right:last-child{
-  margin-right: -15px !important;
-}
-
-.navbar-right{
-  float: right !important;
-}
-	
 .center-table {
-  margin: 	0 auto !important;
-  float: 	none !important;
+  margin: 			0 auto !important;
+  float: 			none !important;
 }
 
 /*********************
@@ -93,12 +94,12 @@ h4 {
 }
 
 .ff-gallery-img a img {
-	margin-top: 5px;
+	margin-top: 	5px;
 }
  
 .gallery ul {
-	padding:	0 0 0 0;
-	margin:		0 0 0 0;
+	padding:		0 0 0 0;
+	margin:			0 0 0 0;
 }
 
 .gallery ul li {
@@ -109,7 +110,29 @@ h4 {
 	cursor:	pointer;
 }
 
+#ffGalleryModal .ff-gallery-modal-dialog {
+	width:			fit-content !important;
+	max-width:		calc(100vw - 40px) !important;
+	margin-right:	auto !important;
+	margin-left:	auto !important;
+}
+
+#ffGalleryModal .ff-gallery-modal-content {
+	background-color:	#491710;
+	width:				fit-content;
+	max-width:			100%;
+}
+
+#ffGalleryModal .modal-body {
+	max-width:		100%;
+}
+
+#ffGalleryModal .ff-gallery-modal-img {
+	max-width:		calc(100vw - 72px) !important;
+	max-height:		calc(100vh - 120px) !important;
+	object-fit:		contain;
+}
+
 .next {
 	float: right;
 }
-
