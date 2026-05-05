@@ -1,31 +1,23 @@
-/*global $, jQuery, alert, document: false */
+/*global $, document, window: false */
 
 window.addEventListener('load', function() {
-    const 	video 		= document.getElementById('movie');
-    const 	seekBar 	= document.getElementById('seek-bar');
-    const 	playBtn 	= document.querySelector('#play-pause');
-	var 	icon 		= document.getElementById("icon");
+    const 	video 			= document.getElementById('movie');
+    const 	progressBar		= document.getElementById('progressBar');
+    const 	playBtn 		= document.getElementById('play-pause');
+	var 	icon 			= document.getElementById('icon');
 //     const fullScreenBtn = document.querySelector('#full-screen');
 
     // Play/Pause toggle
-    playBtn.onclick = () => {
-        if (video.paused) {
-            video.play();
-			icon.classList.remove("glyphicon-play");
-			icon.classList.add("glyphicon-pause");
-        } else {
-            video.pause();
-			icon.classList.remove("glyphicon-pause");
-			icon.classList.add("glyphicon-play");
-        }
-    };
-    
-    // Video ended
-	video.addEventListener('ended', (event) => {
-	  	console.log('The video has ended!');
-	  	// Add your callback logic here (e.g., show a replay button)
-		icon.classList.remove("glyphicon-pause");
-		icon.classList.add("glyphicon-play");
+	playBtn.addEventListener("click", () => {
+	  video.paused ? video.play() : video.pause();
+	});
+	
+	video.addEventListener("play", () => {
+	  playBtn.innerHTML = '<img src="./img/icons/pause.svg" alt="Bootstrap">';
+	});
+	
+	video.addEventListener("pause", () => {
+	  playBtn.innerHTML = '<img src="./img/icons/play.svg" alt="Bootstrap">';
 	});
 	
     // Full Screen using the Fullscreen API
@@ -48,15 +40,14 @@ window.addEventListener('load', function() {
         	percentage = 0;
         	video.currentTime = 0;
         }
-        seekBar.value = percentage || 0;
+        progressBar.value = percentage || 0;
     };
 
     // Seek video when slider is moved
-    seekBar.oninput = () => {
-        const time = video.duration * (seekBar.value / 100);
+    progressBar.oninput = () => {
+        const time = video.duration * (progressBar.value / 100);
         video.currentTime = time;
     };
 
 });
-
 
