@@ -65,6 +65,12 @@ h4 {
 	max-width:		150px;
 }
 
+.ff-download-plans {
+	border:			1px solid #996600;
+	border-radius:	8px;
+	padding:		12px;
+}
+
 .ff-video-container {
 	width:			200px;
 	background:		#000;

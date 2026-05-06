@@ -99,6 +99,28 @@ window.addEventListener('load', function() {
 		});
 	});
 
+	document.querySelectorAll('.ff-download-plans').forEach(function (container) {
+		const drawingsHref = container.getAttribute('data-drawings-href');
+		const pdfsHref = container.getAttribute('data-pdfs-href');
+
+		if (!drawingsHref || !pdfsHref) {
+			return;
+		}
+
+		container.innerHTML = `
+			<h4>Download Free Plans!</h4>
+			<p>Use the <strong>Drawings</strong> button to download plans you can modify. They are in AutoCAD (.dwg) format.</p>
+			<div class="text-center">
+				<a class="btn btn-primary btn-lg d-block w-100 mx-auto ff-download-btn" href="${drawingsHref}" download target="ffDownloadFrame">Drawings</a>
+			</div>
+			<br>
+			<p>Use the <strong>PDFs</strong> button to download PDFs of the plans.</p>
+			<div class="text-center">
+				<a class="btn btn-primary btn-lg d-block w-100 mx-auto ff-download-btn" href="${pdfsHref}" download target="ffDownloadFrame">PDFs</a>
+			</div>
+		`;
+	});
+
 	if (document.querySelector('a[target="ffDownloadFrame"]')) {
 		const downloadFrame = document.createElement('iframe');
 
