@@ -89,6 +89,10 @@ window.addEventListener('load', function() {
     `;
 
 	document.querySelectorAll('.carousel').forEach(function (carousel) {
+		/*
+			Work-around for bug in BootStrap 5 carousel.  Controls are "lazy loaded", hence swipe gestures don't initially work.
+			This code initializes the carousel instance(s) during the page load process.
+		*/
 		bootstrap.Carousel.getOrCreateInstance(carousel, {
 			interval: false,
 			touch: true
