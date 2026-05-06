@@ -98,4 +98,13 @@ window.addEventListener('load', function() {
 			touch: true
 		});
 	});
+
+	if (document.querySelector('a[target="ffDownloadFrame"]')) {
+		const downloadFrame = document.createElement('iframe');
+
+		downloadFrame.name = 'ffDownloadFrame';
+		downloadFrame.title = 'Download';
+		downloadFrame.hidden = true;
+		document.body.appendChild(downloadFrame);
+	}
 });
