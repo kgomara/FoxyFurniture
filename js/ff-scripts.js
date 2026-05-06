@@ -24,7 +24,7 @@ window.addEventListener('load', function() {
 	mainFooter.innerHTML = `
 		<footer class="col-md-12 col-12 footer-div">
 			<div class="row">
-				<div class="col-md-4 col-sm-4 col-12">
+				<div class="col-md-4 col-sm-4 col-6">
 					<div class="text-center">
 						<a class="a2a_dd" href="https://www.addtoany.com/share?linkurl=www.foxyfurniture.com&amp;linkname=">
 							<img src="img/share_save_171_16.png" width="171" height="16" style="border:0" alt="Share"/>
@@ -36,7 +36,7 @@ window.addEventListener('load', function() {
 						<script async src="https://static.addtoany.com/menu/page.js"></script>
 					</div>
 				</div>
-				<div class="col-md-4 col-sm-4 col-6 text-center">
+				<div class="col-md-4 col-sm-3 col-6 text-center">
 					<a href='https://www.counter12.com'>
 						<img src='https://www.counter12.com/img-z0AB8Z3B5dwWb48C-29.gif' border='0' alt='free counter'>
 					</a>
@@ -46,7 +46,7 @@ window.addEventListener('load', function() {
 						<img src='https://img.meuip.page/selo-aZa1Z7W50d3b7CwD.gif' alt='IP' border='0'>
 					</a>
 				</div>
-				<div class="col-md-4 col-sm-4 col-6">
+				<div class="col-md-4 col-sm-5 col-12">
 					<p class="text-center"><small>©2005-2026 Foxy Furniture</small></p>
 				</div>
 			</div>					
