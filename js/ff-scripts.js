@@ -10,12 +10,12 @@ window.addEventListener('load', function() {
 
     mainHeader.innerHTML = `
 		<header class="col-md-12 col-12">
-			<div class="row">
+			<div class="row align-items-center">
 				<div class="col-md-4 col-12">
 					<a href="index.html"><img alt="Foxy Furniture Logo" src="img/head/logo_color.png" class="img-fluid"></a>
 				</div>
-				<div class="col-md-8 col-12 center-text">
-					<h3>Dungeon Furnishings <i>Hidden in Plain Sight</i)</h3>
+				<div class="col-md-8 col-12 text-center">
+					<h3 class="mb-0">Dungeon Furnishings <i>Hidden in Plain Sight</i)</h3>
 				</div>
 			</div>
 		</header>

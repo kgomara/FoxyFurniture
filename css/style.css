@@ -114,7 +114,7 @@ h4 {
 	width:			fit-content !important;
 	max-width:		calc(100vw - 40px) !important;
 	max-height:		calc(100vh - 20px);
-	max-height:		calc(100dvh - 20px);
+	max-height:		calc(100dvh - 40px);
 	margin-right:	auto !important;
 	margin-left:	auto !important;
 }
@@ -135,6 +135,12 @@ h4 {
 
 #ffGalleryModal .ff-gallery-modal-img {
 	max-width:		calc(100vw - 72px) !important;
+	/* 
+		The two max-heights are intential: The first line is the fallback for older browsers. 
+		The second line uses dvh (“dynamic viewport height”), which is better on mobile because 
+		it accounts for browser chrome changing size. Browsers that support dvh use the second 
+		line; browsers that don’t ignore it and keep the vh version.	
+	*/
 	max-height:		calc(100vh - 120px) !important;
 	max-height:		calc(100dvh - 120px) !important;
 	object-fit:		contain;
