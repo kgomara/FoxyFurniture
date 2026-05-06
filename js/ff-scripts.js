@@ -1,4 +1,4 @@
-/*global document, window: false */
+/*global bootstrap, document, window: false */
 
 /* dummy change to force github pages to re-load */
 
@@ -87,4 +87,11 @@ window.addEventListener('load', function() {
 			</div>
 		</nav>
     `;
+
+	document.querySelectorAll('.carousel').forEach(function (carousel) {
+		bootstrap.Carousel.getOrCreateInstance(carousel, {
+			interval: false,
+			touch: true
+		});
+	});
 });
