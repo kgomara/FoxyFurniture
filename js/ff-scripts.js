@@ -14,7 +14,7 @@ window.addEventListener('load', function() {
 				<div class="col-md-4 col-12">
 					<a href="index.html"><img alt="Foxy Furniture Logo" src="img/head/logo_color.png" class="img-fluid"></a>
 				</div>
-				<div class="col-md-8 col-12 text-center">
+				<div class="col-md-8 col-12 text-center text-md-start">
 					<h3 class="mb-0">Dungeon Furnishings <i>Hidden in Plain Sight</i)</h3>
 				</div>
 			</div>
