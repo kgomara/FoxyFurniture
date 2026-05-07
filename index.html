@@ -35,19 +35,12 @@
 					<!-- Video Container (284x504 px?) -->
 					<div class="col-md-4 col-sm-12 col-12">
 						<div id="video-container" class="d-block mx-auto ff-video-container">
-							<video id="movie" class="ff-video">
+							<video id="movie" class="ff-video nocontrols">
 								<source src="img/home/ThisBecomesThis.mov" type="video/mp4">
 							</video>
-							<div id="progressContainer" class="ff-video-controls">
-								<input type="range" id="progressBar" class="ff-video-progress" value="0">
-								<div class="d-flex justify-content-between align-items-center mx-auto">
-									<div class="ff-video-button-row">
-								        <button id="play-pause" class="btn btn-secondary btn-sm">
-								        	<span id="icon"><img src="./img/icons/play.svg" alt="Bootstrap" width="16" height="16"></span>
-								        </button>
-    								</div>
- 								</div>
-							</div>
+							<button id="play-pause" class="ff-video-play" type="button" aria-label="Play video">
+								<img src="./img/icons/play.svg" alt="" width="32" height="32">
+							</button>
 						</div>
 					</div>
 					<div class="col-md-8 col-sm-12 col-12">

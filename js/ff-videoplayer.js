@@ -1,53 +1,41 @@
-/*global $, document, window: false */
+/*global document, window: false */
 
-window.addEventListener('load', function() {
-    const 	video 			= document.getElementById('movie');
-    const 	progressBar		= document.getElementById('progressBar');
-    const 	playBtn 		= document.getElementById('play-pause');
-	var 	icon 			= document.getElementById('icon');
-//     const fullScreenBtn = document.querySelector('#full-screen');
+window.addEventListener('load', function () {
+	const video = document.getElementById('movie');
+	const playBtn = document.getElementById('play-pause');
 
-    // Play/Pause toggle
-	playBtn.addEventListener("click", () => {
-	  video.paused ? video.play() : video.pause();
+	if (!video || !playBtn) {
+		return;
+	}
+
+	function playVideo() {
+		video.play();
+	}
+
+	function resetVideo() {
+		video.currentTime = 0;
+		playBtn.classList.remove('is-hidden');
+	}
+
+	video.addEventListener('click', function () {
+		if (video.paused) {
+			playVideo();
+		} else {
+			video.pause();
+		}
 	});
-	
-	video.addEventListener("play", () => {
-	  playBtn.innerHTML = '<img src="./img/icons/pause.svg" alt="Bootstrap">';
+
+	playBtn.addEventListener('click', playVideo);
+
+	video.addEventListener('play', function () {
+		playBtn.classList.add('is-hidden');
 	});
-	
-	video.addEventListener("pause", () => {
-	  playBtn.innerHTML = '<img src="./img/icons/play.svg" alt="Bootstrap">';
+
+	video.addEventListener('pause', function () {
+		if (video.currentTime < video.duration) {
+			playBtn.classList.remove('is-hidden');
+		}
 	});
-	
-    // Full Screen using the Fullscreen API
-/*
-    fullScreenBtn.onclick = () => {
-        if (video.requestFullscreen) 
-        	video.requestFullscreen();
-        else if (video.webkitRequestFullscreen) 
-        	video.webkitRequestFullscreen(); 	// Safari/Chrome
-        else if (video.msRequestFullscreen) 
-        	video.msRequestFullscreen(); 		// IE/Edge
-    };
-*/
 
-    // Update progress bar as video plays
-    video.ontimeupdate = () => {
-        percentage = (video.currentTime / video.duration) * 100;
-        if (percentage >= 100.0) {
-	        // we are at the end of the video, reset UI to be ready to play again
-        	percentage = 0;
-        	video.currentTime = 0;
-        }
-        progressBar.value = percentage || 0;
-    };
-
-    // Seek video when slider is moved
-    progressBar.oninput = () => {
-        const time = video.duration * (progressBar.value / 100);
-        video.currentTime = time;
-    };
-
+	video.addEventListener('ended', resetVideo);
 });
-
