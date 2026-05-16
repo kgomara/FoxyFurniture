@@ -1,7 +1,5 @@
 /*global bootstrap, document, window: false */
 
-/* dummy change to force github pages to re-load */
-
 window.addEventListener('load', function() {
 	
 	const mainHeader 	= document.querySelector('#header');
