@@ -41,10 +41,6 @@ window.addEventListener('load', function() {
 						<img src='https://www.counter12.com/img-z0AB8Z3B5dwWb48C-29.gif' border='0' alt='free counter'>
 					</a>
 					Visitors
-					<script type='text/javascript' src='https://www.counter12.com/ad.js?id=z0AB8Z3B5dwWb48C'></script>
-					<a href='https://meuip.page/qual-e-o-meu-ip/' target='_blank'>
-						<img src='https://img.meuip.page/selo-aZa1Z7W50d3b7CwD.gif' alt='IP' border='0'>
-					</a>
 				</div>
 				<div class="col-md-4 col-sm-5 col-12">
 					<p class="text-center"><small>©2005-2026 Foxy Furniture</small></p>
