@@ -90,23 +90,52 @@ window.addEventListener('load', function() {
 	document.querySelectorAll('.ff-download-plans').forEach(function (container) {
 		const drawingsHref = container.getAttribute('data-drawings-href');
 		const pdfsHref = container.getAttribute('data-pdfs-href');
+		const createDownloadButton = function (href, label) {
+			const wrapper = document.createElement('div');
+			const link = document.createElement('a');
+
+			wrapper.className = 'text-center';
+			link.className = 'btn btn-primary btn-lg d-block w-100 mx-auto ff-download-btn';
+			link.href = href;
+			link.download = '';
+			link.target = 'ffDownloadFrame';
+			link.textContent = label;
+			wrapper.appendChild(link);
+
+			return wrapper;
+		};
 
 		if (!drawingsHref || !pdfsHref) {
 			return;
 		}
 
-		container.innerHTML = `
-			<h4>Download Free Plans!</h4>
-			<p>Use the <strong>Drawings</strong> button to download plans you can modify. They are in AutoCAD (.dwg) format.</p>
-			<div class="text-center">
-				<a class="btn btn-primary btn-lg d-block w-100 mx-auto ff-download-btn" href="${drawingsHref}" download target="ffDownloadFrame">Drawings</a>
-			</div>
-			<br>
-			<p>Use the <strong>PDFs</strong> button to download PDFs of the plans.</p>
-			<div class="text-center">
-				<a class="btn btn-primary btn-lg d-block w-100 mx-auto ff-download-btn" href="${pdfsHref}" download target="ffDownloadFrame">PDFs</a>
-			</div>
-		`;
+		container.replaceChildren();
+
+		const heading = document.createElement('h4');
+		const drawingsText = document.createElement('p');
+		const drawingsStrong = document.createElement('strong');
+		const spacer = document.createElement('br');
+		const pdfsText = document.createElement('p');
+		const pdfsStrong = document.createElement('strong');
+
+		heading.textContent = 'Download Free Plans!';
+
+		drawingsText.append('Use the ');
+		drawingsStrong.textContent = 'Drawings';
+		drawingsText.append(drawingsStrong, ' button to download plans you can modify. They are in AutoCAD (.dwg) format.');
+
+		pdfsText.append('Use the ');
+		pdfsStrong.textContent = 'PDFs';
+		pdfsText.append(pdfsStrong, ' button to download PDFs of the plans.');
+
+		container.append(
+			heading,
+			drawingsText,
+			createDownloadButton(drawingsHref, 'Drawings'),
+			spacer,
+			pdfsText,
+			createDownloadButton(pdfsHref, 'PDFs')
+		);
 	});
 
 	if (document.querySelector('a[target="ffDownloadFrame"]')) {
