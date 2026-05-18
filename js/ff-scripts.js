@@ -117,6 +117,15 @@ window.addEventListener('load', function() {
 	const downloadPlans = getDownloadPlans(currentPage);
 
 	document.querySelectorAll('.ff-download-plans').forEach(function (container) {
+		const trackDownload = function (href, label) {
+			const eventName = label === 'Drawings' ? 'download_drawings' : 'download_pdfs';
+
+			if (typeof window.sa_event === 'function') {
+				window.sa_event(eventName, {
+					filename: href.split('/').pop()
+				});
+			}
+		};
 		const createDownloadButton = function (href, label) {
 			const wrapper = document.createElement('div');
 			const link = document.createElement('a');
@@ -127,6 +136,9 @@ window.addEventListener('load', function() {
 			link.download = '';
 			link.target = 'ffDownloadFrame';
 			link.textContent = label;
+			link.addEventListener('click', function () {
+				trackDownload(href, label);
+			});
 			wrapper.appendChild(link);
 
 			return wrapper;
