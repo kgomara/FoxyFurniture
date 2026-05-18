@@ -87,9 +87,36 @@ window.addEventListener('load', function() {
 		});
 	});
 
+	const getDownloadPlans = function (pageName) {
+		switch (pageName) {
+		case 'criss-cross.html':
+			return {
+				drawingsHref: 'plans/criss-cross-dwgs.zip',
+				pdfsHref: 'plans/criss-cross-pdfs.zip'
+			};
+		case 'pandoras-chest.html':
+			return {
+				drawingsHref: 'plans/pandoras-chest-dwgs.zip',
+				pdfsHref: 'plans/pandoras-chest-pdfs.zip'
+			};
+		case 'powerpole.html':
+			return {
+				drawingsHref: 'plans/power-pole-dwgs.zip',
+				pdfsHref: 'plans/power-pole-pdfs.zip'
+			};
+		case 'versahorse.html':
+			return {
+				drawingsHref: 'plans/versahorse-dwgs.zip',
+				pdfsHref: 'plans/versahorse-pdfs.zip'
+			};
+		default:
+			return null;
+		}
+	};
+	const currentPage = window.location.pathname.split('/').pop();
+	const downloadPlans = getDownloadPlans(currentPage);
+
 	document.querySelectorAll('.ff-download-plans').forEach(function (container) {
-		const drawingsHref = container.getAttribute('data-drawings-href');
-		const pdfsHref = container.getAttribute('data-pdfs-href');
 		const createDownloadButton = function (href, label) {
 			const wrapper = document.createElement('div');
 			const link = document.createElement('a');
@@ -105,7 +132,7 @@ window.addEventListener('load', function() {
 			return wrapper;
 		};
 
-		if (!drawingsHref || !pdfsHref) {
+		if (!downloadPlans) {
 			return;
 		}
 
@@ -131,10 +158,10 @@ window.addEventListener('load', function() {
 		container.append(
 			heading,
 			drawingsText,
-			createDownloadButton(drawingsHref, 'Drawings'),
+			createDownloadButton(downloadPlans.drawingsHref, 'Drawings'),
 			spacer,
 			pdfsText,
-			createDownloadButton(pdfsHref, 'PDFs')
+			createDownloadButton(downloadPlans.pdfsHref, 'PDFs')
 		);
 	});
 
