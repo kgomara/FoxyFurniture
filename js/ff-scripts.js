@@ -92,22 +92,26 @@ window.addEventListener('load', function() {
 		case 'criss-cross.html':
 			return {
 				drawingsHref: 'plans/criss-cross-dwgs.zip',
-				pdfsHref: 'plans/criss-cross-pdfs.zip'
+				pdfsHref: 'plans/criss-cross-pdfs.zip',
+				prodAbbr: 'cc'
 			};
 		case 'pandoras-chest.html':
 			return {
 				drawingsHref: 'plans/pandoras-chest-dwgs.zip',
-				pdfsHref: 'plans/pandoras-chest-pdfs.zip'
+				pdfsHref: 'plans/pandoras-chest-pdfs.zip',
+				prodAbbr: 'pc'
 			};
 		case 'powerpole.html':
 			return {
 				drawingsHref: 'plans/power-pole-dwgs.zip',
-				pdfsHref: 'plans/power-pole-pdfs.zip'
+				pdfsHref: 'plans/power-pole-pdfs.zip',
+				prodAbbr: 'pp'
 			};
 		case 'versahorse.html':
 			return {
 				drawingsHref: 'plans/versahorse-dwgs.zip',
-				pdfsHref: 'plans/versahorse-pdfs.zip'
+				pdfsHref: 'plans/versahorse-pdfs.zip',
+				prodAbbr: 'vh'
 			};
 		default:
 			return null;
@@ -118,7 +122,7 @@ window.addEventListener('load', function() {
 
 	document.querySelectorAll('.ff-download-plans').forEach(function (container) {
 		const trackDownload = function (href, label) {
-			const eventName = label === 'Drawings' ? 'download_drawings' : 'download_pdfs';
+			const eventName = label === 'Drawings' ? ('download_' + downloadPlans.prodAbbr + '_drawings') : ('download_' + downloadPlans.prodAbbr + '_pdfs');
 
 			if (typeof window.sa_event === 'function') {
 				window.sa_event(eventName, {
