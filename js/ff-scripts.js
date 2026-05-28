@@ -24,7 +24,7 @@ window.addEventListener('load', function() {
 			<div class="row">
 				<div class="col-md-6 col-12">
 					<div class="text-center">
-						<a class="a2a_dd" href="https://www.addtoany.com/share?linkurl=www.foxyfurniture.com&amp;linkname=">
+						<a class="a2a_dd" href="https://www.addtoany.com/share?linkurl=www.foxyfurniture.com&amp;linkname=" target="_blank" rel="noopener">
 							<img src="img/share_save_171_16.png" width="171" height="16" class="ff-share-img" alt="Share"/>
 						</a>
 						<script>
