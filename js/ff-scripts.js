@@ -13,7 +13,7 @@ window.addEventListener('load', function() {
 					<a href="index.html"><img alt="Foxy Furniture Logo" src="img/head/logo_color.png" class="img-fluid"></a>
 				</div>
 				<div class="col-md-8 col-12 text-center text-md-start">
-					<h3 class="mb-0">Dungeon Furnishings <i>Hidden in Plain Sight</i)</h3>
+					<h3 class="mb-0">Dungeon Furnishings <i>Hidden in Plain Sight</i></h3>
 				</div>
 			</div>
 		</header>
@@ -46,7 +46,7 @@ window.addEventListener('load', function() {
 			<div class="collapse navbar-collapse show">
 				<ul class="navbar-nav">
 					<li class="nav-item enabled">
-						<a class="nav-link" href="index.html"> <img src="./img/icons/house.svg" alt="Bootstrap" width="16" height="16"></a>
+						<a class="nav-link" href="index.html"> <img src="./img/icons/house.svg" alt="Home" width="16" height="16"></a>
 					</li>
 					<li class="nav-item dropdown enabled">
 						<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Plans</a>
@@ -78,7 +78,7 @@ window.addEventListener('load', function() {
 
 	document.querySelectorAll('.carousel').forEach(function (carousel) {
 		/*
-			Work-around for bug in BootStrap 5 carousel.  Controls are "lazy loaded", hence swipe gestures don't initially work.
+			Work-around for a bug in the Bootstrap 5 carousel. Controls are "lazy loaded", hence swipe gestures don't initially work.
 			This code initializes the carousel instance(s) during the page load process.
 		*/
 		bootstrap.Carousel.getOrCreateInstance(carousel, {
