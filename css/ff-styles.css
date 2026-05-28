@@ -1,117 +1,117 @@
 /* Foxy Furniture CSS file */
 
 body { 
-	background: #fffdea !important; 	 /* Adding !important forces the browser to overwrite the default style applied by Bootstrap */
+	background:				#fffdea !important; 	 /* Adding !important forces the browser to overwrite the default style applied by Bootstrap */
 }
 
 h1 {
-	color:	#491710;
+	color:						#491710;
 }
 
 h2 {
-	color:	#491710;
+	color:						#491710;
 }
 
 h3 {
-	color:	#491710;
+	color:						#491710;
 }
 
 h4 {
-	color:	#491710;
+	color:						#491710;
 }
 
 .navbar-div {
-	border-bottom:	2px solid #996600;
-	margin-bottom:  5px;
-	padding:		0;
+	border-bottom:		2px solid #996600;
+	margin-bottom: 		5px;
+	padding:					0;
 }
 
 .navbar-div .nav-link {
-	color:			#337ab7;
-	padding:		10px 15px;
+	color:						#337ab7;
+	padding:					10px 15px;
 }
 
 .navbar-div .nav-link:focus,
 .navbar-div .nav-link:hover {
 	background-color:	#eeeeee;
-	color:				#23527c;
+	color:						#23527c;
 }
 
 .footer-div {
-	margin-top: 	10px;
-	padding-top:	4px;
-	border-top:		2px solid 	#996600;
+	margin-top: 			10px;
+	padding-top:			4px;
+	border-top:				2px solid 	#996600;
 }
 
 .container-inner {
-	height:			210px;
+	height:						210px;
 }
 
 .container-inner a img {
-	width:			150px;
-	float:			left;
-	margin-right:	20px;
+	width:						150px;
+	float:						left;
+	margin-right:			20px;
 }
 
 .footer-div li {
-    display: 		inline;
+    display: 				inline;
 }
 
 .ff-share-img {
-	border:			0;
+	border:						0;
 }
 
 .ff-download-btn {
-	max-width:		150px;
+	max-width:				150px;
 }
 
 .ff-download-plans {
-	border:			1px solid #996600;
-	border-radius:	8px;
-	padding:		12px;
+	border:						1px solid #996600;
+	border-radius:		8px;
+	padding:					12px;
 }
 
 .ff-section-gap {
-	padding-top:		10px;
+	padding-top:			10px;
 }
 
 .ff-video-container {
-	width:			100%;
-	max-width:		300px;
-	background:		#000;
-	position:		relative;
-	overflow:		hidden;
+	width:						100%;
+	max-width:				300px;
+	background:				#000;
+	position:					relative;
+	overflow:					hidden;
 }
 
 .ff-video {
-	display:		block;
-	width:			100%;
-	height:			auto;
-	object-fit:		cover;
+	display:					block;
+	width:						100%;
+	height:						auto;
+	object-fit:				cover;
 }
 
 .ff-video-play {
-	position:		absolute;
-	top:			50%;
-	left:			50%;
-	transform:		translate(-50%, -50%);
-	width:			56px;
-	height:			56px;
-	border:			0;
-	border-radius:	50%;
-	background:		rgba(255, 253, 234, 0.9);
-	display:		flex;
-	align-items:	center;
-	justify-content:center;
-	cursor:			pointer;
+	position:					absolute;
+	top:							50%;
+	left:							50%;
+	transform:				translate(-50%, -50%);
+	width:						56px;
+	height:						56px;
+	border:						0;
+	border-radius:		50%;
+	background:				rgba(255, 253, 234, 0.9);
+	display:					flex;
+	align-items:			center;
+	justify-content:	center;
+	cursor:						pointer;
 }
 
 .ff-video-play.is-hidden {
-	display:		none;
+	display:					none;
 }
 
 .ff-product-carousel {
-	max-width:		300px;
+	max-width:				300px;
 }
 
 #carousel-hm,
@@ -119,26 +119,26 @@ h4 {
 #carousel-pc,
 #carousel-pp,
 #carousel-vh {
-	width:	 		300px;
-	height: 		450px;
-	max-width: 		300px;
+	width:	 					300px;
+	height: 					450px;
+	max-width: 				300px;
 }
 
 .carousel-caption-darker-color {
 	/* Some images have strong white backgrounds, override color for contrast */
-	color:			#000;
+	color:						#000;
 }
 
 .carousel-indicators-darker-color li,
 .carousel-indicators-darker-color button {
-	background-color: 	#666666;
+	background-color: #666666;
 	border-style: 		solid;
 	border-width: 		1px;
 }
 
 .center-table {
-  margin: 			0 auto !important;
-  float: 			none !important;
+  margin: 					0 auto !important;
+  float: 						none !important;
 }
 
 /*********************
@@ -146,64 +146,64 @@ h4 {
  *********************/
  
 .ff-gallery-img {
-    box-shadow: 	0px 0px 10px black;
+    box-shadow: 		0px 0px 10px black;
 }
 
 .ff-gallery-img a img {
-	margin-top: 	5px;
+	margin-top: 			5px;
 }
  
 .gallery ul {
-	padding:		0 0 0 0;
-	margin:			0 0 0 0;
+	padding:					0 0 0 0;
+	margin:						0 0 0 0;
 }
 
 .gallery ul li {
-	list-style:		none;
-	margin-bottom:	5px;
+	list-style:				none;
+	margin-bottom:		5px;
 }
 
 .gallery ul li img {
-	cursor:			pointer;
+	cursor:						pointer;
 }
 
 #ffGalleryModal .ff-gallery-modal-dialog {
-	width:			fit-content !important;
-	max-width:		calc(100vw - 40px) !important;
-	max-height:		calc(100vh - 20px);
-	max-height:		calc(100dvh - 40px);
-	margin-right:	auto !important;
-	margin-left:	auto !important;
+	width:						fit-content !important;
+	max-width:				calc(100vw - 40px) !important;
+	max-height:				calc(100vh - 20px);
+	max-height:				calc(100dvh - 40px);
+	margin-right:			auto !important;
+	margin-left:			auto !important;
 }
 
 #ffGalleryModal .ff-gallery-modal-content {
-	background-color:	#491710;
-	width:				fit-content;
-	max-width:			100%;
-	max-height:			100%;
+	background-color:	#996600;
+	width:						fit-content;
+	max-width:				100%;
+	max-height:				100%;
 }
 
 #ffGalleryModal .modal-body {
-	max-width:		100%;
-	max-height:		100%;
-	display:		flex;
-	flex-direction:	column;
+	max-width:				100%;
+	max-height:				100%;
+	display:					flex;
+	flex-direction:		column;
 }
 
 #ffGalleryModal .ff-gallery-modal-img {
-	max-width:		calc(100vw - 72px) !important;
+	max-width:				calc(100vw - 72px) !important;
 	/* 
 		The two max-heights are intential: The first line is the fallback for older browsers. 
 		The second line uses dvh (“dynamic viewport height”), which is better on mobile because 
 		it accounts for browser chrome changing size. Browsers that support dvh use the second 
 		line; browsers that don’t ignore it and keep the vh version.	
 	*/
-	max-height:		calc(100vh - 120px) !important;
-	max-height:		calc(100dvh - 120px) !important;
-	object-fit:		contain;
-	min-height:		0;
+	max-height:				calc(100vh - 120px) !important;
+	max-height:				calc(100dvh - 120px) !important;
+	object-fit:				contain;
+	min-height:				0;
 }
 
 .next {
-	float: right;
+	float:						right;
 }
