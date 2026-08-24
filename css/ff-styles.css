@@ -71,6 +71,12 @@ h4 {
 	padding:					12px;
 }
 
+.ff-download-plans h2,
+.ff-download-plans h4 {
+	font-size:				1.25rem;
+	text-align:				center;
+}
+
 .ff-section-gap {
 	padding-top:			10px;
 }
@@ -111,6 +117,7 @@ h4 {
 }
 
 .ff-product-carousel {
+	margin-bottom:		1rem;
 	max-width:				300px;
 }
 
@@ -122,6 +129,83 @@ h4 {
 	width:	 					300px;
 	height: 					450px;
 	max-width: 				300px;
+}
+
+.ff-carousel-os-controls .carousel-indicators {
+	bottom:						8px;
+	gap:							7px;
+	margin-bottom:		0;
+}
+
+.ff-carousel-os-controls .carousel-indicators button {
+	width:						10px;
+	height:						10px;
+	margin:						0;
+	border:						1px solid rgba(73, 23, 16, 0.75);
+	border-radius:		50%;
+	background-color:	rgba(255, 253, 234, 0.72);
+	opacity:					1;
+}
+
+.ff-carousel-os-controls .carousel-indicators button.active {
+	background-color:	#491710;
+}
+
+.ff-carousel-os-controls .carousel-control-prev,
+.ff-carousel-os-controls .carousel-control-next {
+	width:						44px;
+	opacity:					1;
+}
+
+.ff-carousel-os-controls .carousel-control-prev-icon,
+.ff-carousel-os-controls .carousel-control-next-icon {
+	width:						36px;
+	height:						36px;
+	border:						1px solid rgba(73, 23, 16, 0.45);
+	border-radius:		50%;
+	background-color:	rgba(255, 253, 234, 0.38);
+	background-image:	none;
+	color:						#491710;
+	display:					flex;
+	align-items:			center;
+	justify-content:	center;
+}
+
+.ff-carousel-os-controls .carousel-control-prev:focus .carousel-control-prev-icon,
+.ff-carousel-os-controls .carousel-control-prev:hover .carousel-control-prev-icon,
+.ff-carousel-os-controls .carousel-control-next:focus .carousel-control-next-icon,
+.ff-carousel-os-controls .carousel-control-next:hover .carousel-control-next-icon {
+	background-color:	rgba(255, 253, 234, 0.96);
+	border-color:			#491710;
+}
+
+.ff-carousel-os-controls .carousel-control-prev-icon::before,
+.ff-carousel-os-controls .carousel-control-next-icon::before {
+	font-size:				32px;
+	font-weight:			300;
+	line-height:			1;
+	transform:				translateY(-2px);
+}
+
+.ff-carousel-os-controls .carousel-control-prev-icon::before {
+	content:					"\2039";
+}
+
+.ff-carousel-os-controls .carousel-control-next-icon::before {
+	content:					"\203A";
+}
+
+.carousel-caption {
+	color:						#000;
+	font-size:				1.1rem;
+}
+
+.carousel-caption p {
+	background-color:	rgba(255, 253, 234, 0.48);
+	border-radius:		8px;
+	display:					inline-block;
+	margin-bottom:		0;
+	padding:					4px 8px;
 }
 
 .carousel-caption-darker-color {

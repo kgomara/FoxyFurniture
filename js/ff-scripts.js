@@ -4,7 +4,7 @@ window.addEventListener('load', function() {
 	
 	const mainHeader 	= document.querySelector('#header');
 	const mainFooter 	= document.querySelector('#footer');
-	const navBar		= document.querySelector('#navBar');
+	const navBar			= document.querySelector('#navBar');
 
     mainHeader.innerHTML = `
 		<header class="col-md-12 col-12">
@@ -91,27 +91,29 @@ window.addEventListener('load', function() {
 		switch (pageName) {
 		case 'criss-cross.html':
 			return {
+				buyHref: 			'https://fetishfurniture.org/',
 				drawingsHref: 'plans/criss-cross-dwgs.zip',
-				pdfsHref: 'plans/criss-cross-pdfs.zip',
-				prodAbbr: 'cc'
+				pdfsHref: 		'plans/criss-cross-pdfs.zip',
+				prodAbbr: 		'cc'
 			};
 		case 'pandoras-chest.html':
 			return {
 				drawingsHref: 'plans/pandoras-chest-dwgs.zip',
-				pdfsHref: 'plans/pandoras-chest-pdfs.zip',
-				prodAbbr: 'pc'
+				pdfsHref: 		'plans/pandoras-chest-pdfs.zip',
+				prodAbbr: 		'pc'
 			};
 		case 'powerpole.html':
 			return {
 				drawingsHref: 'plans/power-pole-dwgs.zip',
-				pdfsHref: 'plans/power-pole-pdfs.zip',
-				prodAbbr: 'pp'
+				pdfsHref: 		'plans/power-pole-pdfs.zip',
+				prodAbbr: 		'pp'
 			};
 		case 'versahorse.html':
 			return {
+				buyHref: 			'https://fetishfurniture.org/',
 				drawingsHref: 'plans/versahorse-dwgs.zip',
-				pdfsHref: 'plans/versahorse-pdfs.zip',
-				prodAbbr: 'vh'
+				pdfsHref: 		'plans/versahorse-pdfs.zip',
+				prodAbbr: 		'vh'
 			};
 		default:
 			return null;
@@ -135,11 +137,11 @@ window.addEventListener('load', function() {
 			const link = document.createElement('a');
 
 			wrapper.className = 'text-center';
-			link.className = 'btn btn-primary btn-lg d-block w-100 mx-auto ff-download-btn';
-			link.href = href;
-			link.download = '';
-			link.target = 'ffDownloadFrame';
-			link.textContent = label;
+			link.className 		= 'btn btn-primary btn-lg d-block w-100 mx-auto ff-download-btn';
+			link.href 				= href;
+			link.download 		= '';
+			link.target 			= 'ffDownloadFrame';
+			link.textContent 	= label;
 			link.addEventListener('click', function () {
 				trackDownload(href, label);
 			});
@@ -154,12 +156,13 @@ window.addEventListener('load', function() {
 
 		container.replaceChildren();
 
-		const heading = document.createElement('h4');
-		const drawingsText = document.createElement('p');
-		const drawingsStrong = document.createElement('strong');
-		const spacer = document.createElement('br');
-		const pdfsText = document.createElement('p');
-		const pdfsStrong = document.createElement('strong');
+		const heading 				= document.createElement('h4');
+		const drawingsText 		= document.createElement('p');
+		const drawingsStrong 	= document.createElement('strong');
+		const spacer 					= document.createElement('br');
+		const pdfsText 				= document.createElement('p');
+		const pdfsStrong 			= document.createElement('strong');
+		const buySpacer				= document.createElement('br');
 
 		heading.textContent = 'Download Free Plans!';
 
@@ -179,14 +182,29 @@ window.addEventListener('load', function() {
 			pdfsText,
 			createDownloadButton(downloadPlans.pdfsHref, 'PDFs')
 		);
+
+		if (downloadPlans.buyHref) {
+			const buyHeading = document.createElement('h2');
+			const buyText = document.createElement('p');
+			const buyLink = document.createElement('a');
+
+			buyHeading.textContent 	= "If you'd rather buy...";
+			buyLink.href 						= downloadPlans.buyHref;
+			buyLink.target					= '_blank';
+			buyLink.rel 						= 'noopener';
+			buyLink.textContent 		= 'Fetish Furniture';
+			buyText.append(buyLink, ' builds the VersaHorse and Criss-Cross designs.');
+
+			container.append(buySpacer, buyHeading, buyText);
+		}
 	});
 
 	if (document.querySelector('a[target="ffDownloadFrame"]')) {
 		const downloadFrame = document.createElement('iframe');
 
-		downloadFrame.name = 'ffDownloadFrame';
-		downloadFrame.title = 'Download';
-		downloadFrame.hidden = true;
+		downloadFrame.name 		= 'ffDownloadFrame';
+		downloadFrame.title 	= 'Download';
+		downloadFrame.hidden 	= true;
 		document.body.appendChild(downloadFrame);
 	}
 });
