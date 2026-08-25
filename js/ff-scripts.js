@@ -1,80 +1,39 @@
 /*global bootstrap, document, window: false */
 
-window.addEventListener('load', function() {
-	
+window.addEventListener('load', async function() {
+
 	const mainHeader 	= document.querySelector('#header');
 	const mainFooter 	= document.querySelector('#footer');
-	const navBar			= document.querySelector('#navBar');
 
-    mainHeader.innerHTML = `
-		<header class="col-md-12 col-12">
-			<div class="row align-items-center">
-				<div class="col-md-4 col-12">
-					<a href="index.html"><img alt="Foxy Furniture Logo" src="img/head/logo_color.png" class="img-fluid"></a>
-				</div>
-				<div class="col-md-8 col-12 text-center text-md-start">
-					<h3 class="mb-0">Dungeon Furnishings <i>Hidden in Plain Sight</i></h3>
-				</div>
-			</div>
-		</header>
-    `;
-		
-	mainFooter.innerHTML = `
-		<footer class="col-md-12 col-12 footer-div">
-			<div class="row">
-				<div class="col-md-6 col-12">
-					<div class="text-center">
-						<a class="a2a_dd" href="https://www.addtoany.com/share?linkurl=www.foxyfurniture.com&amp;linkname=" target="_blank" rel="noopener">
-							<img src="img/share_save_171_16.png" width="171" height="16" class="ff-share-img" alt="Share"/>
-						</a>
-						<script>
-							var a2a_config = a2a_config || {};
-							a2a_config.linkurl = "www.foxyfurniture.com";
-						</script>
-						<script async src="https://static.addtoany.com/menu/page.js"></script>
-					</div>
-				</div>
-				<div class="col-md-6 col-12">
-					<p class="text-center"><small>©2005-2026 Foxy Furniture</small></p>
-				</div>
-			</div>					
-		</footer>
-    `;
-    
-    navBar.innerHTML = `
-    	<nav class="col-md-12 col-12 navbar navbar-expand navbar-div">
-			<div class="collapse navbar-collapse show">
-				<ul class="navbar-nav">
-					<li class="nav-item enabled">
-						<a class="nav-link" href="index.html"> <img src="./img/icons/house.svg" alt="Home" width="16" height="16"></a>
-					</li>
-					<li class="nav-item dropdown enabled">
-						<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Plans</a>
-						<ul class="dropdown-menu">
-							<li class="enabled">
-								<a class="dropdown-item" href="criss-cross.html">Criss Cross</a>
-							</li>
-							<li class="enabled">
-								<a class="dropdown-item" href="pandoras-chest.html">Pandora's Chest</a>
-							</li>
-							<li class="enabled">
-								<a class="dropdown-item" href="versahorse.html">VersaHorse</a>
-							</li>
-							<li class="enabled">
-								<a class="dropdown-item" href="powerpole.html">Power Pole</a>
-							</li>
-						</ul>
-					</li>
-					<li class="nav-item enabled">
-						<a class="nav-link" href="gallery.html">Gallery</a>
-					</li>
-					<li class="nav-item enabled">
-						<a class="nav-link" href="about-us.html">About</a>
-					</li>
-				</ul>
-			</div>
-		</nav>
-    `;
+	const injectSharedHtml = async function (container, href) {
+		if (!container) {
+			return;
+		}
+
+		const response = await fetch(href);
+
+		if (!response.ok) {
+			throw new Error('Unable to load ' + href);
+		}
+
+		container.innerHTML = await response.text();
+
+		container.querySelectorAll('script').forEach(function (script) {
+			const executableScript = document.createElement('script');
+
+			Array.from(script.attributes).forEach(function (attribute) {
+				executableScript.setAttribute(attribute.name, attribute.value);
+			});
+
+			executableScript.textContent = script.textContent;
+			script.replaceWith(executableScript);
+		});
+	};
+
+	await Promise.all([
+		injectSharedHtml(mainHeader, 'js/shared/header.html'),
+		injectSharedHtml(mainFooter, 'js/shared/footer.html')
+	]);
 
 	document.querySelectorAll('.carousel').forEach(function (carousel) {
 		/*
@@ -119,7 +78,8 @@ window.addEventListener('load', function() {
 			return null;
 		}
 	};
-	const currentPage = window.location.pathname.split('/').pop();
+
+	const currentPage 	= window.location.pathname.split('/').pop();
 	const downloadPlans = getDownloadPlans(currentPage);
 
 	document.querySelectorAll('.ff-download-plans').forEach(function (container) {
@@ -132,6 +92,7 @@ window.addEventListener('load', function() {
 				});
 			}
 		};
+
 		const createDownloadButton = function (href, label) {
 			const wrapper = document.createElement('div');
 			const link = document.createElement('a');
@@ -184,9 +145,9 @@ window.addEventListener('load', function() {
 		);
 
 		if (downloadPlans.buyHref) {
-			const buyHeading = document.createElement('h2');
-			const buyText = document.createElement('p');
-			const buyLink = document.createElement('a');
+			const buyHeading 	= document.createElement('h2');
+			const buyText 		= document.createElement('p');
+			const buyLink 		= document.createElement('a');
 
 			buyHeading.textContent 	= "If you'd rather buy...";
 			buyLink.href 						= downloadPlans.buyHref;

@@ -20,21 +20,48 @@ h4 {
 	color:						#491710;
 }
 
-.navbar-div {
+.ff-site-header {
 	border-bottom:		2px solid #996600;
-	margin-bottom: 		5px;
-	padding:					0;
+	margin-bottom:		5px;
+	min-height:				48px;
+	padding:					2px 0 4px;
 }
 
-.navbar-div .nav-link {
-	color:						#337ab7;
-	padding:					10px 15px;
+.ff-header-menu-btn {
+	border:						1px solid #996600;
+	padding:					2px 4px;
 }
 
-.navbar-div .nav-link:focus,
-.navbar-div .nav-link:hover {
+.ff-header-menu-btn:focus,
+.ff-header-menu-btn:hover {
 	background-color:	#eeeeee;
-	color:						#23527c;
+}
+
+.ff-header-title {
+	font-size:				1rem;
+	line-height:			1.15;
+}
+
+.ff-header-logo-link {
+	display:					inline-block;
+	margin-left:			5px;
+}
+
+.ff-header-logo {
+	height:						38px;
+	max-width:				none;
+	width:						auto;
+}
+
+.ff-plan-menu-item {
+	padding-left:			2rem;
+}
+
+@media (min-width: 576px) {
+	.ff-header-title {
+		font-size:			1.25rem;
+		white-space:		nowrap;
+	}
 }
 
 .footer-div {
