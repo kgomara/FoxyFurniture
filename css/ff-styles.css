@@ -21,6 +21,8 @@ h4 {
 }
 
 .ff-site-header {
+	--bs-gutter-x:		0;
+	column-gap:				0.75rem;
 	border-bottom:		2px solid #996600;
 	margin-bottom:		5px;
 	min-height:				48px;
@@ -28,8 +30,13 @@ h4 {
 }
 
 .ff-header-menu-btn {
-	border:						1px solid #996600;
+	align-items:			center;
+	border:						0;
+	display:					flex;
+	height:						32px;
+	justify-content:	center;
 	padding:					2px 4px;
+	width:						32px;
 }
 
 .ff-header-menu-btn:focus,
@@ -44,7 +51,6 @@ h4 {
 
 .ff-header-logo-link {
 	display:					inline-block;
-	margin-left:			5px;
 }
 
 .ff-header-logo {
