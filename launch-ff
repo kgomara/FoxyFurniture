@@ -14,10 +14,37 @@ while [ -L "$script_path" ]; do
 done
 
 repo_dir="$(cd "$(dirname "$script_path")" && pwd)"
-requested_port="${1:-8000}"
+bind_address="127.0.0.1"
+open_browser=true
+requested_port="8000"
+port_was_requested=false
+
+for arg in "$@"; do
+	case "$arg" in
+	--lan)
+		bind_address="0.0.0.0"
+		;;
+	--no-open)
+		open_browser=false
+		;;
+	-h|--help)
+		echo "Usage: launch-ff [--lan] [--no-open] [port]"
+		exit 0
+		;;
+	*)
+		if [[ "$arg" =~ ^[0-9]+$ ]]; then
+			requested_port="$arg"
+			port_was_requested=true
+		else
+			echo "Usage: launch-ff [--lan] [--no-open] [port]"
+			exit 2
+		fi
+		;;
+	esac
+done
 
 if [[ ! "$requested_port" =~ ^[0-9]+$ ]]; then
-	echo "Usage: launch-ff [port]"
+	echo "Usage: launch-ff [--lan] [--no-open] [port]"
 	exit 2
 fi
 
@@ -27,7 +54,7 @@ port_is_busy() {
 
 port="$requested_port"
 
-if [ "$#" -eq 0 ]; then
+if ! $port_was_requested; then
 	while port_is_busy "$port"; do
 		port=$((port + 1))
 	done
@@ -37,14 +64,38 @@ elif port_is_busy "$port"; then
 	exit 1
 fi
 
-url="http://127.0.0.1:${port}/index.html"
+local_url="http://127.0.0.1:${port}/index.html"
+display_url="$local_url"
+
+if [ "$bind_address" = "0.0.0.0" ]; then
+	default_interface="$(route -n get default 2>/dev/null | awk '/interface:/{print $2; exit}')"
+	lan_address=""
+
+	if [ -n "$default_interface" ]; then
+		lan_address="$(ipconfig getifaddr "$default_interface" 2>/dev/null || true)"
+	fi
+
+	if [ -n "$lan_address" ]; then
+		display_url="http://${lan_address}:${port}/index.html"
+	fi
+fi
 
 cd "$repo_dir"
 
-echo "Serving FoxyFurniture at ${url}"
+echo "Serving FoxyFurniture at ${local_url}"
+
+if [ "$bind_address" = "0.0.0.0" ]; then
+	echo "From your phone, try ${display_url}"
+
+	if [ "$display_url" = "$local_url" ]; then
+		echo "Could not identify the Mac's local network address automatically."
+		echo "In System Settings > Wi-Fi > Details, look for your Mac's IP address."
+	fi
+fi
+
 echo "Press Ctrl-C to stop."
 
-python3 -m http.server "$port" --bind 127.0.0.1 >/dev/null 2>&1 &
+python3 -m http.server "$port" --bind "$bind_address" >/dev/null 2>&1 &
 server_pid="$!"
 
 cleanup() {
@@ -54,7 +105,7 @@ cleanup() {
 trap cleanup EXIT INT TERM
 
 for _ in {1..30}; do
-	if curl -fsI "$url" >/dev/null 2>&1; then
+	if curl -fsI "$local_url" >/dev/null 2>&1; then
 		break
 	fi
 
@@ -66,8 +117,8 @@ for _ in {1..30}; do
 	sleep 0.1
 done
 
-if command -v open >/dev/null 2>&1; then
-	open "$url" >/dev/null 2>&1 || true
+if $open_browser && command -v open >/dev/null 2>&1; then
+	open "$local_url" >/dev/null 2>&1 || true
 fi
 
 wait "$server_pid"

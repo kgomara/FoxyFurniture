@@ -1,7 +1,7 @@
 /*global document, window: false */
 
 window.addEventListener('load', function () {
-	const video = document.getElementById('movie');
+	const video 	= document.getElementById('movie');
 	const playBtn = document.getElementById('play-pause');
 
 	if (!video || !playBtn) {
