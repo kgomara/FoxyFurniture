@@ -114,6 +114,12 @@ h4 {
 	padding-top:			10px;
 }
 
+.ff-home-page h2,
+.ff-home-page h3 {
+	--bs-text-align:	center;
+	text-align:				center;
+}
+
 .ff-home-intro {
 	align-items:			flex-start;
 	display:					flex;
