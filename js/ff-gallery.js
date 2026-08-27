@@ -1,9 +1,11 @@
-/*global bootstrap, document: false */
+/*global bootstrap, document, window: false */
 
 document.addEventListener('DOMContentLoaded', function () {
-	const galleryLists = document.querySelectorAll('ul.first');
-	let currentItems = [];
-	let currentIndex = 0;
+	const galleryLists 	= document.querySelectorAll('ul.first');
+	let currentItems 		= [];
+	let currentIndex 		= 0;
+	let touchStartX 		= 0;
+	let touchStartY 		= 0;
 
 	if (!galleryLists.length) {
 		return;
@@ -16,21 +18,20 @@ document.addEventListener('DOMContentLoaded', function () {
 			return modal;
 		}
 
-		modal = document.createElement('div');
+		modal 					= document.createElement('div');
 		modal.className = 'modal fade';
-		modal.id = 'ffGalleryModal';
-		modal.tabIndex = -1;
+		modal.id 				= 'ffGalleryModal';
+		modal.tabIndex 	= -1;
 		modal.setAttribute('aria-hidden', 'true');
 		modal.innerHTML = `
-			<div class="modal-dialog modal-dialog-centered ff-gallery-modal-dialog">
+			<div class="modal-dialog ff-gallery-modal-dialog">
 				<div class="modal-content ff-gallery-modal-content">
-					<div class="modal-body position-relative p-3">
-						<button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-2" data-bs-dismiss="modal" aria-label="Close"></button>
-						<img id="ffGalleryImage" class="ff-gallery-modal-img img-fluid d-block mx-auto" alt="">
-						<div class="d-flex justify-content-between align-items-center mt-3">
-							<button type="button" id="ffGalleryPrev" class="btn btn-light btn-sm">&laquo; prev</button>
-							<button type="button" id="ffGalleryNext" class="btn btn-light btn-sm">next &raquo;</button>
-						</div>
+					<div class="modal-body ff-gallery-modal-body">
+						<button type="button" class="btn-close ff-gallery-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						<button type="button" id="ffGalleryPrev" class="ff-gallery-nav ff-gallery-prev" aria-label="Previous image"><span aria-hidden="true">&lsaquo;</span></button>
+						<img id="ffGalleryImage" class="ff-gallery-modal-img" alt="">
+						<button type="button" id="ffGalleryNext" class="ff-gallery-nav ff-gallery-next" aria-label="Next image"><span aria-hidden="true">&rsaquo;</span></button>
+						<div id="ffGalleryCounter" class="ff-gallery-counter" aria-live="polite"></div>
 					</div>
 				</div>
 			</div>
@@ -45,6 +46,14 @@ document.addEventListener('DOMContentLoaded', function () {
 			showImage(currentIndex + 1);
 		});
 
+		window.addEventListener('resize', function () {
+			const modalImg = document.getElementById('ffGalleryImage');
+
+			if (modalImg && modalImg.complete) {
+				sizeModalImage(modalImg);
+			}
+		});
+
 		modal.addEventListener('keydown', function (event) {
 			if (event.key === 'ArrowLeft') {
 				showImage(currentIndex - 1);
@@ -55,45 +64,98 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 		});
 
+		modal.addEventListener('touchstart', function (event) {
+			const touch = event.changedTouches[0];
+
+			touchStartX = touch.clientX;
+			touchStartY = touch.clientY;
+		}, {
+			passive: true
+		});
+
+		modal.addEventListener('touchend', function (event) {
+			const touch = event.changedTouches[0];
+			const deltaX = touch.clientX - touchStartX;
+			const deltaY = touch.clientY - touchStartY;
+
+			if (Math.abs(deltaX) < 50 || Math.abs(deltaX) < Math.abs(deltaY)) {
+				return;
+			}
+
+			if (deltaX > 0) {
+				showImage(currentIndex - 1);
+			} else {
+				showImage(currentIndex + 1);
+			}
+		}, {
+			passive: true
+		});
+
 		return modal;
 	}
 
-	function getImageSrc(img) {
-		return img.getAttribute('data-bsp-large-src') || img.getAttribute('src');
+	function sizeModalImage(modalImg) {
+		const viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+		const maxWidth = window.innerWidth - 16;
+		const maxHeight = viewportHeight - 16;
+		const naturalWidth = modalImg.naturalWidth;
+		const naturalHeight = modalImg.naturalHeight;
+
+		if (!naturalWidth || !naturalHeight) {
+			return;
+		}
+
+		const scale = Math.min(maxWidth / naturalWidth, maxHeight / naturalHeight);
+
+		modalImg.style.width = Math.floor(naturalWidth * scale) + 'px';
+		modalImg.style.height = Math.floor(naturalHeight * scale) + 'px';
 	}
 
 	function showImage(index) {
-		const modalImg = document.getElementById('ffGalleryImage');
-		const prevBtn = document.getElementById('ffGalleryPrev');
-		const nextBtn = document.getElementById('ffGalleryNext');
-		const img = currentItems[index];
+		const modalImg 	= document.getElementById('ffGalleryImage');
+		const prevBtn		= document.getElementById('ffGalleryPrev');
+		const nextBtn 	= document.getElementById('ffGalleryNext');
+		const counter 	= document.getElementById('ffGalleryCounter');
+		const img 			= currentItems[index];
 
 		if (!img) {
 			return;
 		}
 
 		currentIndex = index;
-		modalImg.src = getImageSrc(img);
+		modalImg.style.width = '';
+		modalImg.style.height = '';
+		modalImg.onload = function () {
+			sizeModalImage(modalImg);
+		};
+		modalImg.src = img.getAttribute('src');
 		modalImg.alt = img.getAttribute('alt') || '';
+		if (modalImg.complete) {
+			sizeModalImage(modalImg);
+		}
 		prevBtn.disabled = currentIndex === 0;
 		nextBtn.disabled = currentIndex === currentItems.length - 1;
+		counter.textContent = (currentIndex + 1) + ' / ' + currentItems.length;
 	}
 
 	galleryLists.forEach(function (galleryList) {
 		const items = Array.from(galleryList.querySelectorAll('li'));
 
-		galleryList.classList.add('row');
+		galleryList.classList.add('ff-gallery-grid');
 
 		items.forEach(function (item, index) {
 			const img = item.querySelector('img');
 
-			item.classList.add('col-md-3', 'col-sm-4', 'col-6');
+			item.classList.add('ff-gallery-grid-item');
 
 			if (!img) {
 				return;
 			}
 
-			img.classList.add('img-fluid');
+			img.classList.remove('btn-thumbnail', 'img-thumbnail', 'ff-gallery-btn');
+			img.classList.add('ff-gallery-thumb');
+			img.loading = 'lazy';
+			img.decoding = 'async';
 			img.setAttribute('role', 'button');
 			img.tabIndex = 0;
 

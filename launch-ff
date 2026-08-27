@@ -95,7 +95,23 @@ fi
 
 echo "Press Ctrl-C to stop."
 
-python3 -m http.server "$port" --bind "$bind_address" >/dev/null 2>&1 &
+python3 - "$port" "$bind_address" <<'PY' >/dev/null 2>&1 &
+import http.server
+import sys
+
+
+class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
+	def end_headers(self):
+		self.send_header('Cache-Control', 'no-store, no-cache, must-revalidate')
+		self.send_header('Pragma', 'no-cache')
+		self.send_header('Expires', '0')
+		super().end_headers()
+
+
+port = int(sys.argv[1])
+bind_address = sys.argv[2]
+http.server.test(HandlerClass=NoCacheHandler, port=port, bind=bind_address)
+PY
 server_pid="$!"
 
 cleanup() {

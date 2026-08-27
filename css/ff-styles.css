@@ -303,62 +303,168 @@ h4 {
  *********************/
  
 .ff-gallery-img {
-    box-shadow: 		0px 0px 10px black;
+	margin-bottom:		1rem;
 }
 
-.ff-gallery-img a img {
-	margin-top: 			5px;
+.ff-gallery-index {
+	display:								grid;
+	gap:										1rem;
+	grid-template-columns: 	repeat(auto-fit, minmax(150px, 1fr));
+	width:									100%;
 }
- 
+
+.ff-gallery-img a {
+	color:						#491710;
+	display:					block;
+	text-decoration:	none;
+}
+
+.ff-gallery-img img {
+	aspect-ratio:			1 / 1;
+	object-fit:				cover;
+	width:						100%;
+}
+
+.ff-gallery-img p {
+	margin-top:				0.35rem;
+}
+
 .gallery ul {
-	padding:					0 0 0 0;
+	padding:					0;
 	margin:						0 0 0 0;
+}
+
+.ff-gallery-grid {
+	display:								grid;
+	gap:										0.75rem;
+	grid-template-columns: 	repeat(auto-fit, minmax(150px, 1fr));
+	width:									100%;
 }
 
 .gallery ul li {
 	list-style:				none;
-	margin-bottom:		5px;
 }
 
-.gallery ul li img {
+.ff-gallery-thumb {
+	aspect-ratio:			1 / 1;
 	cursor:						pointer;
+	display:					block;
+	height:						100%;
+	object-fit:				cover;
+	width:						100%;
+}
+
+.ff-gallery-thumb:focus {
+	outline:					3px solid #996600;
+	outline-offset:		3px;
+}
+
+#ffGalleryModal.show {
+	align-items:			center;
+	display:					flex !important;
+	justify-content:	center;
+	padding-bottom:		10px;
 }
 
 #ffGalleryModal .ff-gallery-modal-dialog {
 	width:						fit-content !important;
-	max-width:				calc(100vw - 40px) !important;
-	max-height:				calc(100vh - 20px);
-	max-height:				calc(100dvh - 40px);
-	margin-right:			auto !important;
-	margin-left:			auto !important;
+	max-width:				calc(100vw - 16px) !important;
+	max-height:				calc(100vh - 16px);
+	max-height:				calc(100dvh - 16px);
+	margin:						0 auto !important;
 }
 
 #ffGalleryModal .ff-gallery-modal-content {
-	background-color:	#996600;
+	background:				transparent;
+	border:						0;
 	width:						fit-content;
 	max-width:				100%;
 	max-height:				100%;
 }
 
-#ffGalleryModal .modal-body {
+#ffGalleryModal .ff-gallery-modal-body {
+	align-items:			center;
+	display:					flex;
+	justify-content:	center;
 	max-width:				100%;
 	max-height:				100%;
-	display:					flex;
-	flex-direction:		column;
+	padding:					0;
+	position:					relative;
+	width:						fit-content;
 }
 
 #ffGalleryModal .ff-gallery-modal-img {
-	max-width:				calc(100vw - 72px) !important;
+	border:						3px solid rgba(255, 253, 234, 0.9);
+	display:					block;
+	height:						auto;
+	max-width:				calc(100vw - 16px) !important;
 	/* 
 		The two max-heights are intential: The first line is the fallback for older browsers. 
 		The second line uses dvh (“dynamic viewport height”), which is better on mobile because 
 		it accounts for browser chrome changing size. Browsers that support dvh use the second 
 		line; browsers that don’t ignore it and keep the vh version.	
 	*/
-	max-height:				calc(100vh - 120px) !important;
-	max-height:				calc(100dvh - 120px) !important;
+	max-height:				calc(100vh - 16px) !important;
+	max-height:				calc(100dvh - 16px) !important;
 	object-fit:				contain;
 	min-height:				0;
+	width:						auto;
+}
+
+#ffGalleryModal .ff-gallery-close {
+	background-color:	rgba(255, 253, 234, 0.72);
+	border-radius:		50%;
+	position:					absolute;
+	right:						0.75rem;
+	top:							0.75rem;
+	z-index:					2;
+}
+
+.ff-gallery-nav {
+	align-items:			center;
+	background-color:	rgba(255, 253, 234, 0.38);
+	border:						1px solid rgba(73, 23, 16, 0.45);
+	border-radius:		50%;
+	color:						#491710;
+	display:					flex;
+	font-size:				2rem;
+	height:						44px;
+	justify-content:	center;
+	line-height:			1;
+	position:					absolute;
+	top:							50%;
+	transform:				translateY(-50%);
+	width:						44px;
+	z-index:					2;
+}
+
+.ff-gallery-nav:disabled {
+	opacity:					0.22;
+}
+
+.ff-gallery-nav:focus,
+.ff-gallery-nav:hover,
+#ffGalleryModal .ff-gallery-close:focus,
+#ffGalleryModal .ff-gallery-close:hover {
+	background-color:	rgba(255, 253, 234, 0.9);
+}
+
+.ff-gallery-prev {
+	left:							0.5rem;
+}
+
+.ff-gallery-next {
+	right:						0.5rem;
+}
+
+.ff-gallery-counter {
+	background-color:	rgba(255, 253, 234, 0.6);
+	border-radius:		999px;
+	bottom:						0.75rem;
+	color:						#491710;
+	font-size:				0.9rem;
+	padding:					0.25rem 0.65rem;
+	position:					absolute;
 }
 
 .next {

@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if [ "$#" -ne 1 ]; then
+	echo "Usage: set-ff-version VERSION"
+	echo "Example: set-ff-version 3.0.1"
+	exit 2
+fi
+
+version="$1"
+export FF_VERSION="$version"
+
+if [[ ! "$version" =~ ^[A-Za-z0-9._-]+$ ]]; then
+	echo "Version may contain only letters, numbers, dots, underscores, and hyphens."
+	exit 2
+fi
+
+script_path="${BASH_SOURCE[0]}"
+
+while [ -L "$script_path" ]; do
+	script_dir="$(cd "$(dirname "$script_path")" && pwd)"
+	script_path="$(readlink "$script_path")"
+
+	if [[ "$script_path" != /* ]]; then
+		script_path="${script_dir}/${script_path}"
+	fi
+done
+
+repo_dir="$(cd "$(dirname "$script_path")" && pwd)"
+
+cd "$repo_dir"
+
+perl -0pi -e '
+	my $version = $ENV{FF_VERSION};
+	s#(href="css/ff-styles\.css)(?:\?v=[A-Za-z0-9._-]+)?(")#$1?v=$version$2#g;
+	s#(src="js/ff-scripts\.js)(?:\?v=[A-Za-z0-9._-]+)?(")#$1?v=$version$2#g;
+	s#(src="js/ff-gallery\.js)(?:\?v=[A-Za-z0-9._-]+)?(")#$1?v=$version$2#g;
+	s#(src="js/ff-videoplayer\.js)(?:\?v=[A-Za-z0-9._-]+)?(")#$1?v=$version$2#g;
+' ./*.html
+
+echo "Updated FoxyFurniture asset versions to ${version}."
