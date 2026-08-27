@@ -2,9 +2,18 @@
 
 set -euo pipefail
 
-if [ "$#" -ne 1 ]; then
+usage() {
 	echo "Usage: set-ff-version VERSION"
 	echo "Example: set-ff-version 3.0.1"
+}
+
+if [ "$#" -eq 1 ] && [[ "$1" == "-h" || "$1" == "--help" ]]; then
+	usage
+	exit 0
+fi
+
+if [ "$#" -ne 1 ]; then
+	usage
 	exit 2
 fi
 
