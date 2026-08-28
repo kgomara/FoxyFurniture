@@ -13,6 +13,7 @@ window.addEventListener('load', function () {
 	}
 
 	function resetVideo() {
+		video.pause();
 		video.currentTime = 0;
 		playBtn.classList.remove('is-hidden');
 	}
