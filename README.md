@@ -97,13 +97,14 @@ The home page video is controlled by `js/ff-videoplayer.js`. The page contains
 the video element and a custom play button. The script hides the button while
 the movie is playing and shows it again when the movie is paused or ends.
 
-The ThisBecomesThis.mov is tricky to edit. The iMovie project on Mac won't save in portrait. THe workaround is:
+The ThisBecomesThis.mov is tricky to edit. The iMovie project on Mac won't save in portrait. THe workaround is use Photos:
 
-- When you're finished editing, save the movie somewhere and import it to Photos
+- When you're finished editing in iMovie, save the movie somewhere.
+- Import it to Photos and open it.
 - Tap Edit.
 - Tap the Crop/rotate icon.
-- Choose a vertical aspect ratio if available, or manually crop it tall.
-- Save as a new clip/video if offered.
+- Choose a 16:9 vertical aspect ratio (right pane) and portrait icon, or manually crop it tall.
+- Save it!
 
 ## Local Development
 
