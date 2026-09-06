@@ -55,43 +55,34 @@ function initCarousels() {
 }
 
 function initDownloadPlans() {
-	const getDownloadPlans = function (pageName) {
-		switch (pageName) {
-		case 'criss-cross.html':
-			return {
-				buyHref: 			'https://fetishfurniture.org/',
-				drawingsHref: 'plans/criss-cross-dwgs.zip',
-				pdfsHref: 		'plans/criss-cross-pdfs.zip',
-				prodAbbr: 		'cc'
-			};
-		case 'pandoras-chest.html':
-			return {
-				drawingsHref: 'plans/pandoras-chest-dwgs.zip',
-				pdfsHref: 		'plans/pandoras-chest-pdfs.zip',
-				prodAbbr: 		'pc'
-			};
-		case 'powerpole.html':
-			return {
-				drawingsHref: 'plans/power-pole-dwgs.zip',
-				pdfsHref: 		'plans/power-pole-pdfs.zip',
-				prodAbbr: 		'pp'
-			};
-		case 'versahorse.html':
-			return {
-				buyHref: 			'https://fetishfurniture.org/',
-				drawingsHref: 'plans/versahorse-dwgs.zip',
-				pdfsHref: 		'plans/versahorse-pdfs.zip',
-				prodAbbr: 		'vh'
-			};
-		default:
-			return null;
+	const downloadPlansByKey = {
+		crissCross: {
+			buyHref: 			'https://fetishfurniture.org/',
+			drawingsHref: 'plans/criss-cross-dwgs.zip',
+			pdfsHref: 		'plans/criss-cross-pdfs.zip',
+			prodAbbr: 		'cc'
+		},
+		pandorasChest: {
+			drawingsHref: 'plans/pandoras-chest-dwgs.zip',
+			pdfsHref: 		'plans/pandoras-chest-pdfs.zip',
+			prodAbbr: 		'pc'
+		},
+		powerPole: {
+			drawingsHref: 'plans/power-pole-dwgs.zip',
+			pdfsHref: 		'plans/power-pole-pdfs.zip',
+			prodAbbr: 		'pp'
+		},
+		versaHorse: {
+			buyHref: 			'https://fetishfurniture.org/',
+			drawingsHref: 'plans/versahorse-dwgs.zip',
+			pdfsHref: 		'plans/versahorse-pdfs.zip',
+			prodAbbr: 		'vh'
 		}
 	};
 
-	const currentPage 	= window.location.pathname.split('/').pop();
-	const downloadPlans = getDownloadPlans(currentPage);
-
 	document.querySelectorAll('.ff-download-plans').forEach(function (container) {
+		const downloadPlans = downloadPlansByKey[container.dataset.downloadPlans];
+
 		const trackDownload = function (href, label) {
 			const eventName = label === 'Drawings' ? ('download_' + downloadPlans.prodAbbr + '_drawings') : ('download_' + downloadPlans.prodAbbr + '_pdfs');
 
