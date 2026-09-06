@@ -44,6 +44,7 @@ async function initSharedLayout() {
 function initCarousels() {
 	document.querySelectorAll('.carousel').forEach(function (carousel) {
 		initCarouselIndicators(carousel);
+		initCarouselControls(carousel);
 
 		/*
 			Work-around for a bug in the Bootstrap 5 carousel. Controls are "lazy loaded", hence swipe gestures don't initially work.
@@ -79,6 +80,40 @@ function initCarouselIndicators(carousel) {
 
 		return indicator;
 	}));
+}
+
+function initCarouselControls(carousel) {
+	const controls = carousel.querySelector('[data-carousel-controls]');
+
+	if (!controls || controls.children.length || !carousel.id) {
+		return;
+	}
+
+	controls.append(
+		createCarouselControl(carousel.id, 'prev', 'Previous'),
+		createCarouselControl(carousel.id, 'next', 'Next')
+	);
+}
+
+function createCarouselControl(carouselId, direction, label) {
+	const control = document.createElement('button');
+	const icon = document.createElement('span');
+	const text = document.createElement('span');
+
+	control.className = 'carousel-control-' + direction;
+	control.type = 'button';
+	control.dataset.bsTarget = '#' + carouselId;
+	control.dataset.bsSlide = direction;
+
+	icon.className = 'carousel-control-' + direction + '-icon';
+	icon.setAttribute('aria-hidden', 'true');
+
+	text.className = 'visually-hidden';
+	text.textContent = label;
+
+	control.append(icon, text);
+
+	return control;
 }
 
 function initDownloadPlans() {
