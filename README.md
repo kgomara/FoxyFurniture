@@ -233,8 +233,10 @@ new, which helps visitors receive updated CSS and JavaScript after a release.
 ```bash
 git add .
 git commit -m "Describe the change"
-git push origin master
 set-ff-version v3.0.4
+git add .
+git commit -m "Set Release version to v3.0.4"
+git push origin master
 git tag -a v3.0.4 -m "Release version 3.0.4"
 git push origin v3.4.0
 ```
