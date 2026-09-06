@@ -43,6 +43,7 @@ async function initSharedLayout() {
 
 function initCarousels() {
 	document.querySelectorAll('.carousel').forEach(function (carousel) {
+		renderCarouselSlides(carousel);
 		initCarouselIndicators(carousel);
 		initCarouselControls(carousel);
 
@@ -57,6 +58,37 @@ function initCarousels() {
 	});
 }
 
+function renderCarouselSlides(carousel) {
+	const carouselKey			= carousel.dataset.productCarousel;
+	const carouselSlides	= carouselKey && window.ffProductCarousels ? window.ffProductCarousels[carouselKey] : null;
+	const inner						= carousel.querySelector('.carousel-inner');
+
+	if (!inner || !carouselSlides || inner.children.length) {
+		return;
+	}
+
+	inner.replaceChildren(...carouselSlides.map(function (carouselSlide, index) {
+		const item				= document.createElement('div');
+		const img					= document.createElement('img');
+		const caption			= document.createElement('div');
+		const captionText	= document.createElement('p');
+
+		item.className = index === 0 ? 'carousel-item active' : 'carousel-item';
+		img.src = carouselSlide.src;
+		img.alt = carouselSlide.alt;
+		if (carouselSlide.imgClass) {
+			img.className = carouselSlide.imgClass;
+		}
+		caption.className = carouselSlide.captionClass ? 'carousel-caption ' + carouselSlide.captionClass : 'carousel-caption';
+		captionText.textContent = carouselSlide.caption;
+
+		caption.appendChild(captionText);
+		item.append(img, caption);
+
+		return item;
+	}));
+}
+
 function initCarouselIndicators(carousel) {
 	const indicators = carousel.querySelector('.carousel-indicators');
 	const slides = Array.from(carousel.querySelectorAll('.carousel-item'));
@@ -68,9 +100,9 @@ function initCarouselIndicators(carousel) {
 	indicators.replaceChildren(...slides.map(function (_slide, index) {
 		const indicator = document.createElement('button');
 
-		indicator.type = 'button';
-		indicator.dataset.bsTarget = '#' + carousel.id;
-		indicator.dataset.bsSlideTo = index.toString();
+		indicator.type							= 'button';
+		indicator.dataset.bsTarget	= '#' + carousel.id;
+		indicator.dataset.bsSlideTo	= index.toString();
 		indicator.setAttribute('aria-label', 'Slide ' + (index + 1));
 
 		if (index === 0) {
@@ -96,20 +128,20 @@ function initCarouselControls(carousel) {
 }
 
 function createCarouselControl(carouselId, direction, label) {
-	const control = document.createElement('button');
-	const icon = document.createElement('span');
-	const text = document.createElement('span');
+	const control	= document.createElement('button');
+	const icon		= document.createElement('span');
+	const text		= document.createElement('span');
 
-	control.className = 'carousel-control-' + direction;
-	control.type = 'button';
-	control.dataset.bsTarget = '#' + carouselId;
-	control.dataset.bsSlide = direction;
+	control.className					= 'carousel-control-' + direction;
+	control.type							= 'button';
+	control.dataset.bsTarget	= '#' + carouselId;
+	control.dataset.bsSlide		= direction;
 
 	icon.className = 'carousel-control-' + direction + '-icon';
 	icon.setAttribute('aria-hidden', 'true');
 
-	text.className = 'visually-hidden';
-	text.textContent = label;
+	text.className		= 'visually-hidden';
+	text.textContent	= label;
 
 	control.append(icon, text);
 
