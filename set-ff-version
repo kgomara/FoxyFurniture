@@ -44,8 +44,15 @@ perl -0pi -e '
 	my $version = $ENV{FF_VERSION};
 	s#(href="css/ff-styles\.css)(?:\?v=[A-Za-z0-9._-]+)?(")#$1?v=$version$2#g;
 	s#(src="js/ff-scripts\.js)(?:\?v=[A-Za-z0-9._-]+)?(")#$1?v=$version$2#g;
+	s#(src="js/ff-product-data\.js)(?:\?v=[A-Za-z0-9._-]+)?(")#$1?v=$version$2#g;
+	s#(src="js/ff-gallery-data\.js)(?:\?v=[A-Za-z0-9._-]+)?(")#$1?v=$version$2#g;
 	s#(src="js/ff-gallery\.js)(?:\?v=[A-Za-z0-9._-]+)?(")#$1?v=$version$2#g;
 	s#(src="js/ff-videoplayer\.js)(?:\?v=[A-Za-z0-9._-]+)?(")#$1?v=$version$2#g;
 ' ./*.html
+
+perl -0pi -e '
+	my $version = $ENV{FF_VERSION};
+	s#(const SHARED_LAYOUT_VERSION = ['\''"])[A-Za-z0-9._-]+(['\''"];)#$1$version$2#g;
+' ./js/ff-scripts.js
 
 echo "Updated FoxyFurniture asset versions to ${version}."

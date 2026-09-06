@@ -1,5 +1,7 @@
 /*global bootstrap, document, window: false */
 
+const SHARED_LAYOUT_VERSION = 'v3.0.4a2';
+
 window.addEventListener('load', async function() {
 	await initSharedLayout();
 	initCarousels();
@@ -36,8 +38,8 @@ async function initSharedLayout() {
 	};
 
 	await Promise.all([
-		injectSharedHtml(mainHeader, 'js/shared/header.html'),
-		injectSharedHtml(mainFooter, 'js/shared/footer.html')
+		injectSharedHtml(mainHeader, 'js/shared/header.html?v=' + SHARED_LAYOUT_VERSION),
+		injectSharedHtml(mainFooter, 'js/shared/footer.html?v=' + SHARED_LAYOUT_VERSION)
 	]);
 }
 
