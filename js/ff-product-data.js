@@ -1,6 +1,53 @@
 /*global window: false */
 
 window.ffProductCarousels = {
+	home: [
+		{
+			src: 'img/home/carousel/DCP_2153.jpg',
+			alt: 'Home Bedroom',
+			caption: "Criss Cross & Pandora's Chest at home"
+		},
+		{
+			src: 'img/home/carousel/CCHeraInBlackFishnetBells_300x450.jpg',
+			alt: 'Cherry Criss Cross',
+			caption: 'Criss Cross at play'
+		},
+		{
+			src: 'img/home/carousel/PCBentOver_300x450.jpg',
+			alt: "Pandora's Chest",
+			caption: "Pandora's Chest at play"
+		},
+		{
+			src: 'img/home/carousel/05_powerpole-vanilla.png',
+			alt: 'Power Pole',
+			caption: 'Power Pole at home'
+		},
+		{
+			src: 'img/home/carousel/PPHera_300x450.jpg',
+			alt: 'Power Pole',
+			caption: 'Power Pole at play'
+		},
+		{
+			src: 'img/home/carousel/00_versahorse_base.png',
+			alt: 'Versa Horse',
+			caption: 'VersaHorse Base'
+		},
+		{
+			src: 'img/home/carousel/VHStocksHera_300x450.jpg',
+			alt: 'Stock',
+			caption: 'VersaHorse Stock'
+		},
+		{
+			src: 'img/home/carousel/VHPegasusHera_300x450.jpg',
+			alt: 'VersaHorse with Pegasus Bench',
+			caption: 'VersaHorse + Pegasus Bench'
+		},
+		{
+			src: 'img/home/carousel/VHPilloryHera_300x450.jpg',
+			alt: 'Versahorse with pillory',
+			caption: 'VersaHorse + Pillory'
+		}
+	],
 	crissCross: [
 		{
 			src: 'img/cc/carousel/10_cc-decorate-to-taste.png',
