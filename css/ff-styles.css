@@ -1,32 +1,55 @@
 /* Foxy Furniture CSS file */
 
+:root {
+	--ff-color-page:								#fffdea;
+	--ff-color-text:								#000;
+	--ff-color-brand:								#491710;
+	--ff-color-accent:							#996600;
+	--ff-color-hover:								#eeeeee;
+	--ff-color-overlay-subtle:			rgba(255, 253, 234, 0.38);
+	--ff-color-overlay-medium:			rgba(255, 253, 234, 0.6);
+	--ff-color-overlay-strong:			rgba(255, 253, 234, 0.72);
+	--ff-color-overlay-solid:				rgba(255, 253, 234, 0.9);
+	--ff-color-overlay-hover:				rgba(255, 253, 234, 0.96);
+	--ff-color-overlay-caption:			rgba(255, 253, 234, 0.48);
+	--ff-color-brand-border-light:	rgba(73, 23, 16, 0.45);
+	--ff-color-brand-border:				rgba(73, 23, 16, 0.75);
+	--ff-space-xs:									4px;
+	--ff-space-sm:									8px;
+	--ff-space-md:									10px;
+	--ff-radius-md:									8px;
+	--ff-control-size:							44px;
+	--ff-carousel-width:						300px;
+	--ff-carousel-height:						450px;
+}
+
 body { 
-	background:				#fffdea !important; 	 /* Adding !important forces the browser to overwrite the default style applied by Bootstrap */
+	background:				var(--ff-color-page) !important; 	 /* Adding !important forces the browser to overwrite the default style applied by Bootstrap */
 }
 
 h1 {
-	color:						#491710;
+	color:						var(--ff-color-brand);
 }
 
 h2 {
-	color:						#491710;
+	color:						var(--ff-color-brand);
 }
 
 h3 {
-	color:						#491710;
+	color:						var(--ff-color-brand);
 }
 
 h4 {
-	color:						#491710;
+	color:						var(--ff-color-brand);
 }
 
 .ff-site-header {
 	--bs-gutter-x:		0;
 	column-gap:				0.75rem;
-	border-bottom:		2px solid #996600;
+	border-bottom:		2px solid var(--ff-color-accent);
 	margin-bottom:		5px;
 	min-height:				48px;
-	padding:					2px 0 4px;
+	padding:					2px 0 var(--ff-space-xs);
 }
 
 .ff-header-menu-btn {
@@ -41,7 +64,7 @@ h4 {
 
 .ff-header-menu-btn:focus,
 .ff-header-menu-btn:hover {
-	background-color:	#eeeeee;
+	background-color:	var(--ff-color-hover);
 }
 
 .ff-header-title {
@@ -71,9 +94,9 @@ h4 {
 }
 
 .footer-div {
-	margin-top: 			10px;
-	padding-top:			4px;
-	border-top:				2px solid 	#996600;
+	margin-top: 			var(--ff-space-md);
+	padding-top:			var(--ff-space-xs);
+	border-top:				2px solid 	var(--ff-color-accent);
 }
 
 .footer-div li {
@@ -89,8 +112,8 @@ h4 {
 }
 
 .ff-download-plans {
-	border:						1px solid #996600;
-	border-radius:		8px;
+	border:						1px solid var(--ff-color-accent);
+	border-radius:		var(--ff-radius-md);
 	padding:					12px;
 }
 
@@ -101,11 +124,11 @@ h4 {
 }
 
 .ff-section-gap {
-	padding-top:			10px;
+	padding-top:			var(--ff-space-md);
 }
 
 .ff-about-img {
-	width:						300px;
+	width:						var(--ff-carousel-width);
 }
 
 .ff-home-page h2,
@@ -117,25 +140,25 @@ h4 {
 .ff-home-intro {
 	align-items:			flex-start;
 	display:					flex;
-	flex-wrap:				nowrap;
+	flex-wrap:				wrap;
 	gap:							1rem;
 }
 
 .ff-home-video-col {
-	flex:							0 0 324px;
-	width:						324px;
+	flex:							0 0 100%;
+	width:						100%;
 }
 
 .ff-home-text-col {
-	flex:							1 1 auto;
+	flex:							0 0 100%;
 	min-width:				0;
-	width:						auto;
+	width:						100%;
 }
 
 .ff-video-container {
 	width:						100%;
-	max-width:				300px;
-	background:				#000;
+	max-width:				var(--ff-carousel-width);
+	background:				var(--ff-color-text);
 	position:					relative;
 	overflow:					hidden;
 }
@@ -147,15 +170,19 @@ h4 {
 	object-fit:				cover;
 }
 
-@media (max-width: 599.98px) {
+@media (min-width: 600px) {
 	.ff-home-intro {
-		flex-wrap:			wrap;
+		flex-wrap:			nowrap;
 	}
 
-	.ff-home-video-col,
+	.ff-home-video-col {
+		flex:						0 0 324px;
+		width:					324px;
+	}
+
 	.ff-home-text-col {
-		flex:						0 0 100%;
-		width:					100%;
+		flex:						1 1 auto;
+		width:					auto;
 	}
 }
 
@@ -168,7 +195,7 @@ h4 {
 	height:						56px;
 	border:						0;
 	border-radius:		50%;
-	background:				rgba(255, 253, 234, 0.9);
+	background:				var(--ff-color-overlay-solid);
 	display:					flex;
 	align-items:			center;
 	justify-content:	center;
@@ -181,7 +208,7 @@ h4 {
 
 .ff-product-carousel {
 	margin-bottom:		1rem;
-	max-width:				300px;
+	max-width:				var(--ff-carousel-width);
 }
 
 #carousel-hm,
@@ -189,13 +216,13 @@ h4 {
 #carousel-pc,
 #carousel-pp,
 #carousel-vh {
-	width:	 					300px;
-	height: 					450px;
-	max-width: 				300px;
+	width:	 					var(--ff-carousel-width);
+	height: 					var(--ff-carousel-height);
+	max-width: 				var(--ff-carousel-width);
 }
 
 .ff-carousel-os-controls .carousel-indicators {
-	bottom:						8px;
+	bottom:						var(--ff-space-sm);
 	gap:							7px;
 	margin-bottom:		0;
 }
@@ -204,19 +231,19 @@ h4 {
 	width:						10px;
 	height:						10px;
 	margin:						0;
-	border:						1px solid rgba(73, 23, 16, 0.75);
+	border:						1px solid var(--ff-color-brand-border);
 	border-radius:		50%;
-	background-color:	rgba(255, 253, 234, 0.72);
+	background-color:	var(--ff-color-overlay-strong);
 	opacity:					1;
 }
 
 .ff-carousel-os-controls .carousel-indicators button.active {
-	background-color:	#491710;
+	background-color:	var(--ff-color-brand);
 }
 
 .ff-carousel-os-controls .carousel-control-prev,
 .ff-carousel-os-controls .carousel-control-next {
-	width:						44px;
+	width:						var(--ff-control-size);
 	opacity:					1;
 }
 
@@ -224,11 +251,11 @@ h4 {
 .ff-carousel-os-controls .carousel-control-next-icon {
 	width:						36px;
 	height:						36px;
-	border:						1px solid rgba(73, 23, 16, 0.45);
+	border:						1px solid var(--ff-color-brand-border-light);
 	border-radius:		50%;
-	background-color:	rgba(255, 253, 234, 0.38);
+	background-color:	var(--ff-color-overlay-subtle);
 	background-image:	none;
-	color:						#491710;
+	color:						var(--ff-color-brand);
 	display:					flex;
 	align-items:			center;
 	justify-content:	center;
@@ -238,8 +265,8 @@ h4 {
 .ff-carousel-os-controls .carousel-control-prev:hover .carousel-control-prev-icon,
 .ff-carousel-os-controls .carousel-control-next:focus .carousel-control-next-icon,
 .ff-carousel-os-controls .carousel-control-next:hover .carousel-control-next-icon {
-	background-color:	rgba(255, 253, 234, 0.96);
-	border-color:			#491710;
+	background-color:	var(--ff-color-overlay-hover);
+	border-color:			var(--ff-color-brand);
 }
 
 .ff-carousel-os-controls .carousel-control-prev-icon::before,
@@ -259,21 +286,21 @@ h4 {
 }
 
 .carousel-caption {
-	color:						#000;
+	color:						var(--ff-color-text);
 	font-size:				1.1rem;
 }
 
 .carousel-caption p {
-	background-color:	rgba(255, 253, 234, 0.48);
-	border-radius:		8px;
+	background-color:	var(--ff-color-overlay-caption);
+	border-radius:		var(--ff-radius-md);
 	display:					inline-block;
 	margin-bottom:		0;
-	padding:					4px 8px;
+	padding:					var(--ff-space-xs) var(--ff-space-sm);
 }
 
 .carousel-caption-darker-color {
 	/* Some images have strong white backgrounds, override color for contrast */
-	color:						#000;
+	color:						var(--ff-color-text);
 }
 
 /*********************
@@ -292,7 +319,7 @@ h4 {
 }
 
 .ff-gallery-img a {
-	color:						#491710;
+	color:						var(--ff-color-brand);
 	display:					block;
 	text-decoration:	none;
 }
@@ -333,7 +360,7 @@ h4 {
 }
 
 .ff-gallery-thumb:focus {
-	outline:					3px solid #996600;
+	outline:					3px solid var(--ff-color-accent);
 	outline-offset:		3px;
 }
 
@@ -341,7 +368,7 @@ h4 {
 	align-items:			center;
 	display:					flex !important;
 	justify-content:	center;
-	padding-bottom:		10px;
+	padding-bottom:		var(--ff-space-md);
 }
 
 #ffGalleryModal .ff-gallery-modal-dialog {
@@ -372,12 +399,12 @@ h4 {
 }
 
 #ffGalleryModal .ff-gallery-modal-img {
-	border:						3px solid rgba(255, 253, 234, 0.9);
+	border:						3px solid var(--ff-color-overlay-solid);
 	display:					block;
 	height:						auto;
 	max-width:				calc(100vw - 16px) !important;
 	/* 
-		The two max-heights are intential: The first line is the fallback for older browsers. 
+		The two max-heights are intentional: The first line is the fallback for older browsers.
 		The second line uses dvh (“dynamic viewport height”), which is better on mobile because 
 		it accounts for browser chrome changing size. Browsers that support dvh use the second 
 		line; browsers that don’t ignore it and keep the vh version.	
@@ -390,7 +417,7 @@ h4 {
 }
 
 #ffGalleryModal .ff-gallery-close {
-	background-color:	rgba(255, 253, 234, 0.72);
+	background-color:	var(--ff-color-overlay-strong);
 	border-radius:		50%;
 	position:					absolute;
 	right:						0.75rem;
@@ -400,19 +427,19 @@ h4 {
 
 .ff-gallery-nav {
 	align-items:			center;
-	background-color:	rgba(255, 253, 234, 0.38);
-	border:						1px solid rgba(73, 23, 16, 0.45);
+	background-color:	var(--ff-color-overlay-subtle);
+	border:						1px solid var(--ff-color-brand-border-light);
 	border-radius:		50%;
-	color:						#491710;
+	color:						var(--ff-color-brand);
 	display:					flex;
 	font-size:				2rem;
-	height:						44px;
+	height:						var(--ff-control-size);
 	justify-content:	center;
 	line-height:			1;
 	position:					absolute;
 	top:							50%;
 	transform:				translateY(-50%);
-	width:						44px;
+	width:						var(--ff-control-size);
 	z-index:					2;
 }
 
@@ -424,7 +451,7 @@ h4 {
 .ff-gallery-nav:hover,
 #ffGalleryModal .ff-gallery-close:focus,
 #ffGalleryModal .ff-gallery-close:hover {
-	background-color:	rgba(255, 253, 234, 0.9);
+	background-color:	var(--ff-color-overlay-solid);
 }
 
 .ff-gallery-prev {
@@ -436,10 +463,10 @@ h4 {
 }
 
 .ff-gallery-counter {
-	background-color:	rgba(255, 253, 234, 0.6);
+	background-color:	var(--ff-color-overlay-medium);
 	border-radius:		999px;
 	bottom:						0.75rem;
-	color:						#491710;
+	color:						var(--ff-color-brand);
 	font-size:				0.9rem;
 	padding:					0.25rem 0.65rem;
 	position:					absolute;

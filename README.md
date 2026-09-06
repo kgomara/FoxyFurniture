@@ -189,6 +189,36 @@ The helper updates:
 - For development, append an alpha or beta prerelease marker: for example,
   `v3.0.4a1` or `v3.0.4b1`.
 
+## Git Workflow
+
+Check your current state before starting work:
+
+```bash
+git status
+```
+
+For feature work, use a branch:
+
+```bash
+git switch -c my-feature-branch
+```
+
+After feature work is complete:
+
+```bash
+git add .
+git commit -m "Describe the change"
+git switch master
+git pull --ff-only
+git merge --ff-only my-feature-branch
+git push origin master
+set-ff-version v3.0.4a3
+git tag -a v3.0.4a3 -m "Release version 3.0.4a3"
+git push origin v1.0.0
+```
+
+If `git merge --ff-only` fails, stop and inspect before forcing the merge.
+
 ## Releasing new versions to production
 
 - Anything pushed to Git master will be automatically published immediately.
@@ -199,6 +229,15 @@ The helper updates:
 
 Changing the version string makes the browser treat the referenced asset URL as
 new, which helps visitors receive updated CSS and JavaScript after a release.
+
+```bash
+git add .
+git commit -m "Describe the change"
+git push origin master
+set-ff-version v3.0.4
+git tag -a v3.0.4 -m "Release version 3.0.4"
+git push origin v3.4.0
+```
 
 ## Design Direction
 
