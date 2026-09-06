@@ -76,16 +76,6 @@ h4 {
 	border-top:				2px solid 	#996600;
 }
 
-.container-inner {
-	height:						210px;
-}
-
-.container-inner a img {
-	width:						150px;
-	float:						left;
-	margin-right:			20px;
-}
-
 .footer-div li {
     display: 				inline;
 }
@@ -286,18 +276,6 @@ h4 {
 	color:						#000;
 }
 
-.carousel-indicators-darker-color li,
-.carousel-indicators-darker-color button {
-	background-color: #666666;
-	border-style: 		solid;
-	border-width: 		1px;
-}
-
-.center-table {
-  margin: 					0 auto !important;
-  float: 						none !important;
-}
-
 /*********************
 	Gallery styles	
  *********************/
@@ -465,8 +443,4 @@ h4 {
 	font-size:				0.9rem;
 	padding:					0.25rem 0.65rem;
 	position:					absolute;
-}
-
-.next {
-	float:						right;
 }

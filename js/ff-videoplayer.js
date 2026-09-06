@@ -1,6 +1,10 @@
 /*global document, window: false */
 
 window.addEventListener('load', function () {
+	initVideoPlayer();
+});
+
+function initVideoPlayer() {
 	const video 	= document.getElementById('movie');
 	const playBtn = document.getElementById('play-pause');
 
@@ -39,4 +43,4 @@ window.addEventListener('load', function () {
 	});
 
 	video.addEventListener('ended', resetVideo);
-});
+}

@@ -1,7 +1,12 @@
 /*global bootstrap, document, window: false */
 
 window.addEventListener('load', async function() {
+	await initSharedLayout();
+	initCarousels();
+	initDownloadPlans();
+});
 
+async function initSharedLayout() {
 	const mainHeader 	= document.querySelector('#header');
 	const mainFooter 	= document.querySelector('#footer');
 
@@ -34,7 +39,9 @@ window.addEventListener('load', async function() {
 		injectSharedHtml(mainHeader, 'js/shared/header.html'),
 		injectSharedHtml(mainFooter, 'js/shared/footer.html')
 	]);
+}
 
+function initCarousels() {
 	document.querySelectorAll('.carousel').forEach(function (carousel) {
 		/*
 			Work-around for a bug in the Bootstrap 5 carousel. Controls are "lazy loaded", hence swipe gestures don't initially work.
@@ -45,7 +52,9 @@ window.addEventListener('load', async function() {
 			touch: true
 		});
 	});
+}
 
+function initDownloadPlans() {
 	const getDownloadPlans = function (pageName) {
 		switch (pageName) {
 		case 'criss-cross.html':
@@ -168,4 +177,4 @@ window.addEventListener('load', async function() {
 		downloadFrame.hidden 	= true;
 		document.body.appendChild(downloadFrame);
 	}
-});
+}

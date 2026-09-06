@@ -1,7 +1,11 @@
 /*global bootstrap, document, window: false */
 
 document.addEventListener('DOMContentLoaded', function () {
-	const galleryLists 	= document.querySelectorAll('ul.first');
+	initGallery();
+});
+
+function initGallery() {
+	const galleryLists 	= document.querySelectorAll('[data-gallery]');
 	let currentItems 		= [];
 	let currentIndex 		= 0;
 	let touchStartX 		= 0;
@@ -178,4 +182,4 @@ document.addEventListener('DOMContentLoaded', function () {
 			});
 		});
 	});
-});
+}
