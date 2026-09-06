@@ -43,6 +43,8 @@ async function initSharedLayout() {
 
 function initCarousels() {
 	document.querySelectorAll('.carousel').forEach(function (carousel) {
+		initCarouselIndicators(carousel);
+
 		/*
 			Work-around for a bug in the Bootstrap 5 carousel. Controls are "lazy loaded", hence swipe gestures don't initially work.
 			This code initializes the carousel instance(s) during the page load process.
@@ -52,6 +54,31 @@ function initCarousels() {
 			touch: true
 		});
 	});
+}
+
+function initCarouselIndicators(carousel) {
+	const indicators = carousel.querySelector('.carousel-indicators');
+	const slides = Array.from(carousel.querySelectorAll('.carousel-item'));
+
+	if (!indicators || indicators.children.length || !slides.length || !carousel.id) {
+		return;
+	}
+
+	indicators.replaceChildren(...slides.map(function (_slide, index) {
+		const indicator = document.createElement('button');
+
+		indicator.type = 'button';
+		indicator.dataset.bsTarget = '#' + carousel.id;
+		indicator.dataset.bsSlideTo = index.toString();
+		indicator.setAttribute('aria-label', 'Slide ' + (index + 1));
+
+		if (index === 0) {
+			indicator.className = 'active';
+			indicator.setAttribute('aria-current', 'true');
+		}
+
+		return indicator;
+	}));
 }
 
 function initDownloadPlans() {
