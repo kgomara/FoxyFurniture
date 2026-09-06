@@ -1,6 +1,38 @@
 /*global window: false */
 
 window.ffGalleryItems = {
+	index: [
+		{
+			href: 'gallery-home-dungeon.html',
+			src: 'img/gallery/hd-button.jpg',
+			alt: 'Home Dungeon',
+			title: 'Home Dungeon'
+		},
+		{
+			href: 'gallery-criss-cross.html',
+			src: 'img/gallery/cc-button.jpg',
+			alt: 'Black criss cross in pedestal form',
+			title: 'Criss Cross'
+		},
+		{
+			href: 'gallery-versahorse.html',
+			src: 'img/gallery/vh-button.jpg',
+			alt: 'VersaHorse side view',
+			title: 'VersaHorse'
+		},
+		{
+			href: 'gallery-pandoras-chest.html',
+			src: 'img/gallery/pc-button.jpg',
+			alt: "Pandora's Chest",
+			title: "Pandora's Chest"
+		},
+		{
+			href: 'gallery-powerpole.html',
+			src: 'img/gallery/pp-button.jpg',
+			alt: 'Power Pole',
+			title: 'Power Pole'
+		}
+	],
 	homeDungeon: [
 		{
 			src: 'img/gallery/hd/DCP_1948.jpg',

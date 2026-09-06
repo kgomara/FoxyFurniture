@@ -1,8 +1,38 @@
 /*global bootstrap, document, window: false */
 
 document.addEventListener('DOMContentLoaded', function () {
+	initGalleryIndex();
 	initGallery();
 });
+
+function initGalleryIndex() {
+	const galleryIndex = document.querySelector('[data-gallery-index]');
+	const galleryItems = window.ffGalleryItems ? window.ffGalleryItems.index : null;
+
+	if (!galleryIndex || !galleryItems || galleryIndex.children.length) {
+		return;
+	}
+
+	galleryIndex.replaceChildren(...galleryItems.map(function (galleryItem) {
+		const item = document.createElement('div');
+		const link = document.createElement('a');
+		const img = document.createElement('img');
+		const title = document.createElement('p');
+
+		item.className = 'ff-gallery-img';
+		link.href = galleryItem.href;
+		img.src = galleryItem.src;
+		img.className = 'img-fluid col-12';
+		img.alt = galleryItem.alt;
+		title.className = 'text-center';
+		title.textContent = galleryItem.title;
+
+		link.append(img, title);
+		item.appendChild(link);
+
+		return item;
+	}));
+}
 
 function initGallery() {
 	const galleryLists 	= document.querySelectorAll('[data-gallery]');
