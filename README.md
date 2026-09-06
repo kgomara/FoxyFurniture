@@ -185,11 +185,12 @@ The helper updates:
 
 ## Version strings
 
+- Changing the version string makes the browser treat the referenced asset URL as new, which helps visitors receive updated CSS and JavaScript after a release.
 - Use semantic versioning with a leading `v`: for example, `v3.0.4`.
-- For development, append an alpha or beta prerelease marker: for example,
-  `v3.0.4a1` or `v3.0.4b1`.
+- For development, append an alpha or beta prerelease marker: for example, `v3.0.4a1` or `v3.0.4b1`.
+- Note that using Asset Versioning (above) does not require creating a named GitHub release for development. Again, the asset version strings are used for a "cache busting" strategy. If any of the files set-ff-version updates (see Asset Versioning), use set-ff-version to bump the string.
 
-## Git Workflow
+## Git Development Workflow
 
 Check your current state before starting work:
 
@@ -206,15 +207,12 @@ git switch -c my-feature-branch
 After feature work is complete:
 
 ```bash
+./set-ff-version v3.0.4a3       # if version needs to be changed - see Asset Versioning
 git add .
 git commit -m "Describe the change"
 git switch master
 git pull --ff-only
 git merge --ff-only my-feature-branch
-git push origin master
-set-ff-version v3.0.4a3
-git tag -a v3.0.4a3 -m "Release version 3.0.4a3"
-git push origin v1.0.0
 ```
 
 If `git merge --ff-only` fails, stop and inspect before forcing the merge.
@@ -222,23 +220,16 @@ If `git merge --ff-only` fails, stop and inspect before forcing the merge.
 ## Releasing new versions to production
 
 - Anything pushed to Git master will be automatically published immediately.
-- It should have a new, unique Git named version with at least the patch version
-  incremented.
-- The new release version string should be applied to the assets. See Asset
-  Versioning.
-
-Changing the version string makes the browser treat the referenced asset URL as
-new, which helps visitors receive updated CSS and JavaScript after a release.
+- It should have a new, unique Git named version with at least the patch version number incremented.
+- The new release version string should be applied to the assets. See Asset Versioning.
 
 ```bash
+./set-ff-version v3.0.4         # Set to the target for Production
 git add .
 git commit -m "Describe the change"
-set-ff-version v3.0.4
-git add .
-git commit -m "Set Release version to v3.0.4"
 git push origin master
-git tag -a v3.0.4 -m "Release version 3.0.4"
-git push origin v3.4.0
+gh release create v3.0.4 --generate-notes --target master
+git fetch --tags
 ```
 
 ## Design Direction
