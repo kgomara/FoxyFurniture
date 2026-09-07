@@ -44,3 +44,9 @@ function initVideoPlayer() {
 
 	video.addEventListener('ended', resetVideo);
 }
+
+if (typeof module !== 'undefined') {
+	module.exports = {
+		initVideoPlayer
+	};
+}
