@@ -153,7 +153,9 @@ function createCarouselControl(carouselId, direction, label) {
 if (typeof module !== 'undefined') {
 	module.exports = {
 		createCarouselControl,
-		initCarouselIndicators
+		initCarouselControls,
+		initCarouselIndicators,
+		renderCarouselSlides
 	};
 }
 
