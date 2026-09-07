@@ -251,6 +251,7 @@ function initGallery() {
 if (typeof module !== 'undefined') {
 	module.exports = {
 		calculateScaledImageSize,
+		initGallery,
 		initGalleryIndex,
 		renderGalleryItems
 	};

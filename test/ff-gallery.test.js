@@ -1,5 +1,6 @@
 const {
 	calculateScaledImageSize,
+	initGallery,
 	initGalleryIndex,
 	renderGalleryItems
 } = require('../js/ff-gallery');
@@ -83,6 +84,64 @@ describe('renderGalleryItems', function () {
 
 		expect(items).toHaveLength(1);
 		expect(items[0].dataset.existing).toBe('true');
+	});
+});
+
+describe('initGallery', function () {
+	it('prepares gallery thumbnails and opens the clicked image in a modal', function () {
+		const show = vi.fn();
+		const getOrCreateInstance = vi.fn(function () {
+			return {
+				show
+			};
+		});
+
+		global.bootstrap = {
+			Modal: {
+				getOrCreateInstance
+			}
+		};
+		window.ffGalleryItems = {
+			crissCross: [
+				{
+					src: 'img/gallery/cc/first.jpg',
+					alt: 'First Criss Cross'
+				},
+				{
+					src: 'img/gallery/cc/second.jpg',
+					alt: 'Second Criss Cross'
+				}
+			]
+		};
+		document.body.innerHTML = '<ul data-gallery="crissCross"></ul>';
+
+		initGallery();
+
+		const galleryList	= document.querySelector('[data-gallery]');
+		const thumbs			= galleryList.querySelectorAll('img');
+
+		expect(galleryList.classList.contains('ff-gallery-grid')).toBe(true);
+		expect(thumbs).toHaveLength(2);
+		expect(thumbs[0].classList.contains('ff-gallery-thumb')).toBe(true);
+		expect(thumbs[0].loading).toBe('lazy');
+		expect(thumbs[0].decoding).toBe('async');
+		expect(thumbs[0].getAttribute('role')).toBe('button');
+		expect(thumbs[0].tabIndex).toBe(0);
+
+		thumbs[0].click();
+
+		const modal = document.getElementById('ffGalleryModal');
+
+		expect(modal).not.toBeNull();
+		expect(document.getElementById('ffGalleryImage').getAttribute('src')).toBe('img/gallery/cc/first.jpg');
+		expect(document.getElementById('ffGalleryImage').getAttribute('alt')).toBe('First Criss Cross');
+		expect(document.getElementById('ffGalleryPrev').disabled).toBe(true);
+		expect(document.getElementById('ffGalleryNext').disabled).toBe(false);
+		expect(document.getElementById('ffGalleryCounter').textContent).toBe('1 / 2');
+		expect(getOrCreateInstance).toHaveBeenCalledWith(modal);
+		expect(show).toHaveBeenCalled();
+
+		delete global.bootstrap;
 	});
 });
 
