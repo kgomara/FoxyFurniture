@@ -145,6 +145,7 @@ function initGallery() {
 			const deltaX = touch.clientX - touchStartX;
 			const deltaY = touch.clientY - touchStartY;
 
+			// check if the scroll is horizontal, and ignore if so
 			if (Math.abs(deltaX) < 50 || Math.abs(deltaX) < Math.abs(deltaY)) {
 				return;
 			}
