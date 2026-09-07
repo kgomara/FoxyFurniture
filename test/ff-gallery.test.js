@@ -1,6 +1,7 @@
 const {
 	calculateScaledImageSize,
-	initGalleryIndex
+	initGalleryIndex,
+	renderGalleryItems
 } = require('../js/ff-gallery');
 
 describe('calculateScaledImageSize', function () {
@@ -26,6 +27,62 @@ describe('calculateScaledImageSize', function () {
 		const scaledSize = calculateScaledImageSize(0, 500, 900, 200);
 
 		expect(scaledSize).toBeNull();
+	});
+});
+
+describe('renderGalleryItems', function () {
+	it('renders gallery detail images from gallery data', function () {
+		window.ffGalleryItems = {
+			crissCross: [
+				{
+					src: 'img/gallery/cc/first.jpg',
+					alt: 'First Criss Cross'
+				},
+				{
+					src: 'img/gallery/cc/second.jpg',
+					alt: 'Second Criss Cross'
+				}
+			]
+		};
+		document.body.innerHTML = '<ul data-gallery="crissCross"></ul>';
+
+		const galleryList = document.querySelector('[data-gallery]');
+
+		renderGalleryItems(galleryList);
+
+		const items = galleryList.querySelectorAll('li');
+		const images = galleryList.querySelectorAll('img');
+
+		expect(items).toHaveLength(2);
+		expect(images[0].getAttribute('src')).toBe('img/gallery/cc/first.jpg');
+		expect(images[0].getAttribute('alt')).toBe('First Criss Cross');
+		expect(images[1].getAttribute('src')).toBe('img/gallery/cc/second.jpg');
+		expect(images[1].getAttribute('alt')).toBe('Second Criss Cross');
+	});
+
+	it('does not replace gallery detail images that already exist', function () {
+		window.ffGalleryItems = {
+			crissCross: [
+				{
+					src: 'img/gallery/cc/first.jpg',
+					alt: 'First Criss Cross'
+				}
+			]
+		};
+		document.body.innerHTML = `
+			<ul data-gallery="crissCross">
+				<li data-existing="true"></li>
+			</ul>
+		`;
+
+		const galleryList = document.querySelector('[data-gallery]');
+
+		renderGalleryItems(galleryList);
+
+		const items = galleryList.querySelectorAll('li');
+
+		expect(items).toHaveLength(1);
+		expect(items[0].dataset.existing).toBe('true');
 	});
 });
 
