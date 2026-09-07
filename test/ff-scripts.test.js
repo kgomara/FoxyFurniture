@@ -1,8 +1,11 @@
 const {
+	SHARED_LAYOUT_VERSION,
 	createCarouselControl,
+	initCarousels,
 	initCarouselControls,
 	initDownloadPlans,
 	initCarouselIndicators,
+	initSharedLayout,
 	renderCarouselSlides
 } = require('../js/ff-scripts');
 
@@ -16,6 +19,96 @@ describe('createCarouselControl', function () {
 		expect(control.dataset.bsTarget).toBe('#carousel-hm');
 		expect(control.dataset.bsSlide).toBe('next');
 		expect(control.children).toHaveLength(2);
+	});
+});
+
+describe('initCarousels', function () {
+	it('renders and initializes each carousel on the page', function () {
+		const getOrCreateInstance = vi.fn();
+
+		global.bootstrap = {
+			Carousel: {
+				getOrCreateInstance
+			}
+		};
+		window.ffProductCarousels = {
+			home: [
+				{
+					src:			'img/home/first.jpg',
+					alt:			'First slide',
+					caption:	'First caption'
+				},
+				{
+					src:			'img/home/second.jpg',
+					alt:			'Second slide',
+					caption:	'Second caption'
+				}
+			]
+		};
+		document.body.innerHTML = `
+			<div id="carousel-hm" class="carousel" data-product-carousel="home">
+				<div class="carousel-indicators"></div>
+				<div class="carousel-inner"></div>
+				<div data-carousel-controls></div>
+			</div>
+		`;
+
+		const carousel = document.getElementById('carousel-hm');
+
+		initCarousels();
+
+		expect(carousel.querySelectorAll('.carousel-item')).toHaveLength(2);
+		expect(carousel.querySelectorAll('.carousel-indicators button')).toHaveLength(2);
+		expect(carousel.querySelectorAll('[data-carousel-controls] button')).toHaveLength(2);
+		expect(getOrCreateInstance).toHaveBeenCalledWith(carousel, {
+			interval: false,
+			touch: true
+		});
+
+		delete global.bootstrap;
+	});
+});
+
+describe('initSharedLayout', function () {
+	it('loads shared header and footer HTML into page placeholders', async function () {
+		global.fetch = vi.fn(function (href) {
+			return Promise.resolve({
+				ok: true,
+				text: function () {
+					if (href.includes('header')) {
+						return Promise.resolve('<header>Header content</header>');
+					}
+
+					return Promise.resolve('<footer>Footer content</footer>');
+				}
+			});
+		});
+		document.body.innerHTML = `
+			<div id="header"></div>
+			<div id="footer"></div>
+		`;
+
+		await initSharedLayout();
+
+		expect(document.querySelector('#header header').textContent).toBe('Header content');
+		expect(document.querySelector('#footer footer').textContent).toBe('Footer content');
+		expect(fetch).toHaveBeenCalledWith('js/shared/header.html?v=' + SHARED_LAYOUT_VERSION);
+		expect(fetch).toHaveBeenCalledWith('js/shared/footer.html?v=' + SHARED_LAYOUT_VERSION);
+
+		delete global.fetch;
+	});
+
+	it('reports a failed shared layout fetch', async function () {
+		global.fetch = vi.fn(function () {
+			return Promise.resolve({
+				ok: false
+			});
+		});
+		document.body.innerHTML = '<div id="header"></div>';
+
+		await expect(initSharedLayout()).rejects.toThrow('Unable to load js/shared/header.html?v=' + SHARED_LAYOUT_VERSION);
+
+		delete global.fetch;
 	});
 });
 

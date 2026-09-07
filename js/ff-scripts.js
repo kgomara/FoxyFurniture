@@ -152,10 +152,13 @@ function createCarouselControl(carouselId, direction, label) {
 
 if (typeof module !== 'undefined') {
 	module.exports = {
+		SHARED_LAYOUT_VERSION,
 		createCarouselControl,
+		initCarousels,
 		initCarouselControls,
 		initDownloadPlans,
 		initCarouselIndicators,
+		initSharedLayout,
 		renderCarouselSlides
 	};
 }
