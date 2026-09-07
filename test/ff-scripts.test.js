@@ -9,6 +9,66 @@ const {
 	renderCarouselSlides
 } = require('../js/ff-scripts');
 
+function installFakeBootstrapCarousel() {
+	const getOrCreateInstance = vi.fn();
+
+	global.bootstrap = {
+		Carousel: {
+			getOrCreateInstance
+		}
+	};
+
+	return getOrCreateInstance;
+}
+
+function arrangeHomeCarouselData() {
+	window.ffProductCarousels = {
+		home: [
+			{
+				src:			'img/home/first.jpg',
+				alt:			'First slide',
+				caption:	'First caption'
+			},
+			{
+				src:			'img/home/second.jpg',
+				alt:			'Second slide',
+				caption:	'Second caption',
+				imgClass:	'd-block mx-auto',
+				captionClass:	'carousel-caption-darker-color'
+			}
+		]
+	};
+}
+
+function arrangeCarousel(html) {
+	document.body.innerHTML = html;
+
+	return document.getElementById('carousel-hm') || document.querySelector('.carousel');
+}
+
+function arrangeDownloadPlans(productKey) {
+	document.body.innerHTML = '<div class="ff-download-plans" data-download-plans="' + productKey + '"></div>';
+
+	initDownloadPlans();
+
+	return document.querySelector('.ff-download-plans');
+}
+
+function installSuccessfulSharedLayoutFetch() {
+	global.fetch = vi.fn(function (href) {
+		return Promise.resolve({
+			ok: true,
+			text: function () {
+				if (href.includes('header')) {
+					return Promise.resolve('<header>Header content</header>');
+				}
+
+				return Promise.resolve('<footer>Footer content</footer>');
+			}
+		});
+	});
+}
+
 describe('createCarouselControl', function () {
 	it('creates a Bootstrap carousel control button', function () {
 		const control = createCarouselControl('carousel-hm', 'next', 'Next');
@@ -24,36 +84,16 @@ describe('createCarouselControl', function () {
 
 describe('initCarousels', function () {
 	it('renders and initializes each carousel on the page', function () {
-		const getOrCreateInstance = vi.fn();
+		const getOrCreateInstance = installFakeBootstrapCarousel();
 
-		global.bootstrap = {
-			Carousel: {
-				getOrCreateInstance
-			}
-		};
-		window.ffProductCarousels = {
-			home: [
-				{
-					src:			'img/home/first.jpg',
-					alt:			'First slide',
-					caption:	'First caption'
-				},
-				{
-					src:			'img/home/second.jpg',
-					alt:			'Second slide',
-					caption:	'Second caption'
-				}
-			]
-		};
-		document.body.innerHTML = `
+		arrangeHomeCarouselData();
+		const carousel = arrangeCarousel(`
 			<div id="carousel-hm" class="carousel" data-product-carousel="home">
 				<div class="carousel-indicators"></div>
 				<div class="carousel-inner"></div>
 				<div data-carousel-controls></div>
 			</div>
-		`;
-
-		const carousel = document.getElementById('carousel-hm');
+		`);
 
 		initCarousels();
 
@@ -71,18 +111,7 @@ describe('initCarousels', function () {
 
 describe('initSharedLayout', function () {
 	it('loads shared header and footer HTML into page placeholders', async function () {
-		global.fetch = vi.fn(function (href) {
-			return Promise.resolve({
-				ok: true,
-				text: function () {
-					if (href.includes('header')) {
-						return Promise.resolve('<header>Header content</header>');
-					}
-
-					return Promise.resolve('<footer>Footer content</footer>');
-				}
-			});
-		});
+		installSuccessfulSharedLayoutFetch();
 		document.body.innerHTML = `
 			<div id="header"></div>
 			<div id="footer"></div>
@@ -114,16 +143,14 @@ describe('initSharedLayout', function () {
 
 describe('initCarouselIndicators', function () {
 	it('creates one indicator button for each carousel slide', function () {
-		document.body.innerHTML = `
+		const carousel = arrangeCarousel(`
 			<div id="carousel-hm" class="carousel">
 				<div class="carousel-indicators"></div>
 				<div class="carousel-item active"></div>
 				<div class="carousel-item"></div>
 				<div class="carousel-item"></div>
 			</div>
-		`;
-
-		const carousel = document.getElementById('carousel-hm');
+		`);
 
 		initCarouselIndicators(carousel);
 
@@ -140,16 +167,14 @@ describe('initCarouselIndicators', function () {
 	});
 
 	it('does not replace indicators that already exist', function () {
-		document.body.innerHTML = `
+		const carousel = arrangeCarousel(`
 			<div id="carousel-hm" class="carousel">
 				<div class="carousel-indicators">
 					<button type="button" data-existing="true"></button>
 				</div>
 				<div class="carousel-item active"></div>
 			</div>
-		`;
-
-		const carousel = document.getElementById('carousel-hm');
+		`);
 
 		initCarouselIndicators(carousel);
 
@@ -162,13 +187,11 @@ describe('initCarouselIndicators', function () {
 
 describe('initCarouselControls', function () {
 	it('adds previous and next controls to a carousel', function () {
-		document.body.innerHTML = `
+		const carousel = arrangeCarousel(`
 			<div id="carousel-hm" class="carousel">
 				<div data-carousel-controls></div>
 			</div>
-		`;
-
-		const carousel = document.getElementById('carousel-hm');
+		`);
 
 		initCarouselControls(carousel);
 
@@ -186,15 +209,13 @@ describe('initCarouselControls', function () {
 	});
 
 	it('does not replace controls that already exist', function () {
-		document.body.innerHTML = `
+		const carousel = arrangeCarousel(`
 			<div id="carousel-hm" class="carousel">
 				<div data-carousel-controls>
 					<button type="button" data-existing="true"></button>
 				</div>
 			</div>
-		`;
-
-		const carousel = document.getElementById('carousel-hm');
+		`);
 
 		initCarouselControls(carousel);
 
@@ -207,29 +228,12 @@ describe('initCarouselControls', function () {
 
 describe('renderCarouselSlides', function () {
 	it('renders carousel slides from product carousel data', function () {
-		window.ffProductCarousels = {
-			home: [
-				{
-					src: 'img/home/first.jpg',
-					alt: 'First slide',
-					caption: 'First caption'
-				},
-				{
-					src: 'img/home/second.jpg',
-					alt: 'Second slide',
-					caption: 'Second caption',
-					imgClass: 'd-block mx-auto',
-					captionClass: 'carousel-caption-darker-color'
-				}
-			]
-		};
-		document.body.innerHTML = `
+		arrangeHomeCarouselData();
+		const carousel = arrangeCarousel(`
 			<div class="carousel" data-product-carousel="home">
 				<div class="carousel-inner"></div>
 			</div>
-		`;
-
-		const carousel = document.querySelector('.carousel');
+		`);
 
 		renderCarouselSlides(carousel);
 
@@ -258,15 +262,13 @@ describe('renderCarouselSlides', function () {
 				}
 			]
 		};
-		document.body.innerHTML = `
+		const carousel = arrangeCarousel(`
 			<div class="carousel" data-product-carousel="home">
 				<div class="carousel-inner">
 					<div class="carousel-item" data-existing="true"></div>
 				</div>
 			</div>
-		`;
-
-		const carousel = document.querySelector('.carousel');
+		`);
 
 		renderCarouselSlides(carousel);
 
@@ -279,11 +281,7 @@ describe('renderCarouselSlides', function () {
 
 describe('initDownloadPlans', function () {
 	it('renders download buttons and a buy link for products that can be purchased', function () {
-		document.body.innerHTML = '<div class="ff-download-plans" data-download-plans="crissCross"></div>';
-
-		initDownloadPlans();
-
-		const container			= document.querySelector('.ff-download-plans');
+		const container			= arrangeDownloadPlans('crissCross');
 		const links					= container.querySelectorAll('a');
 		const downloadFrame	= document.querySelector('iframe[name="ffDownloadFrame"]');
 
@@ -299,11 +297,7 @@ describe('initDownloadPlans', function () {
 	});
 
 	it('does not render a buy link for products without a purchase URL', function () {
-		document.body.innerHTML = '<div class="ff-download-plans" data-download-plans="pandorasChest"></div>';
-
-		initDownloadPlans();
-
-		const container	= document.querySelector('.ff-download-plans');
+		const container	= arrangeDownloadPlans('pandorasChest');
 		const links			= container.querySelectorAll('a');
 
 		expect(links).toHaveLength(2);
@@ -321,9 +315,7 @@ describe('initDownloadPlans', function () {
 				eventData
 			});
 		};
-		document.body.innerHTML = '<div class="ff-download-plans" data-download-plans="powerPole"></div>';
-
-		initDownloadPlans();
+		arrangeDownloadPlans('powerPole');
 
 		document.querySelector('a[href="plans/power-pole-pdfs.zip"]').click();
 
