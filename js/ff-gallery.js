@@ -34,6 +34,19 @@ function initGalleryIndex() {
 	}));
 }
 
+function calculateScaledImageSize(naturalWidth, naturalHeight, maxWidth, maxHeight) {
+	if (!naturalWidth || !naturalHeight) {
+		return null;
+	}
+
+	const scale = Math.min(maxWidth / naturalWidth, maxHeight / naturalHeight);
+
+	return {
+		width: 	Math.floor(naturalWidth * scale),
+		height: Math.floor(naturalHeight * scale)
+	};
+}
+
 function initGallery() {
 	const galleryLists 	= document.querySelectorAll('[data-gallery]');
 	let currentItems 		= [];
@@ -129,20 +142,19 @@ function initGallery() {
 	}
 
 	function sizeModalImage(modalImg) {
-		const viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-		const maxWidth = window.innerWidth - 16;
-		const maxHeight = viewportHeight - 16;
-		const naturalWidth = modalImg.naturalWidth;
-		const naturalHeight = modalImg.naturalHeight;
+		const viewportHeight	= window.visualViewport ? window.visualViewport.height : window.innerHeight;
+		const maxWidth				= window.innerWidth - 16;
+		const maxHeight				= viewportHeight - 16;
+		const naturalWidth		= modalImg.naturalWidth;
+		const naturalHeight		= modalImg.naturalHeight;
+		const scaledSize			= calculateScaledImageSize(naturalWidth, naturalHeight, maxWidth, maxHeight);
 
-		if (!naturalWidth || !naturalHeight) {
+		if (!scaledSize) {
 			return;
 		}
 
-		const scale = Math.min(maxWidth / naturalWidth, maxHeight / naturalHeight);
-
-		modalImg.style.width = Math.floor(naturalWidth * scale) + 'px';
-		modalImg.style.height = Math.floor(naturalHeight * scale) + 'px';
+		modalImg.style.width	= scaledSize.width + 'px';
+		modalImg.style.height = scaledSize.height + 'px';
 	}
 
 	function showImage(index) {
@@ -234,4 +246,10 @@ function initGallery() {
 			});
 		});
 	});
+}
+
+if (typeof module !== 'undefined') {
+	module.exports = {
+		calculateScaledImageSize
+	};
 }
