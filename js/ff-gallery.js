@@ -250,6 +250,7 @@ function initGallery() {
 
 if (typeof module !== 'undefined') {
 	module.exports = {
-		calculateScaledImageSize
+		calculateScaledImageSize,
+		initGalleryIndex
 	};
 }
