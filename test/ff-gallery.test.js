@@ -187,6 +187,44 @@ describe('initGallery', function () {
 
 		delete global.bootstrap;
 	});
+
+	it('moves to the next image from the modal next button', function () {
+		global.bootstrap = {
+			Modal: {
+				getOrCreateInstance: vi.fn(function () {
+					return {
+						show: vi.fn()
+					};
+				})
+			}
+		};
+		window.ffGalleryItems = {
+			crissCross: [
+				{
+					src: 'img/gallery/cc/first.jpg',
+					alt: 'First Criss Cross'
+				},
+				{
+					src: 'img/gallery/cc/second.jpg',
+					alt: 'Second Criss Cross'
+				}
+			]
+		};
+		document.body.innerHTML = '<ul data-gallery="crissCross"></ul>';
+
+		initGallery();
+
+		document.querySelector('[data-gallery] img').click();
+		document.getElementById('ffGalleryNext').click();
+
+		expect(document.getElementById('ffGalleryImage').getAttribute('src')).toBe('img/gallery/cc/second.jpg');
+		expect(document.getElementById('ffGalleryImage').getAttribute('alt')).toBe('Second Criss Cross');
+		expect(document.getElementById('ffGalleryPrev').disabled).toBe(false);
+		expect(document.getElementById('ffGalleryNext').disabled).toBe(true);
+		expect(document.getElementById('ffGalleryCounter').textContent).toBe('2 / 2');
+
+		delete global.bootstrap;
+	});
 });
 
 describe('initGalleryIndex', function () {
