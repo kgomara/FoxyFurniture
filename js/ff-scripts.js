@@ -150,6 +150,12 @@ function createCarouselControl(carouselId, direction, label) {
 	return control;
 }
 
+if (typeof module !== 'undefined') {
+	module.exports = {
+		createCarouselControl
+	};
+}
+
 function initDownloadPlans() {
 	const downloadPlansByKey = {
 		crissCross: {
