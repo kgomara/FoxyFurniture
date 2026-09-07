@@ -225,6 +225,53 @@ describe('initGallery', function () {
 
 		delete global.bootstrap;
 	});
+
+	it('moves between modal images with arrow keys', function () {
+		global.bootstrap = {
+			Modal: {
+				getOrCreateInstance: vi.fn(function () {
+					return {
+						show: vi.fn()
+					};
+				})
+			}
+		};
+		window.ffGalleryItems = {
+			crissCross: [
+				{
+					src: 'img/gallery/cc/first.jpg',
+					alt: 'First Criss Cross'
+				},
+				{
+					src: 'img/gallery/cc/second.jpg',
+					alt: 'Second Criss Cross'
+				}
+			]
+		};
+		document.body.innerHTML = '<ul data-gallery="crissCross"></ul>';
+
+		initGallery();
+
+		document.querySelector('[data-gallery] img').click();
+
+		const modal = document.getElementById('ffGalleryModal');
+
+		modal.dispatchEvent(new KeyboardEvent('keydown', {
+			key: 'ArrowRight'
+		}));
+
+		expect(document.getElementById('ffGalleryImage').getAttribute('src')).toBe('img/gallery/cc/second.jpg');
+		expect(document.getElementById('ffGalleryCounter').textContent).toBe('2 / 2');
+
+		modal.dispatchEvent(new KeyboardEvent('keydown', {
+			key: 'ArrowLeft'
+		}));
+
+		expect(document.getElementById('ffGalleryImage').getAttribute('src')).toBe('img/gallery/cc/first.jpg');
+		expect(document.getElementById('ffGalleryCounter').textContent).toBe('1 / 2');
+
+		delete global.bootstrap;
+	});
 });
 
 describe('initGalleryIndex', function () {
