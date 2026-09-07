@@ -189,9 +189,9 @@ function initGallery() {
 		}
 
 		currentIndex = index;
-		modalImg.style.width = '';
-		modalImg.style.height = '';
-		modalImg.onload = function () {
+		modalImg.style.width	= '';
+		modalImg.style.height	= '';
+		modalImg.onload				= function () {
 			sizeModalImage(modalImg);
 		};
 		modalImg.src = img.getAttribute('src');
@@ -222,13 +222,13 @@ function initGallery() {
 
 			img.classList.remove('btn-thumbnail', 'img-thumbnail', 'ff-gallery-btn');
 			img.classList.add('ff-gallery-thumb');
-			img.loading = 'lazy';
-			img.decoding = 'async';
+			img.loading		= 'lazy';
+			img.decoding	= 'async';
 			img.setAttribute('role', 'button');
-			img.tabIndex = 0;
+			img.tabIndex	= 0;
 
 			function openGallery() {
-				const modal = ensureModal();
+				const modal	= ensureModal();
 				currentItems = items.map(function (galleryItem) {
 					return galleryItem.querySelector('img');
 				}).filter(Boolean);
