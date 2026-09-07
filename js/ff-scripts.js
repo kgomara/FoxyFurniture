@@ -154,6 +154,7 @@ if (typeof module !== 'undefined') {
 	module.exports = {
 		createCarouselControl,
 		initCarouselControls,
+		initDownloadPlans,
 		initCarouselIndicators,
 		renderCarouselSlides
 	};

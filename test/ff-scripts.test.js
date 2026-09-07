@@ -1,6 +1,7 @@
 const {
 	createCarouselControl,
 	initCarouselControls,
+	initDownloadPlans,
 	initCarouselIndicators,
 	renderCarouselSlides
 } = require('../js/ff-scripts');
@@ -180,5 +181,68 @@ describe('renderCarouselSlides', function () {
 
 		expect(slides).toHaveLength(1);
 		expect(slides[0].dataset.existing).toBe('true');
+	});
+});
+
+describe('initDownloadPlans', function () {
+	it('renders download buttons and a buy link for products that can be purchased', function () {
+		document.body.innerHTML = '<div class="ff-download-plans" data-download-plans="crissCross"></div>';
+
+		initDownloadPlans();
+
+		const container			= document.querySelector('.ff-download-plans');
+		const links					= container.querySelectorAll('a');
+		const downloadFrame	= document.querySelector('iframe[name="ffDownloadFrame"]');
+
+		expect(container.querySelector('h4').textContent).toBe('Download Free Plans!');
+		expect(links).toHaveLength(3);
+		expect(links[0].getAttribute('href')).toBe('plans/criss-cross-dwgs.zip');
+		expect(links[0].textContent).toBe('Drawings');
+		expect(links[1].getAttribute('href')).toBe('plans/criss-cross-pdfs.zip');
+		expect(links[1].textContent).toBe('PDFs');
+		expect(links[2].getAttribute('href')).toBe('https://fetishfurniture.org/');
+		expect(links[2].getAttribute('target')).toBe('_blank');
+		expect(downloadFrame.hidden).toBe(true);
+	});
+
+	it('does not render a buy link for products without a purchase URL', function () {
+		document.body.innerHTML = '<div class="ff-download-plans" data-download-plans="pandorasChest"></div>';
+
+		initDownloadPlans();
+
+		const container	= document.querySelector('.ff-download-plans');
+		const links			= container.querySelectorAll('a');
+
+		expect(links).toHaveLength(2);
+		expect(links[0].getAttribute('href')).toBe('plans/pandoras-chest-dwgs.zip');
+		expect(links[1].getAttribute('href')).toBe('plans/pandoras-chest-pdfs.zip');
+		expect(container.textContent).not.toContain("If you'd rather buy...");
+	});
+
+	it('tracks download clicks when analytics is available', function () {
+		const events = [];
+
+		window.sa_event = function (eventName, eventData) {
+			events.push({
+				eventName,
+				eventData
+			});
+		};
+		document.body.innerHTML = '<div class="ff-download-plans" data-download-plans="powerPole"></div>';
+
+		initDownloadPlans();
+
+		document.querySelector('a[href="plans/power-pole-pdfs.zip"]').click();
+
+		expect(events).toEqual([
+			{
+				eventName: 'download_pp_pdfs',
+				eventData: {
+					filename: 'power-pole-pdfs.zip'
+				}
+			}
+		]);
+
+		delete window.sa_event;
 	});
 });
