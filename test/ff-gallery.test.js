@@ -143,6 +143,50 @@ describe('initGallery', function () {
 
 		delete global.bootstrap;
 	});
+
+	it('opens a focused thumbnail when Enter is pressed', function () {
+		const show = vi.fn();
+
+		global.bootstrap = {
+			Modal: {
+				getOrCreateInstance: vi.fn(function () {
+					return {
+						show
+					};
+				})
+			}
+		};
+		window.ffGalleryItems = {
+			crissCross: [
+				{
+					src: 'img/gallery/cc/first.jpg',
+					alt: 'First Criss Cross'
+				},
+				{
+					src: 'img/gallery/cc/second.jpg',
+					alt: 'Second Criss Cross'
+				}
+			]
+		};
+		document.body.innerHTML = '<ul data-gallery="crissCross"></ul>';
+
+		initGallery();
+
+		const thumbs			= document.querySelectorAll('[data-gallery] img');
+		const enterEvent	= new KeyboardEvent('keydown', {
+			key: 'Enter'
+		});
+
+		thumbs[1].dispatchEvent(enterEvent);
+
+		expect(document.getElementById('ffGalleryImage').getAttribute('src')).toBe('img/gallery/cc/second.jpg');
+		expect(document.getElementById('ffGalleryPrev').disabled).toBe(false);
+		expect(document.getElementById('ffGalleryNext').disabled).toBe(true);
+		expect(document.getElementById('ffGalleryCounter').textContent).toBe('2 / 2');
+		expect(show).toHaveBeenCalled();
+
+		delete global.bootstrap;
+	});
 });
 
 describe('initGalleryIndex', function () {
