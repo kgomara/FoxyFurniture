@@ -1,13 +1,28 @@
 const { initVideoPlayer } = require('../js/ff-videoplayer');
 
-describe('initVideoPlayer', function () {
-	it('plays the video when the play button is clicked', function () {
-		document.body.innerHTML = `
-			<video id="movie"></video>
-			<button id="play-pause" type="button"></button>
-		`;
+function arrangeVideoPlayer(playButtonClass) {
+	document.body.innerHTML = `
+		<video id="movie"></video>
+		<button id="play-pause" class="${playButtonClass || ''}" type="button"></button>
+	`;
 
-		const video = document.getElementById('movie');
+	return {
+		video: document.getElementById('movie'),
+		playBtn: document.getElementById('play-pause')
+	};
+}
+
+describe('initVideoPlayer', function () {
+	it('does nothing when the page does not have a video player', function () {
+		document.body.innerHTML = '<main></main>';
+
+		expect(function () {
+			initVideoPlayer();
+		}).not.toThrow();
+	});
+
+	it('plays the video when the play button is clicked', function () {
+		const { video } = arrangeVideoPlayer();
 
 		video.play = vi.fn();
 
@@ -19,13 +34,7 @@ describe('initVideoPlayer', function () {
 	});
 
 	it('hides and shows the play button when video playback changes', function () {
-		document.body.innerHTML = `
-			<video id="movie"></video>
-			<button id="play-pause" type="button"></button>
-		`;
-
-		const video		= document.getElementById('movie');
-		const playBtn	= document.getElementById('play-pause');
+		const { video, playBtn } = arrangeVideoPlayer();
 
 		Object.defineProperty(video, 'duration', {
 			value: 10
@@ -45,13 +54,7 @@ describe('initVideoPlayer', function () {
 	});
 
 	it('resets the video and play button when playback ends', function () {
-		document.body.innerHTML = `
-			<video id="movie"></video>
-			<button id="play-pause" class="is-hidden" type="button"></button>
-		`;
-
-		const video		= document.getElementById('movie');
-		const playBtn	= document.getElementById('play-pause');
+		const { video, playBtn } = arrangeVideoPlayer('is-hidden');
 
 		video.pause				= vi.fn();
 		video.currentTime	= 7;
