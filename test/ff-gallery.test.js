@@ -5,6 +5,62 @@ const {
 	renderGalleryItems
 } = require('../js/ff-gallery');
 
+function installFakeBootstrapModal() {
+	const show = vi.fn();
+	const getOrCreateInstance = vi.fn(function () {
+		return {
+			show
+		};
+	});
+
+	global.bootstrap = {
+		Modal: {
+			getOrCreateInstance
+		}
+	};
+
+	return {
+		getOrCreateInstance,
+		show
+	};
+}
+
+function arrangeCrissCrossGallery() {
+	window.ffGalleryItems = {
+		crissCross: [
+			{
+				src: 'img/gallery/cc/first.jpg',
+				alt: 'First Criss Cross'
+			},
+			{
+				src: 'img/gallery/cc/second.jpg',
+				alt: 'Second Criss Cross'
+			}
+		]
+	};
+	document.body.innerHTML = '<ul data-gallery="crissCross"></ul>';
+
+	initGallery();
+
+	return {
+		galleryList: document.querySelector('[data-gallery]'),
+		thumbs:			 document.querySelectorAll('[data-gallery] img')
+	};
+}
+
+function createTouchEvent(type, clientX, clientY) {
+	const event = new Event(type);
+
+	event.changedTouches = [
+		{
+			clientX,
+			clientY
+		}
+	];
+
+	return event;
+}
+
 describe('calculateScaledImageSize', function () {
 	it('scales an image down to fit inside the maximum size', function () {
 		const scaledSize = calculateScaledImageSize(1000, 500, 500, 400);
@@ -89,36 +145,8 @@ describe('renderGalleryItems', function () {
 
 describe('initGallery', function () {
 	it('prepares gallery thumbnails and opens the clicked image in a modal', function () {
-		const show = vi.fn();
-		const getOrCreateInstance = vi.fn(function () {
-			return {
-				show
-			};
-		});
-
-		global.bootstrap = {
-			Modal: {
-				getOrCreateInstance
-			}
-		};
-		window.ffGalleryItems = {
-			crissCross: [
-				{
-					src: 'img/gallery/cc/first.jpg',
-					alt: 'First Criss Cross'
-				},
-				{
-					src: 'img/gallery/cc/second.jpg',
-					alt: 'Second Criss Cross'
-				}
-			]
-		};
-		document.body.innerHTML = '<ul data-gallery="crissCross"></ul>';
-
-		initGallery();
-
-		const galleryList	= document.querySelector('[data-gallery]');
-		const thumbs			= galleryList.querySelectorAll('img');
+		const { getOrCreateInstance, show }	= installFakeBootstrapModal();
+		const { galleryList, thumbs }				= arrangeCrissCrossGallery();
 
 		expect(galleryList.classList.contains('ff-gallery-grid')).toBe(true);
 		expect(thumbs).toHaveLength(2);
@@ -145,34 +173,8 @@ describe('initGallery', function () {
 	});
 
 	it('opens a focused thumbnail when Enter is pressed', function () {
-		const show = vi.fn();
-
-		global.bootstrap = {
-			Modal: {
-				getOrCreateInstance: vi.fn(function () {
-					return {
-						show
-					};
-				})
-			}
-		};
-		window.ffGalleryItems = {
-			crissCross: [
-				{
-					src: 'img/gallery/cc/first.jpg',
-					alt: 'First Criss Cross'
-				},
-				{
-					src: 'img/gallery/cc/second.jpg',
-					alt: 'Second Criss Cross'
-				}
-			]
-		};
-		document.body.innerHTML = '<ul data-gallery="crissCross"></ul>';
-
-		initGallery();
-
-		const thumbs			= document.querySelectorAll('[data-gallery] img');
+		const { show }		= installFakeBootstrapModal();
+		const { thumbs }	= arrangeCrissCrossGallery();
 		const enterEvent	= new KeyboardEvent('keydown', {
 			key: 'Enter'
 		});
@@ -189,30 +191,8 @@ describe('initGallery', function () {
 	});
 
 	it('moves to the next image from the modal next button', function () {
-		global.bootstrap = {
-			Modal: {
-				getOrCreateInstance: vi.fn(function () {
-					return {
-						show: vi.fn()
-					};
-				})
-			}
-		};
-		window.ffGalleryItems = {
-			crissCross: [
-				{
-					src: 'img/gallery/cc/first.jpg',
-					alt: 'First Criss Cross'
-				},
-				{
-					src: 'img/gallery/cc/second.jpg',
-					alt: 'Second Criss Cross'
-				}
-			]
-		};
-		document.body.innerHTML = '<ul data-gallery="crissCross"></ul>';
-
-		initGallery();
+		installFakeBootstrapModal();
+		arrangeCrissCrossGallery();
 
 		document.querySelector('[data-gallery] img').click();
 		document.getElementById('ffGalleryNext').click();
@@ -227,30 +207,8 @@ describe('initGallery', function () {
 	});
 
 	it('moves between modal images with arrow keys', function () {
-		global.bootstrap = {
-			Modal: {
-				getOrCreateInstance: vi.fn(function () {
-					return {
-						show: vi.fn()
-					};
-				})
-			}
-		};
-		window.ffGalleryItems = {
-			crissCross: [
-				{
-					src: 'img/gallery/cc/first.jpg',
-					alt: 'First Criss Cross'
-				},
-				{
-					src: 'img/gallery/cc/second.jpg',
-					alt: 'Second Criss Cross'
-				}
-			]
-		};
-		document.body.innerHTML = '<ul data-gallery="crissCross"></ul>';
-
-		initGallery();
+		installFakeBootstrapModal();
+		arrangeCrissCrossGallery();
 
 		document.querySelector('[data-gallery] img').click();
 
@@ -274,49 +232,14 @@ describe('initGallery', function () {
 	});
 
 	it('moves to the next modal image after a left swipe', function () {
-		global.bootstrap = {
-			Modal: {
-				getOrCreateInstance: vi.fn(function () {
-					return {
-						show: vi.fn()
-					};
-				})
-			}
-		};
-		window.ffGalleryItems = {
-			crissCross: [
-				{
-					src: 'img/gallery/cc/first.jpg',
-					alt: 'First Criss Cross'
-				},
-				{
-					src: 'img/gallery/cc/second.jpg',
-					alt: 'Second Criss Cross'
-				}
-			]
-		};
-		document.body.innerHTML = '<ul data-gallery="crissCross"></ul>';
-
-		initGallery();
+		installFakeBootstrapModal();
+		arrangeCrissCrossGallery();
 
 		document.querySelector('[data-gallery] img').click();
 
 		const modal				= document.getElementById('ffGalleryModal');
-		const touchStart	= new Event('touchstart');
-		const touchEnd		= new Event('touchend');
-
-		touchStart.changedTouches = [
-			{
-				clientX: 200,
-				clientY: 100
-			}
-		];
-		touchEnd.changedTouches = [
-			{
-				clientX: 100,
-				clientY: 110
-			}
-		];
+		const touchStart	= createTouchEvent('touchstart', 200, 100);
+		const touchEnd		= createTouchEvent('touchend', 100, 110);
 
 		modal.dispatchEvent(touchStart);
 		modal.dispatchEvent(touchEnd);
@@ -328,49 +251,14 @@ describe('initGallery', function () {
 	});
 
 	it('stays on the current modal image after a mostly vertical swipe', function () {
-		global.bootstrap = {
-			Modal: {
-				getOrCreateInstance: vi.fn(function () {
-					return {
-						show: vi.fn()
-					};
-				})
-			}
-		};
-		window.ffGalleryItems = {
-			crissCross: [
-				{
-					src: 'img/gallery/cc/first.jpg',
-					alt: 'First Criss Cross'
-				},
-				{
-					src: 'img/gallery/cc/second.jpg',
-					alt: 'Second Criss Cross'
-				}
-			]
-		};
-		document.body.innerHTML = '<ul data-gallery="crissCross"></ul>';
-
-		initGallery();
+		installFakeBootstrapModal();
+		arrangeCrissCrossGallery();
 
 		document.querySelector('[data-gallery] img').click();
 
 		const modal				= document.getElementById('ffGalleryModal');
-		const touchStart	= new Event('touchstart');
-		const touchEnd		= new Event('touchend');
-
-		touchStart.changedTouches = [
-			{
-				clientX: 200,
-				clientY: 100
-			}
-		];
-		touchEnd.changedTouches = [
-			{
-				clientX: 120,
-				clientY: 220
-			}
-		];
+		const touchStart	= createTouchEvent('touchstart', 200, 100);
+		const touchEnd		= createTouchEvent('touchend', 120, 220);
 
 		modal.dispatchEvent(touchStart);
 		modal.dispatchEvent(touchEnd);
@@ -382,30 +270,8 @@ describe('initGallery', function () {
 	});
 
 	it('stays on the first modal image when previous is requested at the beginning', function () {
-		global.bootstrap = {
-			Modal: {
-				getOrCreateInstance: vi.fn(function () {
-					return {
-						show: vi.fn()
-					};
-				})
-			}
-		};
-		window.ffGalleryItems = {
-			crissCross: [
-				{
-					src: 'img/gallery/cc/first.jpg',
-					alt: 'First Criss Cross'
-				},
-				{
-					src: 'img/gallery/cc/second.jpg',
-					alt: 'Second Criss Cross'
-				}
-			]
-		};
-		document.body.innerHTML = '<ul data-gallery="crissCross"></ul>';
-
-		initGallery();
+		installFakeBootstrapModal();
+		arrangeCrissCrossGallery();
 
 		document.querySelector('[data-gallery] img').click();
 		document.getElementById('ffGalleryPrev').click();
@@ -419,30 +285,8 @@ describe('initGallery', function () {
 	});
 
 	it('stays on the last modal image when next is requested at the end', function () {
-		global.bootstrap = {
-			Modal: {
-				getOrCreateInstance: vi.fn(function () {
-					return {
-						show: vi.fn()
-					};
-				})
-			}
-		};
-		window.ffGalleryItems = {
-			crissCross: [
-				{
-					src: 'img/gallery/cc/first.jpg',
-					alt: 'First Criss Cross'
-				},
-				{
-					src: 'img/gallery/cc/second.jpg',
-					alt: 'Second Criss Cross'
-				}
-			]
-		};
-		document.body.innerHTML = '<ul data-gallery="crissCross"></ul>';
-
-		initGallery();
+		installFakeBootstrapModal();
+		arrangeCrissCrossGallery();
 
 		document.querySelectorAll('[data-gallery] img')[1].click();
 		document.getElementById('ffGalleryNext').click();
