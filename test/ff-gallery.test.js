@@ -227,6 +227,20 @@ describe('initGallery', function () {
 		delete global.bootstrap;
 	});
 
+	it('does not open a focused thumbnail when another key is pressed', function () {
+		const { show }		= installFakeBootstrapModal();
+		const { thumbs }	= arrangeCrissCrossGallery();
+
+		thumbs[1].dispatchEvent(new KeyboardEvent('keydown', {
+			key: 'Escape'
+		}));
+
+		expect(document.getElementById('ffGalleryModal')).toBeNull();
+		expect(show).not.toHaveBeenCalled();
+
+		delete global.bootstrap;
+	});
+
 	it('moves to the next image from the modal next button', function () {
 		installFakeBootstrapModal();
 		arrangeCrissCrossGallery();
