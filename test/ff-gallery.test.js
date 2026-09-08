@@ -62,6 +62,11 @@ function createTouchEvent(type, clientX, clientY) {
 	return event;
 }
 
+afterEach(function () {
+	// Test isolation: each test gets a clean fake dependency setup.
+	delete global.bootstrap;
+});
+
 describe('calculateScaledImageSize', function () {
 	it('scales an image down to fit inside the maximum size', function () {
 		// Pure-function test: simple inputs, simple output, no DOM setup needed.
@@ -194,8 +199,6 @@ describe('initGallery', function () {
 		expect(document.getElementById('ffGalleryCounter').textContent).toBe('1 / 2');
 		expect(getOrCreateInstance).toHaveBeenCalledWith(modal);
 		expect(show).toHaveBeenCalled();
-
-		delete global.bootstrap;
 	});
 
 	it('opens a focused thumbnail when Enter is pressed', function () {
@@ -213,8 +216,6 @@ describe('initGallery', function () {
 		expect(document.getElementById('ffGalleryNext').disabled).toBe(true);
 		expect(document.getElementById('ffGalleryCounter').textContent).toBe('2 / 2');
 		expect(show).toHaveBeenCalled();
-
-		delete global.bootstrap;
 	});
 
 	it('opens a focused thumbnail when Space is pressed', function () {
@@ -232,8 +233,6 @@ describe('initGallery', function () {
 		expect(document.getElementById('ffGalleryImage').getAttribute('src')).toBe('img/gallery/cc/second.jpg');
 		expect(document.getElementById('ffGalleryCounter').textContent).toBe('2 / 2');
 		expect(show).toHaveBeenCalled();
-
-		delete global.bootstrap;
 	});
 
 	it('does not open a focused thumbnail when another key is pressed', function () {
@@ -247,8 +246,6 @@ describe('initGallery', function () {
 
 		expect(document.getElementById('ffGalleryModal')).toBeNull();
 		expect(show).not.toHaveBeenCalled();
-
-		delete global.bootstrap;
 	});
 
 	it('moves to the next image from the modal next button', function () {
@@ -263,8 +260,6 @@ describe('initGallery', function () {
 		expect(document.getElementById('ffGalleryPrev').disabled).toBe(false);
 		expect(document.getElementById('ffGalleryNext').disabled).toBe(true);
 		expect(document.getElementById('ffGalleryCounter').textContent).toBe('2 / 2');
-
-		delete global.bootstrap;
 	});
 
 	it('moves between modal images with arrow keys', function () {
@@ -289,8 +284,6 @@ describe('initGallery', function () {
 
 		expect(document.getElementById('ffGalleryImage').getAttribute('src')).toBe('img/gallery/cc/first.jpg');
 		expect(document.getElementById('ffGalleryCounter').textContent).toBe('1 / 2');
-
-		delete global.bootstrap;
 	});
 
 	it('moves to the next modal image after a left swipe', function () {
@@ -309,8 +302,6 @@ describe('initGallery', function () {
 
 		expect(document.getElementById('ffGalleryImage').getAttribute('src')).toBe('img/gallery/cc/second.jpg');
 		expect(document.getElementById('ffGalleryCounter').textContent).toBe('2 / 2');
-
-		delete global.bootstrap;
 	});
 
 	it('stays on the current modal image after a mostly vertical swipe', function () {
@@ -329,8 +320,6 @@ describe('initGallery', function () {
 
 		expect(document.getElementById('ffGalleryImage').getAttribute('src')).toBe('img/gallery/cc/first.jpg');
 		expect(document.getElementById('ffGalleryCounter').textContent).toBe('1 / 2');
-
-		delete global.bootstrap;
 	});
 
 	it('stays on the first modal image when previous is requested at the beginning', function () {
@@ -345,8 +334,6 @@ describe('initGallery', function () {
 		expect(document.getElementById('ffGalleryPrev').disabled).toBe(true);
 		expect(document.getElementById('ffGalleryNext').disabled).toBe(false);
 		expect(document.getElementById('ffGalleryCounter').textContent).toBe('1 / 2');
-
-		delete global.bootstrap;
 	});
 
 	it('stays on the last modal image when next is requested at the end', function () {
@@ -361,8 +348,6 @@ describe('initGallery', function () {
 		expect(document.getElementById('ffGalleryPrev').disabled).toBe(false);
 		expect(document.getElementById('ffGalleryNext').disabled).toBe(true);
 		expect(document.getElementById('ffGalleryCounter').textContent).toBe('2 / 2');
-
-		delete global.bootstrap;
 	});
 });
 
