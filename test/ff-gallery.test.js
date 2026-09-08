@@ -155,6 +155,14 @@ describe('renderGalleryItems', function () {
 });
 
 describe('initGallery', function () {
+	it('does nothing when the page does not have a gallery list', function () {
+		document.body.innerHTML = '<main></main>';
+
+		expect(function () {
+			initGallery();
+		}).not.toThrow();
+	});
+
 	it('prepares gallery thumbnails and opens the clicked image in a modal', function () {
 		const { getOrCreateInstance, show }	= installFakeBootstrapModal();
 		const { galleryList, thumbs }				= arrangeCrissCrossGallery();
