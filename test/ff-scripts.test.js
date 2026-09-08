@@ -72,6 +72,14 @@ function installSuccessfulSharedLayoutFetch() {
 	});
 }
 
+afterEach(function () {
+	// Test isolation: each test gets a clean fake dependency and global data setup.
+	delete global.bootstrap;
+	delete global.fetch;
+	delete window.ffProductCarousels;
+	delete window.sa_event;
+});
+
 describe('createCarouselControl', function () {
 	it('creates a Bootstrap carousel control button', function () {
 		const control = createCarouselControl('carousel-hm', 'next', 'Next');
@@ -107,8 +115,6 @@ describe('initCarousels', function () {
 			interval: false,
 			touch: true
 		});
-
-		delete global.bootstrap;
 	});
 });
 
@@ -127,8 +133,6 @@ describe('initSharedLayout', function () {
 		expect(document.querySelector('#footer footer').textContent).toBe('Footer content');
 		expect(fetch).toHaveBeenCalledWith('js/shared/header.html?v=' + SHARED_LAYOUT_VERSION);
 		expect(fetch).toHaveBeenCalledWith('js/shared/footer.html?v=' + SHARED_LAYOUT_VERSION);
-
-		delete global.fetch;
 	});
 
 	it('reports a failed shared layout fetch', async function () {
@@ -141,8 +145,6 @@ describe('initSharedLayout', function () {
 		document.body.innerHTML = '<div id="header"></div>';
 
 		await expect(initSharedLayout()).rejects.toThrow('Unable to load js/shared/header.html?v=' + SHARED_LAYOUT_VERSION);
-
-		delete global.fetch;
 	});
 
 	it('skips shared layout sections that are not on the page', async function () {
@@ -155,8 +157,6 @@ describe('initSharedLayout', function () {
 		expect(document.querySelector('#header header').textContent).toBe('Header content');
 		expect(fetch).toHaveBeenCalledTimes(1);
 		expect(fetch).toHaveBeenCalledWith('js/shared/header.html?v=' + SHARED_LAYOUT_VERSION);
-
-		delete global.fetch;
 	});
 
 	it('recreates script tags from shared layout HTML', async function () {
@@ -178,8 +178,6 @@ describe('initSharedLayout', function () {
 		expect(script.getAttribute('src')).toBe('js/shared/menu.js');
 		expect(script.dataset.shared).toBe('true');
 		expect(script.textContent).toBe('window.ffMenuLoaded = true;');
-
-		delete global.fetch;
 	});
 });
 
@@ -436,7 +434,5 @@ describe('initDownloadPlans', function () {
 				}
 			}
 		]);
-
-		delete window.sa_event;
 	});
 });
