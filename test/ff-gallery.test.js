@@ -306,6 +306,24 @@ describe('initGallery', function () {
 		expect(document.getElementById('ffGalleryCounter').textContent).toBe('2 / 2');
 	});
 
+	it('stays on the current modal image after a short swipe', function () {
+		installFakeBootstrapModal();
+		arrangeCrissCrossGallery();
+
+		document.querySelector('[data-gallery] img').click();
+
+		const modal				= document.getElementById('ffGalleryModal');
+		const touchStart	= createTouchEvent('touchstart', 200, 100);
+		const touchEnd		= createTouchEvent('touchend', 160, 100);
+
+		// Gesture guard test: short movement should not count as intentional image navigation.
+		modal.dispatchEvent(touchStart);
+		modal.dispatchEvent(touchEnd);
+
+		expect(document.getElementById('ffGalleryImage').getAttribute('src')).toBe('img/gallery/cc/first.jpg');
+		expect(document.getElementById('ffGalleryCounter').textContent).toBe('1 / 2');
+	});
+
 	it('stays on the current modal image after a mostly vertical swipe', function () {
 		installFakeBootstrapModal();
 		arrangeCrissCrossGallery();
