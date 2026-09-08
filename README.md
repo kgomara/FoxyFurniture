@@ -157,6 +157,37 @@ The script starts a small local web server from the project directory, chooses
 an available port when needed, opens the site in the browser, and sends no-cache
 headers to reduce stale browser-cache surprises during testing.
 
+## Testing
+
+The project has a small Vitest unit test suite for the plain JavaScript behavior
+in `js/`.
+
+Run the tests with:
+
+```sh
+npm test
+```
+
+The test command uses jsdom, which gives the tests a browser-like `document` and
+`window` without opening a real browser. This lets the tests exercise DOM
+rendering, click handlers, keyboard events, touch events, and optional browser
+globals such as `window.sa_event`.
+
+Current test files:
+
+- `test/ff-scripts.test.js` covers shared layout loading, carousel rendering and
+  setup, product download panels, Simple Analytics download events, and
+  repeated initialization behavior.
+- `test/ff-gallery.test.js` covers Gallery data rendering, modal behavior,
+  keyboard navigation, touch swipes, guard clauses, and image-size calculation.
+- `test/ff-videoplayer.test.js` covers the home page video play button,
+  play/pause behavior, and end-of-video reset behavior.
+
+These tests are intentionally focused on small, observable behavior. Prefer
+adding tests near the behavior being changed, and keep the production code's
+browser-safe CommonJS export guards in place so Vitest can import the functions
+without changing how the scripts run in the browser.
+
 ## Asset Versioning
 
 Browsers may cache CSS and JavaScript files aggressively. The project uses query
