@@ -63,8 +63,9 @@ function createTouchEvent(type, clientX, clientY) {
 }
 
 afterEach(function () {
-	// Test isolation: each test gets a clean fake dependency setup.
+	// Test isolation: each test gets a clean fake dependency and global data setup.
 	delete global.bootstrap;
+	delete window.ffGalleryItems;
 });
 
 describe('calculateScaledImageSize', function () {
