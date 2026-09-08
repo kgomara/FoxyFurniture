@@ -250,6 +250,18 @@ describe('initCarouselControls', function () {
 		expect(controls).toHaveLength(1);
 		expect(controls[0].dataset.existing).toBe('true');
 	});
+
+	it('does not create controls when the carousel has no id', function () {
+		const carousel = arrangeCarousel(`
+			<div class="carousel">
+				<div data-carousel-controls></div>
+			</div>
+		`);
+
+		initCarouselControls(carousel);
+
+		expect(carousel.querySelectorAll('[data-carousel-controls] button')).toHaveLength(0);
+	});
 });
 
 describe('renderCarouselSlides', function () {
