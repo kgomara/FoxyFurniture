@@ -196,6 +196,19 @@ describe('initCarouselIndicators', function () {
 		expect(indicators).toHaveLength(1);
 		expect(indicators[0].dataset.existing).toBe('true');
 	});
+
+	it('does not create indicators when the carousel has no id', function () {
+		const carousel = arrangeCarousel(`
+			<div class="carousel">
+				<div class="carousel-indicators"></div>
+				<div class="carousel-item active"></div>
+			</div>
+		`);
+
+		initCarouselIndicators(carousel);
+
+		expect(carousel.querySelectorAll('.carousel-indicators button')).toHaveLength(0);
+	});
 });
 
 describe('initCarouselControls', function () {
