@@ -95,6 +95,15 @@ describe('createCarouselControl', function () {
 });
 
 describe('initCarousels', function () {
+	it('does nothing when the page does not have a carousel', function () {
+		document.body.innerHTML = '<main></main>';
+
+		// Guard-clause test: pages without carousel markup should not need Bootstrap carousel setup.
+		expect(function () {
+			initCarousels();
+		}).not.toThrow();
+	});
+
 	it('renders and initializes each carousel on the page', function () {
 		const getOrCreateInstance = installFakeBootstrapCarousel();
 
