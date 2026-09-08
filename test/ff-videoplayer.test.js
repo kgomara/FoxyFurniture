@@ -12,6 +12,12 @@ function arrangeVideoPlayer(playButtonClass) {
 	};
 }
 
+function setVideoProperty(video, propertyName, value) {
+	Object.defineProperty(video, propertyName, {
+		value
+	});
+}
+
 describe('initVideoPlayer', function () {
 	it('does nothing when the page does not have a video player', function () {
 		document.body.innerHTML = '<main></main>';
@@ -38,9 +44,7 @@ describe('initVideoPlayer', function () {
 		const { video } = arrangeVideoPlayer();
 
 		// jsdom does not really play media, so the test supplies the browser state this branch needs.
-		Object.defineProperty(video, 'paused', {
-			value: true
-		});
+		setVideoProperty(video, 'paused', true);
 		video.play = vi.fn();
 
 		initVideoPlayer();
@@ -54,9 +58,7 @@ describe('initVideoPlayer', function () {
 		const { video } = arrangeVideoPlayer();
 
 		// This is the other side of the same if/else branch: not paused means pause on click.
-		Object.defineProperty(video, 'paused', {
-			value: false
-		});
+		setVideoProperty(video, 'paused', false);
 		video.pause = vi.fn();
 
 		initVideoPlayer();
@@ -69,9 +71,7 @@ describe('initVideoPlayer', function () {
 	it('hides and shows the play button when video playback changes', function () {
 		const { video, playBtn } = arrangeVideoPlayer();
 
-		Object.defineProperty(video, 'duration', {
-			value: 10
-		});
+		setVideoProperty(video, 'duration', 10);
 		video.play = vi.fn();
 
 		initVideoPlayer();
@@ -90,9 +90,7 @@ describe('initVideoPlayer', function () {
 	it('does not show the play button from a pause event at the end', function () {
 		const { video, playBtn } = arrangeVideoPlayer('is-hidden');
 
-		Object.defineProperty(video, 'duration', {
-			value: 10
-		});
+		setVideoProperty(video, 'duration', 10);
 		video.currentTime = 10;
 
 		initVideoPlayer();
