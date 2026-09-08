@@ -388,6 +388,8 @@ describe('initDownloadPlans', function () {
 		expect(links[1].textContent).toBe('PDFs');
 		expect(links[2].getAttribute('href')).toBe('https://fetishfurniture.org/');
 		expect(links[2].getAttribute('target')).toBe('_blank');
+		// External-link safety test: new-tab links should not give the new page access back to this page.
+		expect(links[2].getAttribute('rel')).toBe('noopener');
 		expect(downloadFrame.hidden).toBe(true);
 	});
 
