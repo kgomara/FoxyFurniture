@@ -83,6 +83,21 @@ describe('initVideoPlayer', function () {
 		expect(playBtn.classList.contains('is-hidden')).toBe(false);
 	});
 
+	it('does not show the play button from a pause event at the end', function () {
+		const { video, playBtn } = arrangeVideoPlayer('is-hidden');
+
+		Object.defineProperty(video, 'duration', {
+			value: 10
+		});
+		video.currentTime = 10;
+
+		initVideoPlayer();
+
+		video.dispatchEvent(new Event('pause'));
+
+		expect(playBtn.classList.contains('is-hidden')).toBe(true);
+	});
+
 	it('resets the video and play button when playback ends', function () {
 		const { video, playBtn } = arrangeVideoPlayer('is-hidden');
 
