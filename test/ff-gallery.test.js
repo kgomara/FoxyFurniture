@@ -141,6 +141,17 @@ describe('renderGalleryItems', function () {
 		expect(items).toHaveLength(1);
 		expect(items[0].dataset.existing).toBe('true');
 	});
+
+	it('does not render gallery detail images when gallery data is unavailable', function () {
+		window.ffGalleryItems = {};
+		document.body.innerHTML = '<ul data-gallery="missing"></ul>';
+
+		const galleryList = document.querySelector('[data-gallery]');
+
+		renderGalleryItems(galleryList);
+
+		expect(galleryList.querySelectorAll('li')).toHaveLength(0);
+	});
 });
 
 describe('initGallery', function () {
