@@ -158,6 +158,29 @@ describe('initSharedLayout', function () {
 
 		delete global.fetch;
 	});
+
+	it('recreates script tags from shared layout HTML', async function () {
+		global.fetch = vi.fn(function () {
+			return Promise.resolve({
+				ok: true,
+				text: function () {
+					return Promise.resolve('<header><script src="js/shared/menu.js" data-shared="true">window.ffMenuLoaded = true;</script></header>');
+				}
+			});
+		});
+		document.body.innerHTML = '<div id="header"></div>';
+
+		await initSharedLayout();
+
+		const script = document.querySelector('#header script');
+
+		// DOM transformation test: script attributes and contents survive the replacement step.
+		expect(script.getAttribute('src')).toBe('js/shared/menu.js');
+		expect(script.dataset.shared).toBe('true');
+		expect(script.textContent).toBe('window.ffMenuLoaded = true;');
+
+		delete global.fetch;
+	});
 });
 
 describe('initCarouselIndicators', function () {
