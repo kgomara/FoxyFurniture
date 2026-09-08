@@ -18,6 +18,11 @@ function setVideoProperty(video, propertyName, value) {
 	});
 }
 
+afterEach(function () {
+	// Test isolation: each test gets clean page markup.
+	document.body.replaceChildren();
+});
+
 describe('initVideoPlayer', function () {
 	it('does nothing when the page does not have a video player', function () {
 		document.body.innerHTML = '<main></main>';
