@@ -315,6 +315,19 @@ describe('renderCarouselSlides', function () {
 		expect(slides).toHaveLength(1);
 		expect(slides[0].dataset.existing).toBe('true');
 	});
+
+	it('does not render slides when carousel data is unavailable', function () {
+		window.ffProductCarousels = {};
+		const carousel = arrangeCarousel(`
+			<div class="carousel" data-product-carousel="missing">
+				<div class="carousel-inner"></div>
+			</div>
+		`);
+
+		renderCarouselSlides(carousel);
+
+		expect(carousel.querySelectorAll('.carousel-item')).toHaveLength(0);
+	});
 });
 
 describe('initDownloadPlans', function () {
