@@ -33,6 +33,21 @@ describe('initVideoPlayer', function () {
 		expect(video.play).toHaveBeenCalled();
 	});
 
+	it('plays the video when the video is clicked while paused', function () {
+		const { video } = arrangeVideoPlayer();
+
+		Object.defineProperty(video, 'paused', {
+			value: true
+		});
+		video.play = vi.fn();
+
+		initVideoPlayer();
+
+		video.click();
+
+		expect(video.play).toHaveBeenCalled();
+	});
+
 	it('pauses the video when the video is clicked during playback', function () {
 		const { video } = arrangeVideoPlayer();
 
