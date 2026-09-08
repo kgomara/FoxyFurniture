@@ -436,4 +436,28 @@ describe('initDownloadPlans', function () {
 			}
 		]);
 	});
+
+	it('tracks drawing download clicks with the drawings event name', function () {
+		const events = [];
+
+		window.sa_event = function (eventName, eventData) {
+			events.push({
+				eventName,
+				eventData
+			});
+		};
+		arrangeDownloadPlans('powerPole');
+
+		// Branch test: the Drawings label takes a different event-name path than PDFs.
+		document.querySelector('a[href="plans/power-pole-dwgs.zip"]').click();
+
+		expect(events).toEqual([
+			{
+				eventName: 'download_pp_drawings',
+				eventData: {
+					filename: 'power-pole-dwgs.zip'
+				}
+			}
+		]);
+	});
 });
