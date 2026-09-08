@@ -374,4 +374,13 @@ describe('initGalleryIndex', function () {
 		expect(existing).not.toBeNull();
 		expect(galleryCards).toHaveLength(0);
 	});
+
+	it('does not render gallery index links when index data is unavailable', function () {
+		window.ffGalleryItems = {};
+		document.body.innerHTML = '<div data-gallery-index></div>';
+
+		initGalleryIndex();
+
+		expect(document.querySelectorAll('.ff-gallery-img')).toHaveLength(0);
+	});
 });
