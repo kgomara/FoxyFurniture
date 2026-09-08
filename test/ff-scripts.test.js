@@ -403,6 +403,20 @@ describe('initDownloadPlans', function () {
 		expect(container.textContent).not.toContain("If you'd rather buy...");
 	});
 
+	it('creates one hidden download frame for multiple download-plan sections', function () {
+		document.body.innerHTML = `
+			<div class="ff-download-plans" data-download-plans="crissCross"></div>
+			<div class="ff-download-plans" data-download-plans="powerPole"></div>
+		`;
+
+		// Shared-support test: many download links can target the same hidden iframe.
+		initDownloadPlans();
+
+		expect(document.querySelectorAll('.ff-download-plans')).toHaveLength(2);
+		expect(document.querySelectorAll('a[target="ffDownloadFrame"]')).toHaveLength(4);
+		expect(document.querySelectorAll('iframe[name="ffDownloadFrame"]')).toHaveLength(1);
+	});
+
 	it('leaves unknown download-plan sections unchanged', function () {
 		document.body.innerHTML = '<div class="ff-download-plans" data-download-plans="unknown">Original content</div>';
 
