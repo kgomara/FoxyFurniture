@@ -319,6 +319,17 @@ describe('initDownloadPlans', function () {
 		expect(container.textContent).not.toContain("If you'd rather buy...");
 	});
 
+	it('leaves unknown download-plan sections unchanged', function () {
+		document.body.innerHTML = '<div class="ff-download-plans" data-download-plans="unknown">Original content</div>';
+
+		initDownloadPlans();
+
+		const container = document.querySelector('.ff-download-plans');
+
+		expect(container.textContent).toBe('Original content');
+		expect(document.querySelector('iframe[name="ffDownloadFrame"]')).toBeNull();
+	});
+
 	it('tracks download clicks when analytics is available', function () {
 		const events = [];
 
