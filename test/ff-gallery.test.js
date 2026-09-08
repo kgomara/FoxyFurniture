@@ -306,6 +306,24 @@ describe('initGallery', function () {
 		expect(document.getElementById('ffGalleryCounter').textContent).toBe('2 / 2');
 	});
 
+	it('moves to the previous modal image after a right swipe', function () {
+		installFakeBootstrapModal();
+		arrangeCrissCrossGallery();
+
+		document.querySelectorAll('[data-gallery] img')[1].click();
+
+		const modal				= document.getElementById('ffGalleryModal');
+		const touchStart	= createTouchEvent('touchstart', 100, 100);
+		const touchEnd		= createTouchEvent('touchend', 200, 110);
+
+		// Gesture test: the sign of deltaX determines whether the gallery moves forward or back.
+		modal.dispatchEvent(touchStart);
+		modal.dispatchEvent(touchEnd);
+
+		expect(document.getElementById('ffGalleryImage').getAttribute('src')).toBe('img/gallery/cc/first.jpg');
+		expect(document.getElementById('ffGalleryCounter').textContent).toBe('1 / 2');
+	});
+
 	it('stays on the current modal image after a short swipe', function () {
 		installFakeBootstrapModal();
 		arrangeCrissCrossGallery();
