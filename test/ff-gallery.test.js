@@ -63,7 +63,8 @@ function createTouchEvent(type, clientX, clientY) {
 }
 
 afterEach(function () {
-	// Test isolation: each test gets a clean fake dependency and global data setup.
+	// Test isolation: each test gets clean page markup, fake dependencies, and global data.
+	document.body.replaceChildren();
 	delete global.bootstrap;
 	delete window.ffGalleryItems;
 });
