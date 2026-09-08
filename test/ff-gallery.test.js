@@ -209,6 +209,24 @@ describe('initGallery', function () {
 		delete global.bootstrap;
 	});
 
+	it('opens a focused thumbnail when Space is pressed', function () {
+		const { show }		= installFakeBootstrapModal();
+		const { thumbs }	= arrangeCrissCrossGallery();
+		const spaceEvent	= new KeyboardEvent('keydown', {
+			key:				' ',
+			cancelable:	true
+		});
+
+		thumbs[1].dispatchEvent(spaceEvent);
+
+		expect(spaceEvent.defaultPrevented).toBe(true);
+		expect(document.getElementById('ffGalleryImage').getAttribute('src')).toBe('img/gallery/cc/second.jpg');
+		expect(document.getElementById('ffGalleryCounter').textContent).toBe('2 / 2');
+		expect(show).toHaveBeenCalled();
+
+		delete global.bootstrap;
+	});
+
 	it('moves to the next image from the modal next button', function () {
 		installFakeBootstrapModal();
 		arrangeCrissCrossGallery();
