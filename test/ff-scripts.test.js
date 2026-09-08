@@ -328,6 +328,17 @@ describe('renderCarouselSlides', function () {
 
 		expect(carousel.querySelectorAll('.carousel-item')).toHaveLength(0);
 	});
+
+	it('does not throw when the carousel inner element is missing', function () {
+		arrangeHomeCarouselData();
+		const carousel = arrangeCarousel(`
+			<div class="carousel" data-product-carousel="home"></div>
+		`);
+
+		expect(function () {
+			renderCarouselSlides(carousel);
+		}).not.toThrow();
+	});
 });
 
 describe('initDownloadPlans', function () {
