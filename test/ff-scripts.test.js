@@ -462,4 +462,13 @@ describe('initDownloadPlans', function () {
 			}
 		]);
 	});
+
+	it('does not require analytics to handle download clicks', function () {
+		arrangeDownloadPlans('powerPole');
+
+		// Optional-dependency guard: downloads should still work if Simple Analytics has not loaded.
+		expect(function () {
+			document.querySelector('a[href="plans/power-pole-pdfs.zip"]').click();
+		}).not.toThrow();
+	});
 });
