@@ -194,7 +194,6 @@ describe('initCarouselIndicators', function () {
 			</div>
 		`);
 
-		// Idempotence test: running initialization again should not duplicate existing markup.
 		initCarouselIndicators(carousel);
 
 		const indicators = carousel.querySelectorAll('.carousel-indicators button');
@@ -219,6 +218,7 @@ describe('initCarouselIndicators', function () {
 			</div>
 		`);
 
+		// Idempotence test: running initialization again should not duplicate existing markup.
 		initCarouselIndicators(carousel);
 
 		const indicators = carousel.querySelectorAll('.carousel-indicators button');
