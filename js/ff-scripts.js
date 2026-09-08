@@ -269,7 +269,7 @@ function initDownloadPlans() {
 		}
 	});
 
-	if (document.querySelector('a[target="ffDownloadFrame"]')) {
+	if (document.querySelector('a[target="ffDownloadFrame"]') && !document.querySelector('iframe[name="ffDownloadFrame"]')) {
 		const downloadFrame = document.createElement('iframe');
 
 		downloadFrame.name 		= 'ffDownloadFrame';

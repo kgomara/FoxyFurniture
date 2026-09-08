@@ -417,6 +417,15 @@ describe('initDownloadPlans', function () {
 		expect(document.querySelectorAll('iframe[name="ffDownloadFrame"]')).toHaveLength(1);
 	});
 
+	it('does not duplicate the hidden download frame when initialized again', function () {
+		arrangeDownloadPlans('powerPole');
+
+		// Idempotence test: repeated initialization should leave one shared support element.
+		initDownloadPlans();
+
+		expect(document.querySelectorAll('iframe[name="ffDownloadFrame"]')).toHaveLength(1);
+	});
+
 	it('leaves unknown download-plan sections unchanged', function () {
 		document.body.innerHTML = '<div class="ff-download-plans" data-download-plans="unknown">Original content</div>';
 
