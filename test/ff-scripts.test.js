@@ -12,6 +12,7 @@ const {
 function installFakeBootstrapCarousel() {
 	const getOrCreateInstance = vi.fn();
 
+	// Fake dependency test: supply just enough Bootstrap shape for this unit to run.
 	global.bootstrap = {
 		Carousel: {
 			getOrCreateInstance
@@ -49,12 +50,14 @@ function arrangeCarousel(html) {
 function arrangeDownloadPlans(productKey) {
 	document.body.innerHTML = '<div class="ff-download-plans" data-download-plans="' + productKey + '"></div>';
 
+	// Arrange helper: hide repeated setup so each test can focus on behavior.
 	initDownloadPlans();
 
 	return document.querySelector('.ff-download-plans');
 }
 
 function installSuccessfulSharedLayoutFetch() {
+	// Async browser API fake: real fetch() and response.text() both return Promises.
 	global.fetch = vi.fn(function (href) {
 		return Promise.resolve({
 			ok: true,
@@ -117,6 +120,7 @@ describe('initSharedLayout', function () {
 			<div id="footer"></div>
 		`;
 
+		// Async test: await the initializer before checking the DOM it updates.
 		await initSharedLayout();
 
 		expect(document.querySelector('#header header').textContent).toBe('Header content');
@@ -128,6 +132,7 @@ describe('initSharedLayout', function () {
 	});
 
 	it('reports a failed shared layout fetch', async function () {
+		// Error-path test: make the fake dependency fail and assert the rejected Promise.
 		global.fetch = vi.fn(function () {
 			return Promise.resolve({
 				ok: false
@@ -144,6 +149,7 @@ describe('initSharedLayout', function () {
 		installSuccessfulSharedLayoutFetch();
 		document.body.innerHTML = '<div id="header"></div>';
 
+		// Guard-clause test: missing optional page sections should not trigger extra work.
 		await initSharedLayout();
 
 		expect(document.querySelector('#header header').textContent).toBe('Header content');
@@ -165,6 +171,7 @@ describe('initCarouselIndicators', function () {
 			</div>
 		`);
 
+		// Idempotence test: running initialization again should not duplicate existing markup.
 		initCarouselIndicators(carousel);
 
 		const indicators = carousel.querySelectorAll('.carousel-indicators button');
@@ -205,6 +212,7 @@ describe('initCarouselIndicators', function () {
 			</div>
 		`);
 
+		// Guard-clause test: generated Bootstrap indicators need an id-based target.
 		initCarouselIndicators(carousel);
 
 		expect(carousel.querySelectorAll('.carousel-indicators button')).toHaveLength(0);
@@ -258,6 +266,7 @@ describe('initCarouselControls', function () {
 			</div>
 		`);
 
+		// Same guard, different output: previous/next buttons also need a target id.
 		initCarouselControls(carousel);
 
 		expect(carousel.querySelectorAll('[data-carousel-controls] button')).toHaveLength(0);
@@ -324,6 +333,7 @@ describe('renderCarouselSlides', function () {
 			</div>
 		`);
 
+		// Data-availability guard: page markup can exist before or without matching data.
 		renderCarouselSlides(carousel);
 
 		expect(carousel.querySelectorAll('.carousel-item')).toHaveLength(0);
@@ -335,6 +345,7 @@ describe('renderCarouselSlides', function () {
 			<div class="carousel" data-product-carousel="home"></div>
 		`);
 
+		// Malformed-markup test: incomplete page structure should not crash the script.
 		expect(function () {
 			renderCarouselSlides(carousel);
 		}).not.toThrow();
@@ -371,6 +382,7 @@ describe('initDownloadPlans', function () {
 	it('leaves unknown download-plan sections unchanged', function () {
 		document.body.innerHTML = '<div class="ff-download-plans" data-download-plans="unknown">Original content</div>';
 
+		// Unknown-data guard: preserve author-provided content when the key is not recognized.
 		initDownloadPlans();
 
 		const container = document.querySelector('.ff-download-plans');
@@ -382,6 +394,7 @@ describe('initDownloadPlans', function () {
 	it('tracks download clicks when analytics is available', function () {
 		const events = [];
 
+		// Observable side-effect test: fake analytics records what would have been reported.
 		window.sa_event = function (eventName, eventData) {
 			events.push({
 				eventName,

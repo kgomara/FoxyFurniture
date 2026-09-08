@@ -13,6 +13,7 @@ function installFakeBootstrapModal() {
 		};
 	});
 
+	// Fake dependency test: the gallery only needs Bootstrap's modal shape, not real Bootstrap.
 	global.bootstrap = {
 		Modal: {
 			getOrCreateInstance
@@ -63,6 +64,7 @@ function createTouchEvent(type, clientX, clientY) {
 
 describe('calculateScaledImageSize', function () {
 	it('scales an image down to fit inside the maximum size', function () {
+		// Pure-function test: simple inputs, simple output, no DOM setup needed.
 		const scaledSize = calculateScaledImageSize(1000, 500, 500, 400);
 
 		expect(scaledSize).toEqual({
@@ -81,6 +83,7 @@ describe('calculateScaledImageSize', function () {
 	});
 
 	it('returns null when the natural image size is not available', function () {
+		// Guard-clause test: impossible image dimensions should return a clear no-result value.
 		const scaledSize = calculateScaledImageSize(0, 500, 900, 200);
 
 		expect(scaledSize).toBeNull();
@@ -134,6 +137,7 @@ describe('renderGalleryItems', function () {
 
 		const galleryList = document.querySelector('[data-gallery]');
 
+		// Idempotence test: existing author-provided markup should not be duplicated or replaced.
 		renderGalleryItems(galleryList);
 
 		const items = galleryList.querySelectorAll('li');
@@ -148,6 +152,7 @@ describe('renderGalleryItems', function () {
 
 		const galleryList = document.querySelector('[data-gallery]');
 
+		// Data-availability guard: unknown gallery keys should leave the list empty.
 		renderGalleryItems(galleryList);
 
 		expect(galleryList.querySelectorAll('li')).toHaveLength(0);
@@ -158,6 +163,7 @@ describe('initGallery', function () {
 	it('does nothing when the page does not have a gallery list', function () {
 		document.body.innerHTML = '<main></main>';
 
+		// Guard-clause test: shared scripts should be safe on pages that do not use this feature.
 		expect(function () {
 			initGallery();
 		}).not.toThrow();
@@ -179,6 +185,7 @@ describe('initGallery', function () {
 
 		const modal = document.getElementById('ffGalleryModal');
 
+		// Integration-style DOM test: one click wires together rendering, modal state, and Bootstrap.
 		expect(modal).not.toBeNull();
 		expect(document.getElementById('ffGalleryImage').getAttribute('src')).toBe('img/gallery/cc/first.jpg');
 		expect(document.getElementById('ffGalleryImage').getAttribute('alt')).toBe('First Criss Cross');
@@ -198,6 +205,7 @@ describe('initGallery', function () {
 			key: 'Enter'
 		});
 
+		// Keyboard-accessibility test: focused thumbnails should open without a mouse.
 		thumbs[1].dispatchEvent(enterEvent);
 
 		expect(document.getElementById('ffGalleryImage').getAttribute('src')).toBe('img/gallery/cc/second.jpg');
@@ -217,6 +225,7 @@ describe('initGallery', function () {
 			cancelable:	true
 		});
 
+		// Default-action test: Space opens the modal and prevents the browser's normal page scroll.
 		thumbs[1].dispatchEvent(spaceEvent);
 
 		expect(spaceEvent.defaultPrevented).toBe(true);
@@ -231,6 +240,7 @@ describe('initGallery', function () {
 		const { show }		= installFakeBootstrapModal();
 		const { thumbs }	= arrangeCrissCrossGallery();
 
+		// Negative event test: keys we do not handle should not open the modal.
 		thumbs[1].dispatchEvent(new KeyboardEvent('keydown', {
 			key: 'Escape'
 		}));
@@ -265,6 +275,7 @@ describe('initGallery', function () {
 
 		const modal = document.getElementById('ffGalleryModal');
 
+		// Event-driven test: dispatch the same key events the modal listens for.
 		modal.dispatchEvent(new KeyboardEvent('keydown', {
 			key: 'ArrowRight'
 		}));
@@ -292,6 +303,7 @@ describe('initGallery', function () {
 		const touchStart	= createTouchEvent('touchstart', 200, 100);
 		const touchEnd		= createTouchEvent('touchend', 100, 110);
 
+		// Gesture test: simulate only the touch data the swipe logic actually reads.
 		modal.dispatchEvent(touchStart);
 		modal.dispatchEvent(touchEnd);
 
@@ -311,6 +323,7 @@ describe('initGallery', function () {
 		const touchStart	= createTouchEvent('touchstart', 200, 100);
 		const touchEnd		= createTouchEvent('touchend', 120, 220);
 
+		// Gesture guard test: mostly vertical movement should behave like page scroll, not image nav.
 		modal.dispatchEvent(touchStart);
 		modal.dispatchEvent(touchEnd);
 
@@ -324,6 +337,7 @@ describe('initGallery', function () {
 		installFakeBootstrapModal();
 		arrangeCrissCrossGallery();
 
+		// Boundary test: asking for an image before the first one should leave state unchanged.
 		document.querySelector('[data-gallery] img').click();
 		document.getElementById('ffGalleryPrev').click();
 
@@ -339,6 +353,7 @@ describe('initGallery', function () {
 		installFakeBootstrapModal();
 		arrangeCrissCrossGallery();
 
+		// Boundary test: asking for an image after the last one should leave state unchanged.
 		document.querySelectorAll('[data-gallery] img')[1].click();
 		document.getElementById('ffGalleryNext').click();
 
@@ -406,6 +421,7 @@ describe('initGalleryIndex', function () {
 			</div>
 		`;
 
+		// Idempotence test: an already-rendered index should not be rebuilt over existing content.
 		initGalleryIndex();
 
 		const existing			= document.querySelector('[data-existing="true"]');
@@ -419,6 +435,7 @@ describe('initGalleryIndex', function () {
 		window.ffGalleryItems = {};
 		document.body.innerHTML = '<div data-gallery-index></div>';
 
+		// Data-availability guard: the placeholder can exist even when index data is absent.
 		initGalleryIndex();
 
 		expect(document.querySelectorAll('.ff-gallery-img')).toHaveLength(0);

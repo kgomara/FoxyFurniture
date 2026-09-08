@@ -16,6 +16,7 @@ describe('initVideoPlayer', function () {
 	it('does nothing when the page does not have a video player', function () {
 		document.body.innerHTML = '<main></main>';
 
+		// Guard-clause test: shared scripts should be safe on pages that do not use this feature.
 		expect(function () {
 			initVideoPlayer();
 		}).not.toThrow();
@@ -36,6 +37,7 @@ describe('initVideoPlayer', function () {
 	it('plays the video when the video is clicked while paused', function () {
 		const { video } = arrangeVideoPlayer();
 
+		// jsdom does not really play media, so the test supplies the browser state this branch needs.
 		Object.defineProperty(video, 'paused', {
 			value: true
 		});
@@ -51,6 +53,7 @@ describe('initVideoPlayer', function () {
 	it('pauses the video when the video is clicked during playback', function () {
 		const { video } = arrangeVideoPlayer();
 
+		// This is the other side of the same if/else branch: not paused means pause on click.
 		Object.defineProperty(video, 'paused', {
 			value: false
 		});
@@ -73,6 +76,7 @@ describe('initVideoPlayer', function () {
 
 		initVideoPlayer();
 
+		// Event-driven test: dispatch the same events the browser would fire during playback.
 		video.dispatchEvent(new Event('play'));
 
 		expect(playBtn.classList.contains('is-hidden')).toBe(true);
@@ -93,6 +97,7 @@ describe('initVideoPlayer', function () {
 
 		initVideoPlayer();
 
+		// Edge-case event test: an end-of-video pause should not look like an ordinary mid-video pause.
 		video.dispatchEvent(new Event('pause'));
 
 		expect(playBtn.classList.contains('is-hidden')).toBe(true);
