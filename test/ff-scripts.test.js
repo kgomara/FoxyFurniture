@@ -139,6 +139,19 @@ describe('initSharedLayout', function () {
 
 		delete global.fetch;
 	});
+
+	it('skips shared layout sections that are not on the page', async function () {
+		installSuccessfulSharedLayoutFetch();
+		document.body.innerHTML = '<div id="header"></div>';
+
+		await initSharedLayout();
+
+		expect(document.querySelector('#header header').textContent).toBe('Header content');
+		expect(fetch).toHaveBeenCalledTimes(1);
+		expect(fetch).toHaveBeenCalledWith('js/shared/header.html?v=' + SHARED_LAYOUT_VERSION);
+
+		delete global.fetch;
+	});
 });
 
 describe('initCarouselIndicators', function () {
