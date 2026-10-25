@@ -30,7 +30,7 @@ window.ffProductCarousels = {
 		{
 			src: 'img/home/carousel/00_versahorse_base.png',
 			alt: 'Versa Horse',
-			caption: 'VersaHorse Base'
+			caption: 'VersaHorse + Chest Rest'
 		},
 		{
 			src: 'img/home/carousel/VHStocksHera_300x450.jpg',

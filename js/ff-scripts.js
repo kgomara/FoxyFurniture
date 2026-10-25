@@ -1,6 +1,6 @@
 /*global bootstrap, document, window: false */
 
-const SHARED_LAYOUT_VERSION = 'v3.1.0';
+const SHARED_LAYOUT_VERSION = 'v3.2.0';
 
 window.addEventListener('load', async function() {
 	await initSharedLayout();
@@ -182,10 +182,28 @@ function initDownloadPlans() {
 			prodAbbr: 		'pp'
 		},
 		versaHorse: {
-			buyHref: 			'https://fetishfurniture.org/',
-			drawingsHref: 'plans/versahorse-dwgs.zip',
-			pdfsHref: 		'plans/versahorse-pdfs.zip',
-			prodAbbr: 		'vh'
+			buyHref: 				'https://fetishfurniture.org/',
+			buildPackHref: 	'plans/versahorse-build-pack.zip',
+			revisionDate: 	'2026-10-24',
+			revisionLabel: 	'October 24, 2026',
+			models: [
+				{
+					label: 	'Chest Rest',
+					image: 	'img/vh/models/chest-rest-working.png',
+					href: 	'https://app.sketchup.com/share/tc/northAmerica/VLbDbSqafpw?source=desktop&stoken=T9fbZ8R4D_X6TJH-T51qa3JNjvm05vV12HwA2yQZbsEWLfGQL_kIHcSR28EQh0Xf&rtc-engine-version=21'
+				},
+				{
+					label: 	'Pegasus Bench',
+					image: 	'img/vh/models/pegasus-bench-working.png',
+					href: 	'https://app.sketchup.com/share/tc/northAmerica/Qh_9RlPO-hY?source=desktop&stoken=FRRL7hCPxDwaHeXDjecbcW6wkao6KG8z1PDfzD4uolOKokz-2EpliWIgM9WaY_DZ&rtc-engine-version=21'
+				},
+				{
+					label: 	'Pillory & Stock',
+					image: 	'img/vh/models/pillory-stock-working.png',
+					href: 	'https://app.sketchup.com/share/tc/northAmerica/iG_kwpRfIMc?source=desktop&stoken=EvpO3aYyuqlya8IN6wYIYrmyElDulm3h5OGp_udoPWebQFr70cZXWefj6re3s3gs&rtc-engine-version=21'
+				}
+			],
+			prodAbbr: 	'vh'
 		}
 	};
 
@@ -193,7 +211,8 @@ function initDownloadPlans() {
 		const downloadPlans = downloadPlansByKey[container.dataset.downloadPlans];
 
 		const trackDownload = function (href, label) {
-			const eventName = label === 'Drawings' ? ('download_' + downloadPlans.prodAbbr + '_drawings') : ('download_' + downloadPlans.prodAbbr + '_pdfs');
+			const eventSuffix = label === 'Build-Pack' ? 'build_pack' : label === 'Drawings' ? 'drawings' : 'pdfs';
+			const eventName 	= 'download_' + downloadPlans.prodAbbr + '_' + eventSuffix;
 
 			if (typeof window.sa_event === 'function') {
 				window.sa_event(eventName, {
@@ -227,8 +246,8 @@ function initDownloadPlans() {
 		container.replaceChildren();
 
 		const heading 				= document.createElement('h4');
-		const drawingsText 		= document.createElement('p');
-		const drawingsStrong 	= document.createElement('strong');
+		const drawingsText 	= document.createElement('p');
+		const drawingsStrong = document.createElement('strong');
 		const spacer 					= document.createElement('br');
 		const pdfsText 				= document.createElement('p');
 		const pdfsStrong 			= document.createElement('strong');
@@ -236,22 +255,70 @@ function initDownloadPlans() {
 
 		heading.textContent = 'Download Free Plans!';
 
-		drawingsText.append('Use the ');
-		drawingsStrong.textContent = 'Drawings';
-		drawingsText.append(drawingsStrong, ' button to download plans you can modify. They are in AutoCAD (.dwg) format.');
+		if (downloadPlans.buildPackHref) {
+			drawingsText.textContent 	= 'Use the ';
+			drawingsStrong.textContent	= 'Build-Pack';
+			drawingsText.append(drawingsStrong, ' button to download Instructions, BOM, cutting diagrams and original dimensioned drawings.');
 
-		pdfsText.append('Use the ');
-		pdfsStrong.textContent = 'PDFs';
-		pdfsText.append(pdfsStrong, ' button to download PDFs of the plans.');
+			const revision 						= document.createElement('p');
+			const date 								= document.createElement('time');
+			revision.className 				= 'ff-build-pack-revision';
+			date.dateTime 						= downloadPlans.revisionDate;
+			date.textContent 					= downloadPlans.revisionLabel;
+			revision.append('Revised ', date);
 
-		container.append(
-			heading,
-			drawingsText,
-			createDownloadButton(downloadPlans.drawingsHref, 'Drawings'),
-			spacer,
-			pdfsText,
-			createDownloadButton(downloadPlans.pdfsHref, 'PDFs')
-		);
+			const modelHeading 				= document.createElement('h4');
+			modelHeading.className 		= 'ff-model-heading';
+			modelHeading.textContent	= 'Explore in 3D';
+			const models 							= document.createElement('ul');
+			models.className 					= 'ff-model-links';
+
+			downloadPlans.models.forEach(function (model) {
+				const item 	= document.createElement('li');
+				const link 	= document.createElement('a');
+				const image = document.createElement('img');
+				const label = document.createElement('span');
+
+				link.href 	= model.href;
+				link.target = '_blank';
+				link.rel 		= 'noopener';
+				link.setAttribute('aria-label', 'View ' + model.label + ' model in 3D (opens in a new tab)');
+
+				image.src 				= model.image;
+				image.alt 				= '';
+				image.width 			= 100;
+				image.height 			= 100;
+				image.decoding 		= 'async';
+
+				label.textContent = model.label;
+				link.append(image, label);
+				item.appendChild(link);
+				models.appendChild(item);
+			});
+
+			const modelText 			= document.createElement('p');
+			modelText.className 	= 'ff-model-description';
+			modelText.textContent = 'View in your browser. No account required. Models supplement the build documents.';
+			container.append(heading, drawingsText, createDownloadButton(downloadPlans.buildPackHref, 'Build-Pack'), revision, modelHeading, models, modelText);
+		}
+		else {
+			drawingsText.append('Use the ');
+			drawingsStrong.textContent = 'Drawings';
+			drawingsText.append(drawingsStrong, ' button to download plans you can modify. They are in AutoCAD (.dwg) format.');
+
+			pdfsText.append('Use the ');
+			pdfsStrong.textContent = 'PDFs';
+			pdfsText.append(pdfsStrong, ' button to download PDFs of the plans.');
+
+			container.append(
+				heading,
+				drawingsText,
+				createDownloadButton(downloadPlans.drawingsHref, 'Drawings'),
+				spacer,
+				pdfsText,
+				createDownloadButton(downloadPlans.pdfsHref, 'PDFs')
+			);
+		}
 
 		if (downloadPlans.buyHref) {
 			const buyHeading 	= document.createElement('h2');

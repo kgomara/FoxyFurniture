@@ -384,6 +384,39 @@ describe('renderCarouselSlides', function () {
 });
 
 describe('initDownloadPlans', function () {
+	it('renders the VersaHorse Build-Pack and three labeled model previews', function () {
+		const container = arrangeDownloadPlans('versaHorse');
+		expect(container.querySelector('h4').textContent).toBe('Download Free Plans!');
+		expect(container.textContent).toContain('Use the Build-Pack button to download Instructions, BOM, cutting diagrams and original dimensioned drawings.');
+		const button = container.querySelector('.ff-download-btn');
+		expect(button.textContent).toBe('Build-Pack');
+		expect(button.getAttribute('href')).toBe('plans/versahorse-build-pack.zip');
+		expect(button.hasAttribute('download')).toBe(true);
+		expect(container.querySelector('time').dateTime).toBe('2026-10-24');
+		expect(container.querySelector('.ff-model-heading').textContent).toBe('Explore in 3D');
+		const models = Array.from(container.querySelectorAll('.ff-model-links a'));
+		expect(models.map(function (link) { return link.textContent; })).toEqual(['Chest Rest', 'Pegasus Bench', 'Pillory & Stock']);
+		models.forEach(function (link) {
+			expect(link.href).toContain('https://app.sketchup.com/share/tc/northAmerica/');
+			expect(link.target).toBe('_blank');
+			expect(link.rel).toBe('noopener');
+			expect(link.querySelector('img').src).toContain('/img/vh/models/');
+		});
+		expect(container.textContent).toContain('View in your browser. No account required. Models supplement the build documents.');
+		expect(container.querySelector('h2').textContent).toBe("If you'd rather buy...");
+		expect(container.querySelectorAll('.ff-download-btn')).toHaveLength(1);
+	});
+
+	it('tracks the Build-Pack separately and does not duplicate model links on reinitialization', function () {
+		window.sa_event = vi.fn();
+		arrangeDownloadPlans('versaHorse');
+		initDownloadPlans();
+		document.querySelector('.ff-download-btn').click();
+		expect(window.sa_event).toHaveBeenCalledWith('download_vh_build_pack', {filename: 'versahorse-build-pack.zip'});
+		expect(document.querySelectorAll('.ff-model-links a')).toHaveLength(3);
+		expect(document.querySelectorAll('iframe[name="ffDownloadFrame"]')).toHaveLength(1);
+	});
+
 	it('renders download buttons and a buy link for products that can be purchased', function () {
 		const container			= arrangeDownloadPlans('crissCross');
 		const links					= container.querySelectorAll('a');
