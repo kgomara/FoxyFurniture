@@ -1,6 +1,6 @@
 /*global bootstrap, document, window: false */
 
-const SHARED_LAYOUT_VERSION = 'v3.2.0';
+const SHARED_LAYOUT_VERSION = 'v3.2.1';
 
 window.addEventListener('load', async function() {
 	await initSharedLayout();
@@ -184,8 +184,8 @@ function initDownloadPlans() {
 		versaHorse: {
 			buyHref: 				'https://fetishfurniture.org/',
 			buildPackHref: 	'plans/versahorse-build-pack.zip',
-			revisionDate: 	'2026-10-24',
-			revisionLabel: 	'October 24, 2026',
+			revisionDate: 	'2026-10-25',
+			revisionLabel: 	'October 25, 2026',
 			models: [
 				{
 					label: 	'Chest Rest',
