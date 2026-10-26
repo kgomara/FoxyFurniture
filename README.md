@@ -35,7 +35,8 @@ Supporting files are grouped by purpose:
 - `js/shared/header.html` and `js/shared/footer.html` contain repeated page
   markup that is fetched into each page at runtime.
 - `img/` contains the existing image, icon, carousel, and Gallery assets.
-- `plans/` contains downloadable plan archives.
+- `plans/` contains downloadable plan archives, including the current
+  `versahorse-build-pack.zip`. These ZIPs are included in version control.
 
 ## Page Loading Model
 
@@ -100,6 +101,79 @@ The VersaHorse page follows the same general pattern, but has additional
 component-description content and local links because it is a more complex
 product.
 
+## Build Packs and 3D Models
+
+VersaHorse is the first product converted to the Build-Pack presentation.
+Criss-Cross, Pandora's Chest, and PowerPole still use their existing Drawings
+and PDFs downloads. The conversion process for those products is not yet
+established; do not treat the VersaHorse arrangement as a finished template
+for every product.
+
+The VersaHorse download panel contains:
+
+- A Build-Pack button and the package revision date.
+- Three linked Working-scene previews: Chest Rest, Pegasus Bench, and
+  Pillory & Stock.
+- A browser-viewing note and the existing conditional purchase information.
+
+The button downloads `plans/versahorse-build-pack.zip` directly from
+FoxyFurniture. It contains `START-HERE.pdf`, the BOM, construction instructions,
+plywood and solid-wood cutting diagrams, and `DimensionedDrawings/`. The latter
+includes dimensioned PDFs and the original DWGs in `VersaHorse-dwgs/`.
+The original drawings predate the revisions; START-HERE explains how to use
+them alongside the current build documents and models.
+
+SketchUp models are hosted on Trimble, not in this repository or the Build Pack.
+The website links to Trimble's browser-based 3D viewers; START-HERE contains
+both viewing and model-download links. These are separate sharing links and
+must be checked independently. Chest Rest has Working and Folded scenes; Pegasus Bench and
+Pillory & Stock each have a Working scene.
+
+### Sources and Published Files
+
+Editable plans and reference material live outside this repository in the
+sibling `FoxyFurniturePlans/` folder:
+
+- `VersaHorse/` holds the editable START-HERE document and BOM/instruction
+  workbooks.
+- `VersaHorse/Build-Pack/` is the authoritative set of package contents.
+- Each product configuration has its own SketchUp source and reference folders.
+- `VersaHorse/ReleaseModels/` holds the prepared model uploads and packaged
+  Build-Pack ZIP, not another editable, unpacked Build-Pack copy.
+- `FF-Trimble-Links.xlsx` tracks public model links and verification results
+  across products.
+
+Only the prepared website assets and download ZIP belong in this repository.
+The VersaHorse viewer URLs, preview image paths, download path, and displayed
+revision date are configured in `initDownloadPlans()` in `js/ff-scripts.js`.
+Preview images are in `img/vh/models/`. Keep their full-resolution source
+pixels; CSS controls their displayed size.
+
+### Replacing a Build Pack
+
+1. Correct the editable source documents and regenerate any affected PDFs in
+   `FoxyFurniturePlans/VersaHorse/Build-Pack/`.
+2. ZIP that folder with a single `Build-Pack/` root. Exclude Finder metadata
+   (`.DS_Store`, `__MACOSX`, and `._*` files), review drafts, archives, reference
+   photos, and SketchUp files. Check for unintended duplicate drawings.
+3. Keep the prepared ZIP in `ReleaseModels/`, then copy the same ZIP to this
+   repository as `plans/versahorse-build-pack.zip`. Do not keep an unpacked
+   `plans/VHPlans/` copy.
+4. Update `revisionDate` and `revisionLabel` in `js/ff-scripts.js`, along with
+   the corresponding date assertion in `test/ff-scripts.test.js`. This is the
+   package revision date, separate from the website's release version.
+5. Extract the ZIP into a temporary folder and open the included documents.
+   Check its integrity, filenames, completeness, and START-HERE links. Confirm
+   that the website downloads exactly the prepared ZIP.
+6. Preview on desktop and phone, then follow the production release process
+   below. After deployment, download the live ZIP and compare it with the
+   prepared copy; a successful upload alone is not sufficient verification.
+
+If model files or sharing links change, also update the link register,
+START-HERE, and the website viewer URLs as applicable. Test both viewer and
+download routes anonymously on desktop and phone. Do not assume a download
+share follows future model versions automatically.
+
 ## Gallery
 
 The Gallery has two layers:
@@ -156,6 +230,12 @@ launch-ff --lan
 The script starts a small local web server from the project directory, chooses
 an available port when needed, opens the site in the browser, and sends no-cache
 headers to reduce stale browser-cache surprises during testing.
+
+Use the URL printed by the script. The default is Mac-only; `--lan` allows
+other devices on the same network to connect. Keep the Mac awake during phone
+testing. Use LAN mode only on a trusted network: it serves the project
+directory, not a filtered copy of the public website. The `~/Sites` folder
+is not involved in this workflow.
 
 ## Testing
 
@@ -253,15 +333,24 @@ If `git merge --ff-only` fails, stop and inspect before forcing the merge.
 - Anything pushed to Git master will be automatically published immediately.
 - It should have a new, unique Git named version with at least the patch version number incremented.
 - The new release version string should be applied to the assets. See Asset Versioning.
+- Choose an unused version newer than the latest release, including for
+  download-only corrections.
 
 ```bash
 ./set-ff-version v3.0.4         # Set to the target for Production
+npm test
+git diff --check
 git add .
 git commit -m "Describe the change"
 git push origin master
 gh release create v3.0.4 --generate-notes --target master
 git fetch --tags
 ```
+
+Review the files being committed before pushing. Confirm that GitHub's tests,
+security checks, and deployment succeed, then check the live page and any
+updated downloads. A documentation-only README edit does not require an asset
+version change.
 
 ## Design Direction
 
