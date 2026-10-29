@@ -129,7 +129,8 @@ h4 {
 	text-align: center;
 }
 
-.ff-download-plans[data-download-plans="versaHorse"] {
+.ff-download-plans[data-download-plans="versaHorse"],
+.ff-download-plans[data-download-plans="crissCross"] {
 	container: ff-plans / inline-size;
 }
 
@@ -154,6 +155,10 @@ h4 {
 	font-size: .875rem;
 	line-height: 1.3;
 	text-align: center;
+}
+
+.ff-model-links > li:only-child {
+	grid-column: 1 / -1;
 }
 
 .ff-model-links img {
@@ -286,22 +291,26 @@ h4 {
 }
 
 @media (min-width: 768px) and (max-width: 991.98px) {
-	#carousel-vh {
+	#carousel-vh,
+	#carousel-cc {
 		width: 100%;
 		height: auto;
 		aspect-ratio: 2 / 3;
 	}
 
-	#carousel-vh .carousel-item img {
+	#carousel-vh .carousel-item img,
+	#carousel-cc .carousel-item img {
 		width: 100%;
 		height: auto;
 	}
 
-	#carousel-vh .carousel-indicators {
+	#carousel-vh .carousel-indicators,
+	#carousel-cc .carousel-indicators {
 		flex-wrap: wrap;
 	}
 
-	#carousel-vh .carousel-indicators button {
+	#carousel-vh .carousel-indicators button,
+	#carousel-cc .carousel-indicators button {
 		flex-shrink: 0;
 	}
 }

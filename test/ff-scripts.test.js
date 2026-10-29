@@ -417,22 +417,42 @@ describe('initDownloadPlans', function () {
 		expect(document.querySelectorAll('iframe[name="ffDownloadFrame"]')).toHaveLength(1);
 	});
 
-	it('renders download buttons and a buy link for products that can be purchased', function () {
+	it('renders the CrissCross Build-Pack, shared-scene preview and existing buy link', function () {
 		const container			= arrangeDownloadPlans('crissCross');
 		const links					= container.querySelectorAll('a');
 		const downloadFrame	= document.querySelector('iframe[name="ffDownloadFrame"]');
 
 		expect(container.querySelector('h4').textContent).toBe('Download Free Plans!');
 		expect(links).toHaveLength(3);
-		expect(links[0].getAttribute('href')).toBe('plans/criss-cross-dwgs.zip');
-		expect(links[0].textContent).toBe('Drawings');
-		expect(links[1].getAttribute('href')).toBe('plans/criss-cross-pdfs.zip');
-		expect(links[1].textContent).toBe('PDFs');
+		expect(links[0].getAttribute('href')).toBe('plans/crisscross-build-pack.zip');
+		expect(links[0].textContent).toBe('Build-Pack');
+		expect(links[0].hasAttribute('download')).toBe(true);
+		expect(container.querySelectorAll('.ff-download-btn')).toHaveLength(1);
+		expect(container.querySelector('time').dateTime).toBe('2026-10-29');
+		expect(container.querySelector('time').textContent).toBe('October 29, 2026');
+		expect(container.querySelectorAll('.ff-model-links a')).toHaveLength(1);
+		expect(links[1].textContent).toBe('Working & Playing');
+		expect(links[1].getAttribute('href')).toBe('https://app.sketchup.com/share/tc/northAmerica/kdVacVyOuW4?source=desktop&stoken=gADJmRdy1rPqoQNS2yn9pYWdgP-mHICtdfLEyZAXI0tr2vh1jedfCiUHs7eTF5e_&rtc-engine-version=21');
+		expect(links[1].getAttribute('target')).toBe('_blank');
+		expect(links[1].getAttribute('rel')).toBe('noopener');
+		expect(links[1].getAttribute('aria-label')).toContain('opens in a new tab');
+		expect(links[1].querySelector('img').getAttribute('src')).toBe('img/cc/models/working.png');
+		expect(container.textContent).toContain('View in your browser. No account required. Models supplement the build documents.');
 		expect(links[2].getAttribute('href')).toBe('https://fetishfurniture.org/');
 		expect(links[2].getAttribute('target')).toBe('_blank');
 		// External-link safety test: new-tab links should not give the new page access back to this page.
 		expect(links[2].getAttribute('rel')).toBe('noopener');
 		expect(downloadFrame.hidden).toBe(true);
+	});
+
+	it('tracks CrissCross Build-Pack downloads without duplicating its model preview', function () {
+		window.sa_event = vi.fn();
+		arrangeDownloadPlans('crissCross');
+		initDownloadPlans();
+		document.querySelector('.ff-download-btn').click();
+		expect(window.sa_event).toHaveBeenCalledWith('download_cc_build_pack', {filename: 'crisscross-build-pack.zip'});
+		expect(document.querySelectorAll('.ff-model-links a')).toHaveLength(1);
+		expect(document.querySelectorAll('iframe[name="ffDownloadFrame"]')).toHaveLength(1);
 	});
 
 	it('does not render a buy link for products without a purchase URL', function () {
@@ -455,7 +475,9 @@ describe('initDownloadPlans', function () {
 		initDownloadPlans();
 
 		expect(document.querySelectorAll('.ff-download-plans')).toHaveLength(2);
-		expect(document.querySelectorAll('a[target="ffDownloadFrame"]')).toHaveLength(4);
+		expect(Array.from(document.querySelectorAll('a[target="ffDownloadFrame"]'), function (link) {
+			return link.getAttribute('href');
+		})).toEqual(['plans/crisscross-build-pack.zip', 'plans/power-pole-dwgs.zip', 'plans/power-pole-pdfs.zip']);
 		expect(document.querySelectorAll('iframe[name="ffDownloadFrame"]')).toHaveLength(1);
 	});
 

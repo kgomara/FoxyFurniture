@@ -103,11 +103,8 @@ product.
 
 ## Build Packs and 3D Models
 
-VersaHorse is the first product converted to the Build-Pack presentation.
-Criss-Cross, Pandora's Chest, and PowerPole still use their existing Drawings
-and PDFs downloads. The conversion process for those products is not yet
-established; do not treat the VersaHorse arrangement as a finished template
-for every product.
+VersaHorse and Criss-Cross use the Build-Pack presentation. Pandora's Chest
+and PowerPole still use their existing Drawings and PDFs downloads.
 
 The VersaHorse download panel contains:
 
@@ -129,6 +126,15 @@ both viewing and model-download links. These are separate sharing links and
 must be checked independently. Chest Rest has Working and Folded scenes; Pegasus Bench and
 Pillory & Stock each have a Working scene.
 
+Criss-Cross reuses the same panel with `plans/crisscross-build-pack.zip`, its
+package revision date, and one linked preview for the model's Working and
+Playing scenes. Its Build Pack includes the BOM, construction instructions,
+Assembly Guide, cutting diagrams, drawing corrections, original dimensioned
+PDFs/DWGs, two revised plate-fabrication DXFs, and START-HERE with separate
+viewing/download links. Both products retain the Fetish Furniture purchase
+link. The old Criss-Cross archives remain available for existing external
+links but are no longer offered by the panel.
+
 ### Sources and Published Files
 
 Editable plans and reference material live outside this repository in the
@@ -142,11 +148,13 @@ sibling `FoxyFurniturePlans/` folder:
   Build-Pack ZIP, not another editable, unpacked Build-Pack copy.
 - `FF-Trimble-Links.xlsx` tracks public model links and verification results
   across products.
+- `CrissCross/` follows the same source, `Build-Pack/`, and `ReleaseModels/`
+  separation; `CrissCross-Model/SketchUp/CrissCross.skp` is its source master.
 
 Only the prepared website assets and download ZIP belong in this repository.
-The VersaHorse viewer URLs, preview image paths, download path, and displayed
+The product viewer URLs, preview image paths, download paths, and displayed
 revision date are configured in `initDownloadPlans()` in `js/ff-scripts.js`.
-Preview images are in `img/vh/models/`. Keep their full-resolution source
+Preview images are in `img/vh/models/` and `img/cc/models/`. Keep their full-resolution source
 pixels; CSS controls their displayed size.
 
 ### Replacing a Build Pack

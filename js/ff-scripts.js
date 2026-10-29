@@ -167,8 +167,16 @@ function initDownloadPlans() {
 	const downloadPlansByKey = {
 		crissCross: {
 			buyHref: 			'https://fetishfurniture.org/',
-			drawingsHref: 'plans/criss-cross-dwgs.zip',
-			pdfsHref: 		'plans/criss-cross-pdfs.zip',
+			buildPackHref: 'plans/crisscross-build-pack.zip',
+			revisionDate: '2026-10-29',
+			revisionLabel: 'October 29, 2026',
+			models: [
+				{
+					label: 'Working & Playing',
+					image: 'img/cc/models/working.png',
+					href: 'https://app.sketchup.com/share/tc/northAmerica/kdVacVyOuW4?source=desktop&stoken=gADJmRdy1rPqoQNS2yn9pYWdgP-mHICtdfLEyZAXI0tr2vh1jedfCiUHs7eTF5e_&rtc-engine-version=21'
+				}
+			],
 			prodAbbr: 		'cc'
 		},
 		pandorasChest: {
