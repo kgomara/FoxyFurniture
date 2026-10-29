@@ -103,8 +103,14 @@ h4 {
     display: 				inline;
 }
 
-.ff-share-img {
-	border:						0;
+.ff-analytics-badge {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.ff-analytics-badge img {
+	display: block;
+	max-width: 100%;
 }
 
 .ff-download-btn {
