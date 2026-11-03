@@ -136,7 +136,8 @@ h4 {
 }
 
 .ff-download-plans[data-download-plans="versaHorse"],
-.ff-download-plans[data-download-plans="crissCross"] {
+.ff-download-plans[data-download-plans="crissCross"],
+.ff-download-plans[data-download-plans="pandorasChest"] {
 	container: ff-plans / inline-size;
 }
 
@@ -298,25 +299,29 @@ h4 {
 
 @media (min-width: 768px) and (max-width: 991.98px) {
 	#carousel-vh,
-	#carousel-cc {
+	#carousel-cc,
+	#carousel-pc {
 		width: 100%;
 		height: auto;
 		aspect-ratio: 2 / 3;
 	}
 
 	#carousel-vh .carousel-item img,
-	#carousel-cc .carousel-item img {
+	#carousel-cc .carousel-item img,
+	#carousel-pc .carousel-item img {
 		width: 100%;
 		height: auto;
 	}
 
 	#carousel-vh .carousel-indicators,
-	#carousel-cc .carousel-indicators {
+	#carousel-cc .carousel-indicators,
+	#carousel-pc .carousel-indicators {
 		flex-wrap: wrap;
 	}
 
 	#carousel-vh .carousel-indicators button,
-	#carousel-cc .carousel-indicators button {
+	#carousel-cc .carousel-indicators button,
+	#carousel-pc .carousel-indicators button {
 		flex-shrink: 0;
 	}
 }

@@ -180,8 +180,16 @@ function initDownloadPlans() {
 			prodAbbr: 		'cc'
 		},
 		pandorasChest: {
-			drawingsHref: 'plans/pandoras-chest-dwgs.zip',
-			pdfsHref: 		'plans/pandoras-chest-pdfs.zip',
+			buildPackHref: 'plans/pandoraschest-build-pack.zip',
+			revisionDate: '2026-11-03',
+			revisionLabel: 'November 3, 2026',
+			models: [
+				{
+					label: 'Mission & Raised Panel',
+					image: 'img/pc/models/working.png',
+					href: 'https://app.sketchup.com/share/tc/northAmerica/FyczaFLqji4?source=desktop&stoken=MPUxwvvLdJBYxHjqfug-8oUMy8tdhpTFoCPd_twQVDj3pKoFRQBQ9BDSG83UKSJm&rtc-engine-version=21'
+				}
+			],
 			prodAbbr: 		'pc'
 		},
 		powerPole: {

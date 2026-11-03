@@ -455,13 +455,40 @@ describe('initDownloadPlans', function () {
 		expect(document.querySelectorAll('iframe[name="ffDownloadFrame"]')).toHaveLength(1);
 	});
 
-	it('does not render a buy link for products without a purchase URL', function () {
+	it('renders the PandorasChest Build-Pack and two-style model without a purchase link', function () {
 		const container	= arrangeDownloadPlans('pandorasChest');
 		const links			= container.querySelectorAll('a');
 
 		expect(links).toHaveLength(2);
-		expect(links[0].getAttribute('href')).toBe('plans/pandoras-chest-dwgs.zip');
-		expect(links[1].getAttribute('href')).toBe('plans/pandoras-chest-pdfs.zip');
+		expect(links[0].getAttribute('href')).toBe('plans/pandoraschest-build-pack.zip');
+		expect(links[0].textContent).toBe('Build-Pack');
+		expect(links[0].hasAttribute('download')).toBe(true);
+		expect(container.querySelector('time').dateTime).toBe('2026-11-03');
+		expect(container.querySelector('time').textContent).toBe('November 3, 2026');
+		expect(links[1].textContent).toBe('Mission & Raised Panel');
+		expect(links[1].getAttribute('href')).toBe('https://app.sketchup.com/share/tc/northAmerica/FyczaFLqji4?source=desktop&stoken=MPUxwvvLdJBYxHjqfug-8oUMy8tdhpTFoCPd_twQVDj3pKoFRQBQ9BDSG83UKSJm&rtc-engine-version=21');
+		expect(links[1].target).toBe('_blank');
+		expect(links[1].rel).toBe('noopener');
+		expect(links[1].querySelector('img').getAttribute('src')).toBe('img/pc/models/working.png');
+		expect(container.textContent).toContain('View in your browser. No account required.');
+		expect(container.textContent).not.toContain("If you'd rather buy...");
+	});
+
+	it('tracks PandorasChest Build-Pack downloads without duplicating its model preview', function () {
+		window.sa_event = vi.fn();
+		arrangeDownloadPlans('pandorasChest');
+		initDownloadPlans();
+		document.querySelector('.ff-download-btn').click();
+		expect(window.sa_event).toHaveBeenCalledWith('download_pc_build_pack', {filename: 'pandoraschest-build-pack.zip'});
+		expect(document.querySelectorAll('.ff-model-links a')).toHaveLength(1);
+		expect(document.querySelectorAll('iframe[name="ffDownloadFrame"]')).toHaveLength(1);
+	});
+
+	it('retains the legacy PowerPole downloads without a purchase link', function () {
+		const container = arrangeDownloadPlans('powerPole');
+		const links = container.querySelectorAll('a');
+		expect(Array.from(links, function (link) { return link.getAttribute('href'); })).toEqual(['plans/power-pole-dwgs.zip', 'plans/power-pole-pdfs.zip']);
+		expect(container.querySelector('.ff-model-links')).toBeNull();
 		expect(container.textContent).not.toContain("If you'd rather buy...");
 	});
 

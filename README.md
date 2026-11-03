@@ -103,8 +103,8 @@ product.
 
 ## Build Packs and 3D Models
 
-VersaHorse and Criss-Cross use the Build-Pack presentation. Pandora's Chest
-and PowerPole still use their existing Drawings and PDFs downloads.
+VersaHorse, Criss-Cross and Pandora's Chest use the Build-Pack presentation.
+PowerPole still uses its existing Drawings and PDFs downloads.
 
 The VersaHorse download panel contains:
 
@@ -135,6 +135,14 @@ viewing/download links. Both products retain the Fetish Furniture purchase
 link. The old Criss-Cross archives remain available for existing external
 links but are no longer offered by the panel.
 
+Pandora's Chest uses `plans/pandoraschest-build-pack.zip` and one linked model
+preview. The model includes Mission and Raised Panel styles, each with Working,
+Playing, Drawer Storage Detail and Leg Joint Detail scenes. Its pack contains
+START-HERE, the combined BOM, construction instructions, Assembly Guide, plywood
+and solid-wood cutting diagrams, annotated drawing PDFs, remaining drawing
+corrections and the unchanged original DWGs. Its separate model-download link
+is in START-HERE. The older plan ZIPs remain available for existing external links.
+
 ### Sources and Published Files
 
 Editable plans and reference material live outside this repository in the
@@ -150,11 +158,13 @@ sibling `FoxyFurniturePlans/` folder:
   across products.
 - `CrissCross/` follows the same source, `Build-Pack/`, and `ReleaseModels/`
   separation; `CrissCross-Model/SketchUp/CrissCross.skp` is its source master.
+- `PandorasChest/` uses the same separation; its source master is
+  `PandorasChest-Model/SketchUp/PandorasChest.skp`.
 
 Only the prepared website assets and download ZIP belong in this repository.
 The product viewer URLs, preview image paths, download paths, and displayed
 revision date are configured in `initDownloadPlans()` in `js/ff-scripts.js`.
-Preview images are in `img/vh/models/` and `img/cc/models/`. Keep their full-resolution source
+Preview images are in `img/vh/models/`, `img/cc/models/` and `img/pc/models/`. Keep their full-resolution source
 pixels; CSS controls their displayed size.
 
 ### Replacing a Build Pack
