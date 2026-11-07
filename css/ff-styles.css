@@ -118,6 +118,7 @@ h4 {
 }
 
 .ff-download-plans {
+	container: ff-plans / inline-size;
 	border:						1px solid var(--ff-color-accent);
 	border-radius:		var(--ff-radius-md);
 	padding:					12px;
@@ -133,12 +134,6 @@ h4 {
 	font-size: .875rem;
 	margin: .375rem 0 1rem;
 	text-align: center;
-}
-
-.ff-download-plans[data-download-plans="versaHorse"],
-.ff-download-plans[data-download-plans="crissCross"],
-.ff-download-plans[data-download-plans="pandorasChest"] {
-	container: ff-plans / inline-size;
 }
 
 .ff-download-plans .ff-model-heading {

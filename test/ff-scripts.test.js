@@ -484,11 +484,25 @@ describe('initDownloadPlans', function () {
 		expect(document.querySelectorAll('iframe[name="ffDownloadFrame"]')).toHaveLength(1);
 	});
 
-	it('retains the legacy PowerPole downloads without a purchase link', function () {
+	it('renders the PowerPole Build-Pack and seven-scene viewer without a purchase link', function () {
 		const container = arrangeDownloadPlans('powerPole');
 		const links = container.querySelectorAll('a');
-		expect(Array.from(links, function (link) { return link.getAttribute('href'); })).toEqual(['plans/power-pole-dwgs.zip', 'plans/power-pole-pdfs.zip']);
-		expect(container.querySelector('.ff-model-links')).toBeNull();
+		expect(container.querySelector('h4').textContent).toBe('Download Free Plans!');
+		expect(links).toHaveLength(2);
+		expect(links[0].getAttribute('href')).toBe('plans/powerpole-build-pack.zip');
+		expect(links[0].textContent).toBe('Build-Pack');
+		expect(links[0].hasAttribute('download')).toBe(true);
+		expect(links[0].target).toBe('ffDownloadFrame');
+		expect(container.querySelector('time').dateTime).toBe('2026-11-07');
+		expect(container.querySelector('time').textContent).toBe('November 7, 2026');
+		expect(container.querySelector('.ff-model-heading').textContent).toBe('Explore in 3D');
+		expect(links[1].textContent).toBe('Working & Playing');
+		expect(links[1].getAttribute('href')).toBe('https://app.sketchup.com/share/tc/northAmerica/Vb7BGKdCiW8?source=desktop&stoken=RW78NZpfmejqIiYNSIh0yMCP01x-fS1EzGzV7iROXPY2U12fKWyPFOQ6QOtcnPLD&rtc-engine-version=21');
+		expect(links[1].target).toBe('_blank');
+		expect(links[1].rel).toBe('noopener');
+		expect(links[1].getAttribute('aria-label')).toContain('opens in a new tab');
+		expect(links[1].querySelector('img').getAttribute('src')).toBe('img/pp/models/working.png');
+		expect(container.textContent).toContain('View in your browser. No account required. Models supplement the build documents.');
 		expect(container.textContent).not.toContain("If you'd rather buy...");
 	});
 
@@ -504,7 +518,7 @@ describe('initDownloadPlans', function () {
 		expect(document.querySelectorAll('.ff-download-plans')).toHaveLength(2);
 		expect(Array.from(document.querySelectorAll('a[target="ffDownloadFrame"]'), function (link) {
 			return link.getAttribute('href');
-		})).toEqual(['plans/crisscross-build-pack.zip', 'plans/power-pole-dwgs.zip', 'plans/power-pole-pdfs.zip']);
+		})).toEqual(['plans/crisscross-build-pack.zip', 'plans/powerpole-build-pack.zip']);
 		expect(document.querySelectorAll('iframe[name="ffDownloadFrame"]')).toHaveLength(1);
 	});
 
@@ -515,6 +529,8 @@ describe('initDownloadPlans', function () {
 		initDownloadPlans();
 
 		expect(document.querySelectorAll('iframe[name="ffDownloadFrame"]')).toHaveLength(1);
+		expect(document.querySelectorAll('.ff-download-btn')).toHaveLength(1);
+		expect(document.querySelectorAll('.ff-model-links a')).toHaveLength(1);
 	});
 
 	it('leaves unknown download-plan sections unchanged', function () {
@@ -541,40 +557,27 @@ describe('initDownloadPlans', function () {
 		};
 		arrangeDownloadPlans('powerPole');
 
-		document.querySelector('a[href="plans/power-pole-pdfs.zip"]').click();
+		document.querySelector('a[href="plans/powerpole-build-pack.zip"]').click();
 
 		expect(events).toEqual([
 			{
-				eventName: 'download_pp_pdfs',
+				eventName: 'download_pp_build_pack',
 				eventData: {
-					filename: 'power-pole-pdfs.zip'
+					filename: 'powerpole-build-pack.zip'
 				}
 			}
 		]);
 	});
 
-	it('tracks drawing download clicks with the drawings event name', function () {
-		const events = [];
-
-		window.sa_event = function (eventName, eventData) {
-			events.push({
-				eventName,
-				eventData
-			});
-		};
-		arrangeDownloadPlans('powerPole');
-
-		// Branch test: the Drawings label takes a different event-name path than PDFs.
-		document.querySelector('a[href="plans/power-pole-dwgs.zip"]').click();
-
-		expect(events).toEqual([
-			{
-				eventName: 'download_pp_drawings',
-				eventData: {
-					filename: 'power-pole-dwgs.zip'
-				}
-			}
-		]);
+	it.each(['versaHorse', 'crissCross', 'pandorasChest', 'powerPole'])('retires separate Drawings and PDFs buttons for %s', function (productKey) {
+		const container = arrangeDownloadPlans(productKey);
+		const downloads = container.querySelectorAll('.ff-download-btn');
+		expect(downloads).toHaveLength(1);
+		expect(downloads[0].textContent).toBe('Build-Pack');
+		expect(downloads[0].getAttribute('href')).toMatch(/-build-pack\.zip$/);
+		expect(container.querySelector('a[href$="-dwgs.zip"]')).toBeNull();
+		expect(container.querySelector('a[href$="-pdfs.zip"]')).toBeNull();
+		expect(container.textContent).not.toContain('AutoCAD');
 	});
 
 	it('does not require analytics to handle download clicks', function () {
@@ -582,7 +585,7 @@ describe('initDownloadPlans', function () {
 
 		// Optional-dependency guard: downloads should still work if Simple Analytics has not loaded.
 		expect(function () {
-			document.querySelector('a[href="plans/power-pole-pdfs.zip"]').click();
+			document.querySelector('a[href="plans/powerpole-build-pack.zip"]').click();
 		}).not.toThrow();
 	});
 });

@@ -193,8 +193,16 @@ function initDownloadPlans() {
 			prodAbbr: 		'pc'
 		},
 		powerPole: {
-			drawingsHref: 'plans/power-pole-dwgs.zip',
-			pdfsHref: 		'plans/power-pole-pdfs.zip',
+			buildPackHref: 'plans/powerpole-build-pack.zip',
+			revisionDate: '2026-11-07',
+			revisionLabel: 'November 7, 2026',
+			models: [
+				{
+					label: 'Working & Playing',
+					image: 'img/pp/models/working.png',
+					href: 'https://app.sketchup.com/share/tc/northAmerica/Vb7BGKdCiW8?source=desktop&stoken=RW78NZpfmejqIiYNSIh0yMCP01x-fS1EzGzV7iROXPY2U12fKWyPFOQ6QOtcnPLD&rtc-engine-version=21'
+				}
+			],
 			prodAbbr: 		'pp'
 		},
 		versaHorse: {
@@ -226,9 +234,8 @@ function initDownloadPlans() {
 	document.querySelectorAll('.ff-download-plans').forEach(function (container) {
 		const downloadPlans = downloadPlansByKey[container.dataset.downloadPlans];
 
-		const trackDownload = function (href, label) {
-			const eventSuffix = label === 'Build-Pack' ? 'build_pack' : label === 'Drawings' ? 'drawings' : 'pdfs';
-			const eventName 	= 'download_' + downloadPlans.prodAbbr + '_' + eventSuffix;
+		const trackDownload = function (href) {
+			const eventName 	= 'download_' + downloadPlans.prodAbbr + '_build_pack';
 
 			if (typeof window.sa_event === 'function') {
 				window.sa_event(eventName, {
@@ -248,7 +255,7 @@ function initDownloadPlans() {
 			link.target 			= 'ffDownloadFrame';
 			link.textContent 	= label;
 			link.addEventListener('click', function () {
-				trackDownload(href, label);
+				trackDownload(href);
 			});
 			wrapper.appendChild(link);
 
@@ -262,79 +269,56 @@ function initDownloadPlans() {
 		container.replaceChildren();
 
 		const heading 				= document.createElement('h4');
-		const drawingsText 	= document.createElement('p');
-		const drawingsStrong = document.createElement('strong');
-		const spacer 					= document.createElement('br');
-		const pdfsText 				= document.createElement('p');
-		const pdfsStrong 			= document.createElement('strong');
+		const introText 			= document.createElement('p');
+		const introStrong 		= document.createElement('strong');
 		const buySpacer				= document.createElement('br');
 
 		heading.textContent = 'Download Free Plans!';
 
-		if (downloadPlans.buildPackHref) {
-			drawingsText.textContent 	= 'Use the ';
-			drawingsStrong.textContent	= 'Build-Pack';
-			drawingsText.append(drawingsStrong, ' button to download Instructions, BOM, cutting diagrams and original dimensioned drawings.');
+		introText.textContent 	= 'Use the ';
+		introStrong.textContent	= 'Build-Pack';
+		introText.append(introStrong, ' button to download Instructions, BOM, cutting diagrams and original dimensioned drawings.');
 
-			const revision 						= document.createElement('p');
-			const date 								= document.createElement('time');
-			revision.className 				= 'ff-build-pack-revision';
-			date.dateTime 						= downloadPlans.revisionDate;
-			date.textContent 					= downloadPlans.revisionLabel;
-			revision.append('Revised ', date);
+		const revision 						= document.createElement('p');
+		const date 								= document.createElement('time');
+		revision.className 				= 'ff-build-pack-revision';
+		date.dateTime 						= downloadPlans.revisionDate;
+		date.textContent 					= downloadPlans.revisionLabel;
+		revision.append('Revised ', date);
 
-			const modelHeading 				= document.createElement('h4');
-			modelHeading.className 		= 'ff-model-heading';
-			modelHeading.textContent	= 'Explore in 3D';
-			const models 							= document.createElement('ul');
-			models.className 					= 'ff-model-links';
+		const modelHeading 				= document.createElement('h4');
+		modelHeading.className 		= 'ff-model-heading';
+		modelHeading.textContent	= 'Explore in 3D';
+		const models 							= document.createElement('ul');
+		models.className 					= 'ff-model-links';
 
-			downloadPlans.models.forEach(function (model) {
-				const item 	= document.createElement('li');
-				const link 	= document.createElement('a');
-				const image = document.createElement('img');
-				const label = document.createElement('span');
+		downloadPlans.models.forEach(function (model) {
+			const item 	= document.createElement('li');
+			const link 	= document.createElement('a');
+			const image = document.createElement('img');
+			const label = document.createElement('span');
 
-				link.href 	= model.href;
-				link.target = '_blank';
-				link.rel 		= 'noopener';
-				link.setAttribute('aria-label', 'View ' + model.label + ' model in 3D (opens in a new tab)');
+			link.href 	= model.href;
+			link.target = '_blank';
+			link.rel 		= 'noopener';
+			link.setAttribute('aria-label', 'View ' + model.label + ' model in 3D (opens in a new tab)');
 
-				image.src 				= model.image;
-				image.alt 				= '';
-				image.width 			= 100;
-				image.height 			= 100;
-				image.decoding 		= 'async';
+			image.src 				= model.image;
+			image.alt 				= '';
+			image.width 			= 100;
+			image.height 			= 100;
+			image.decoding 		= 'async';
 
-				label.textContent = model.label;
-				link.append(image, label);
-				item.appendChild(link);
-				models.appendChild(item);
-			});
+			label.textContent = model.label;
+			link.append(image, label);
+			item.appendChild(link);
+			models.appendChild(item);
+		});
 
-			const modelText 			= document.createElement('p');
-			modelText.className 	= 'ff-model-description';
-			modelText.textContent = 'View in your browser. No account required. Models supplement the build documents.';
-			container.append(heading, drawingsText, createDownloadButton(downloadPlans.buildPackHref, 'Build-Pack'), revision, modelHeading, models, modelText);
-		}
-		else {
-			drawingsText.append('Use the ');
-			drawingsStrong.textContent = 'Drawings';
-			drawingsText.append(drawingsStrong, ' button to download plans you can modify. They are in AutoCAD (.dwg) format.');
-
-			pdfsText.append('Use the ');
-			pdfsStrong.textContent = 'PDFs';
-			pdfsText.append(pdfsStrong, ' button to download PDFs of the plans.');
-
-			container.append(
-				heading,
-				drawingsText,
-				createDownloadButton(downloadPlans.drawingsHref, 'Drawings'),
-				spacer,
-				pdfsText,
-				createDownloadButton(downloadPlans.pdfsHref, 'PDFs')
-			);
-		}
+		const modelText 			= document.createElement('p');
+		modelText.className 	= 'ff-model-description';
+		modelText.textContent = 'View in your browser. No account required. Models supplement the build documents.';
+		container.append(heading, introText, createDownloadButton(downloadPlans.buildPackHref, 'Build-Pack'), revision, modelHeading, models, modelText);
 
 		if (downloadPlans.buyHref) {
 			const buyHeading 	= document.createElement('h2');

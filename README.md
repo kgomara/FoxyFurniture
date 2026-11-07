@@ -103,8 +103,9 @@ product.
 
 ## Build Packs and 3D Models
 
-VersaHorse, Criss-Cross and Pandora's Chest use the Build-Pack presentation.
-PowerPole still uses its existing Drawings and PDFs downloads.
+All four products use the Build-Pack presentation. The legacy Drawings/PDFs
+panel and its separate analytics events have been retired; old ZIP files in
+`plans/` remain available for existing external links.
 
 The VersaHorse download panel contains:
 
@@ -143,6 +144,12 @@ and solid-wood cutting diagrams, annotated drawing PDFs, remaining drawing
 corrections and the unchanged original DWGs. Its separate model-download link
 is in START-HERE. The older plan ZIPs remain available for existing external links.
 
+PowerPole uses `plans/powerpole-build-pack.zip`, revised November 7, 2026, and
+one Working-scene preview linking to its seven-scene model. Its pack includes
+START-HERE, BOM, construction instructions, plywood and solid-wood cutting
+diagrams, four annotated dimensioned PDFs and four original DWGs. The separate
+model-download link remains in START-HERE. PowerPole has no purchase referral.
+
 ### Sources and Published Files
 
 Editable plans and reference material live outside this repository in the
@@ -160,11 +167,14 @@ sibling `FoxyFurniturePlans/` folder:
   separation; `CrissCross-Model/SketchUp/CrissCross.skp` is its source master.
 - `PandorasChest/` uses the same separation; its source master is
   `PandorasChest-Model/SketchUp/PandorasChest.skp`.
+- `PowerPole/` uses the same separation; its source master is
+  `PowerPole-Model/SketchUp/PowerPole-Fit-Study.skp`.
 
 Only the prepared website assets and download ZIP belong in this repository.
 The product viewer URLs, preview image paths, download paths, and displayed
 revision date are configured in `initDownloadPlans()` in `js/ff-scripts.js`.
-Preview images are in `img/vh/models/`, `img/cc/models/` and `img/pc/models/`. Keep their full-resolution source
+Preview images are in `img/vh/models/`, `img/cc/models/`, `img/pc/models/` and
+`img/pp/models/`. Keep their full-resolution source
 pixels; CSS controls their displayed size.
 
 ### Replacing a Build Pack
