@@ -208,8 +208,8 @@ function initDownloadPlans() {
 		versaHorse: {
 			buyHref: 				'https://fetishfurniture.org/',
 			buildPackHref: 	'plans/versahorse-build-pack.zip',
-			revisionDate: 	'2026-10-25',
-			revisionLabel: 	'October 25, 2026',
+			revisionDate: 	'2026-11-09',
+			revisionLabel: 	'November 9, 2026',
 			models: [
 				{
 					label: 	'Chest Rest',
