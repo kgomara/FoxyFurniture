@@ -463,8 +463,8 @@ describe('initDownloadPlans', function () {
 		expect(links[0].getAttribute('href')).toBe('plans/pandoraschest-build-pack.zip');
 		expect(links[0].textContent).toBe('Build-Pack');
 		expect(links[0].hasAttribute('download')).toBe(true);
-		expect(container.querySelector('time').dateTime).toBe('2026-11-03');
-		expect(container.querySelector('time').textContent).toBe('November 3, 2026');
+		expect(container.querySelector('time').dateTime).toBe('2026-11-10');
+		expect(container.querySelector('time').textContent).toBe('November 10, 2026');
 		expect(links[1].textContent).toBe('Mission & Raised Panel');
 		expect(links[1].getAttribute('href')).toBe('https://app.sketchup.com/share/tc/northAmerica/FyczaFLqji4?source=desktop&stoken=MPUxwvvLdJBYxHjqfug-8oUMy8tdhpTFoCPd_twQVDj3pKoFRQBQ9BDSG83UKSJm&rtc-engine-version=21');
 		expect(links[1].target).toBe('_blank');

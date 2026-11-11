@@ -181,8 +181,8 @@ function initDownloadPlans() {
 		},
 		pandorasChest: {
 			buildPackHref: 'plans/pandoraschest-build-pack.zip',
-			revisionDate: '2026-11-03',
-			revisionLabel: 'November 3, 2026',
+			revisionDate: '2026-11-10',
+			revisionLabel: 'November 10, 2026',
 			models: [
 				{
 					label: 'Mission & Raised Panel',
