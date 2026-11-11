@@ -144,11 +144,13 @@ and solid-wood cutting diagrams, annotated drawing PDFs, remaining drawing
 corrections and the unchanged original DWGs. Its separate model-download link
 is in START-HERE. The older plan ZIPs remain available for existing external links.
 
-PowerPole uses `plans/powerpole-build-pack.zip`, revised November 7, 2026, and
+PowerPole uses `plans/powerpole-build-pack.zip`, revised November 11, 2026, and
 one Working-scene preview linking to its seven-scene model. Its pack includes
 START-HERE, BOM, construction instructions, plywood and solid-wood cutting
 diagrams, four annotated dimensioned PDFs and four original DWGs. The separate
 model-download link remains in START-HERE. PowerPole has no purchase referral.
+The model and cutting diagrams use the BOM's stable Bxxx part references and
+plain-English part names; instructions retain their stable Ixxx references.
 
 ### Sources and Published Files
 

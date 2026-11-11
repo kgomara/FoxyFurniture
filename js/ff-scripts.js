@@ -194,8 +194,8 @@ function initDownloadPlans() {
 		},
 		powerPole: {
 			buildPackHref: 'plans/powerpole-build-pack.zip',
-			revisionDate: '2026-11-07',
-			revisionLabel: 'November 7, 2026',
+			revisionDate: '2026-11-11',
+			revisionLabel: 'November 11, 2026',
 			models: [
 				{
 					label: 'Working & Playing',
