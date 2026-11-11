@@ -392,7 +392,8 @@ describe('initDownloadPlans', function () {
 		expect(button.textContent).toBe('Build-Pack');
 		expect(button.getAttribute('href')).toBe('plans/versahorse-build-pack.zip');
 		expect(button.hasAttribute('download')).toBe(true);
-		expect(container.querySelector('time').dateTime).toBe('2026-11-09');
+		expect(container.querySelector('time').dateTime).toBe('2026-11-11');
+		expect(container.querySelector('time').textContent).toBe('November 11, 2026');
 		expect(container.querySelector('.ff-model-heading').textContent).toBe('Explore in 3D');
 		const models = Array.from(container.querySelectorAll('.ff-model-links a'));
 		expect(models.map(function (link) { return link.textContent; })).toEqual(['Chest Rest', 'Pegasus Bench', 'Pillory & Stock']);
