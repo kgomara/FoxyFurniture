@@ -168,8 +168,8 @@ function initDownloadPlans() {
 		crissCross: {
 			buyHref: 			'https://fetishfurniture.org/',
 			buildPackHref: 'plans/crisscross-build-pack.zip',
-			revisionDate: '2026-11-09',
-			revisionLabel: 'November 9, 2026',
+			revisionDate: '2026-11-11',
+			revisionLabel: 'November 11, 2026',
 			models: [
 				{
 					label: 'Working & Playing',

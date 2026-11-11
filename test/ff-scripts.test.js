@@ -429,8 +429,8 @@ describe('initDownloadPlans', function () {
 		expect(links[0].textContent).toBe('Build-Pack');
 		expect(links[0].hasAttribute('download')).toBe(true);
 		expect(container.querySelectorAll('.ff-download-btn')).toHaveLength(1);
-		expect(container.querySelector('time').dateTime).toBe('2026-11-09');
-		expect(container.querySelector('time').textContent).toBe('November 9, 2026');
+		expect(container.querySelector('time').dateTime).toBe('2026-11-11');
+		expect(container.querySelector('time').textContent).toBe('November 11, 2026');
 		expect(container.querySelectorAll('.ff-model-links a')).toHaveLength(1);
 		expect(links[1].textContent).toBe('Working & Playing');
 		expect(links[1].getAttribute('href')).toBe('https://app.sketchup.com/share/tc/northAmerica/kdVacVyOuW4?source=desktop&stoken=gADJmRdy1rPqoQNS2yn9pYWdgP-mHICtdfLEyZAXI0tr2vh1jedfCiUHs7eTF5e_&rtc-engine-version=21');
