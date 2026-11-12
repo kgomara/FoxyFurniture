@@ -17,6 +17,7 @@ The main pages live at the top level of the project:
 - `gallery.html` is the Gallery landing page.
 - `gallery-*.html` files are the Gallery detail pages.
 - `about-us.html` is the About page.
+- `contact.html` is the contact form, with FetLife as an alternative.
 
 Supporting files are grouped by purpose:
 
@@ -298,6 +299,29 @@ adding tests near the behavior being changed, and keep the production code's
 browser-safe CommonJS export guards in place so Vitest can import the functions
 without changing how the scripts run in the browser.
 
+## Contact Form
+
+`contact.html` posts to Formspree using the small, dependency-free
+`js/ff-contact.js` script. Submission feedback stays on FF. Failed or timed-out
+requests preserve the visitor's text; the submit button is disabled while a
+request is pending. The form accepts no attachments and includes a standard
+`_gotcha` honeypot. JavaScript is required; FetLife is the fallback.
+
+The Formspree endpoint and Cloudflare Turnstile site key in `contact.html` are
+public identifiers. Keep the Turnstile **secret key only in Formspree's CAPTCHA
+settings**, with Turnstile enabled so Formspree verifies tokens on its servers.
+The destination email is verified and configured in Formspree, not in the site.
+The Cloudflare widget should use Managed mode, with `foxyfurniture.net`,
+`www.foxyfurniture.net`, and `localhost` allowed. The page shows the widget only
+when interaction is needed. Keep spam filtering enabled in Formspree.
+
+Preview through `launch-ff` using `localhost`. Unit tests mock delivery and
+Turnstile; they send no emails. Before publishing, manually submit one test
+message, check on-page confirmation and receipt in the destination inbox, and
+verify spam protection is enabled in the Formspree dashboard. Repeat on the live
+domain after an approved deployment. Monitor the account's submission quota;
+filtered-spam quota handling has not been confirmed with Formspree.
+
 ## Asset Versioning
 
 Browsers may cache CSS and JavaScript files aggressively. The project uses query
@@ -322,6 +346,7 @@ The helper updates:
 - `js/ff-gallery-data.js`
 - `js/ff-gallery.js`
 - `js/ff-videoplayer.js`
+- `js/ff-contact.js`
 - the shared header/footer version constant inside `js/ff-scripts.js`
 
 ## Version strings

@@ -48,6 +48,7 @@ perl -0pi -e '
 	s#(src="js/ff-gallery-data\.js)(?:\?v=[A-Za-z0-9._-]+)?(")#$1?v=$version$2#g;
 	s#(src="js/ff-gallery\.js)(?:\?v=[A-Za-z0-9._-]+)?(")#$1?v=$version$2#g;
 	s#(src="js/ff-videoplayer\.js)(?:\?v=[A-Za-z0-9._-]+)?(")#$1?v=$version$2#g;
+	s#(src="js/ff-contact\.js)(?:\?v=[A-Za-z0-9._-]+)?(")#$1?v=$version$2#g;
 ' ./*.html
 
 perl -0pi -e '

@@ -196,6 +196,23 @@ h4 {
 	width:						var(--ff-carousel-width);
 }
 
+.ff-contact {
+	max-width: 42rem;
+	margin-inline: auto;
+	padding-block: 1rem;
+}
+
+.ff-contact .form-control,
+.ff-contact .form-select,
+.ff-contact button {
+	min-height: var(--ff-control-size);
+}
+
+.ff-contact button {
+	background-color: var(--ff-color-brand);
+	border-color: var(--ff-color-brand);
+}
+
 .ff-home-page h2,
 .ff-home-page h3 {
 	--bs-text-align:	center;
