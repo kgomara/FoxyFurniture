@@ -18,7 +18,7 @@ describe('published HTML without JavaScript', function () {
 		const menu = page.querySelector('nav[aria-label="Main navigation"] details');
 		expect(menu.querySelector('summary').getAttribute('aria-label')).toBe('Open navigation menu');
 		const hrefs = Array.from(menu.querySelectorAll('a'), function (a) { return a.getAttribute('href'); });
-		expect(hrefs.sort()).toEqual(pages.slice().sort());
+		expect(hrefs.sort()).toEqual(pages.map(function (name) { return name === 'index.html' ? './' : name; }).sort());
 		expect(menu.querySelector('[data-bs-toggle]')).toBeNull();
 	});
 
@@ -35,6 +35,26 @@ describe('published HTML without JavaScript', function () {
 			expect(fs.existsSync(path.join(root, link.querySelector('img').getAttribute('src')))).toBe(true);
 		});
 	});
+});
+
+it('declares canonical URLs that match the sitemap and navigation on every public page', function () {
+	const origin = 'https://www.foxyfurniture.net/';
+	const sitemap = new DOMParser().parseFromString(fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8'), 'application/xml');
+	const sitemapUrls = Array.from(sitemap.querySelectorAll('loc'), function (loc) { return loc.textContent; }).sort();
+	const canonicalUrls = pages.map(function (file) {
+		const page = new DOMParser().parseFromString(fs.readFileSync(path.join(root, file), 'utf8'), 'text/html');
+		const canonical = page.head.querySelectorAll('link[rel="canonical"]');
+		expect(canonical).toHaveLength(1);
+		const expected = origin + (file === 'index.html' ? '' : file);
+		expect(canonical[0].getAttribute('href')).toBe(expected);
+		const menuUrls = Array.from(page.querySelectorAll('nav a'), function (link) {
+			return new URL(link.getAttribute('href'), expected).href;
+		}).sort();
+		expect(menuUrls).toEqual(sitemapUrls);
+		expect(new URL(page.querySelector('.ff-header-logo-link').getAttribute('href'), expected).href).toBe(origin);
+		return expected;
+	});
+	expect(canonicalUrls.sort()).toEqual(sitemapUrls);
 });
 
 describe('navigation enhancement', function () {
