@@ -1,3 +1,7 @@
+const fs = require('node:fs');
+const path = require('node:path');
+const vm = require('node:vm');
+const root = path.join(__dirname, '..');
 const {
 	calculateScaledImageSize,
 	initGallery,
@@ -167,6 +171,55 @@ describe('renderGalleryItems', function () {
 });
 
 describe('initGallery', function () {
+	it('enhances existing image links once without replacing their content', function () {
+		const { show } = installFakeBootstrapModal();
+		document.body.innerHTML = fs.readFileSync(path.join(root, 'gallery-home-dungeon.html'), 'utf8');
+		const list = document.querySelector('[data-gallery]');
+		const images = Array.from(list.querySelectorAll('img'));
+		const link = list.querySelector('a');
+		initGallery();
+		initGallery();
+		images[0].click();
+		expect(Array.from(list.querySelectorAll('img'))).toEqual(images);
+		expect(list.querySelector('a')).toBe(link);
+		expect(list.querySelectorAll('img')).toHaveLength(4);
+		expect(document.querySelectorAll('#ffGalleryModal')).toHaveLength(1);
+		expect(show).toHaveBeenCalledOnce();
+		expect(document.querySelector('#ffGalleryCounter').textContent).toBe('1 / 4');
+	});
+
+	it('returns focus to the opening image link when the modal closes', function () {
+		installFakeBootstrapModal();
+		const { thumbs } = arrangeCrissCrossGallery();
+		thumbs[1].click();
+		const modal = document.querySelector('#ffGalleryModal');
+		modal.focus();
+		modal.dispatchEvent(new Event('hidden.bs.modal'));
+		expect(document.activeElement).toBe(thumbs[1].closest('a'));
+		expect(modal.getAttribute('aria-label')).toBe('Image gallery');
+	});
+
+	it('leaves direct image links usable when Bootstrap is unavailable', function () {
+		document.body.innerHTML = fs.readFileSync(path.join(root, 'gallery-home-dungeon.html'), 'utf8');
+		initGallery();
+		const link = document.querySelector('[data-gallery] a');
+		const event = new Event('click', {bubbles: true, cancelable: true});
+		link.dispatchEvent(event);
+		expect(event.defaultPrevented).toBe(false);
+		expect(link.getAttribute('href')).toBe('img/gallery/hd/DCP_1948.jpg');
+		expect(link.getAttribute('role')).toBeNull();
+		expect(document.querySelector('#ffGalleryModal')).toBeNull();
+	});
+
+	it('preserves modified-click behavior for opening the original image separately', function () {
+		const { show } = installFakeBootstrapModal();
+		const { thumbs } = arrangeCrissCrossGallery();
+		const event = new Event('click', {bubbles: true, cancelable: true});
+		event.ctrlKey = true;
+		thumbs[0].dispatchEvent(event);
+		expect(event.defaultPrevented).toBe(false);
+		expect(show).not.toHaveBeenCalled();
+	});
 	it('does nothing when the page does not have a gallery list', function () {
 		document.body.innerHTML = '<main></main>';
 
@@ -185,8 +238,8 @@ describe('initGallery', function () {
 		expect(thumbs[0].classList.contains('ff-gallery-thumb')).toBe(true);
 		expect(thumbs[0].loading).toBe('lazy');
 		expect(thumbs[0].decoding).toBe('async');
-		expect(thumbs[0].getAttribute('role')).toBe('button');
-		expect(thumbs[0].tabIndex).toBe(0);
+		expect(thumbs[0].closest('a').getAttribute('role')).toBe('button');
+		expect(thumbs[0].closest('a').tabIndex).toBe(0);
 
 		thumbs[0].click();
 
@@ -211,7 +264,7 @@ describe('initGallery', function () {
 		});
 
 		// Keyboard-accessibility test: focused thumbnails should open without a mouse.
-		thumbs[1].dispatchEvent(enterEvent);
+		thumbs[1].closest('a').dispatchEvent(enterEvent);
 
 		expect(document.getElementById('ffGalleryImage').getAttribute('src')).toBe('img/gallery/cc/second.jpg');
 		expect(document.getElementById('ffGalleryPrev').disabled).toBe(false);
@@ -229,7 +282,7 @@ describe('initGallery', function () {
 		});
 
 		// Default-action test: Space opens the modal and prevents the browser's normal page scroll.
-		thumbs[1].dispatchEvent(spaceEvent);
+		thumbs[1].closest('a').dispatchEvent(spaceEvent);
 
 		expect(spaceEvent.defaultPrevented).toBe(true);
 		expect(document.getElementById('ffGalleryImage').getAttribute('src')).toBe('img/gallery/cc/second.jpg');
@@ -242,7 +295,7 @@ describe('initGallery', function () {
 		const { thumbs }	= arrangeCrissCrossGallery();
 
 		// Negative event test: keys we do not handle should not open the modal.
-		thumbs[1].dispatchEvent(new KeyboardEvent('keydown', {
+		thumbs[1].closest('a').dispatchEvent(new KeyboardEvent('keydown', {
 			key: 'Escape'
 		}));
 
@@ -386,6 +439,34 @@ describe('initGallery', function () {
 		expect(document.getElementById('ffGalleryPrev').disabled).toBe(false);
 		expect(document.getElementById('ffGalleryNext').disabled).toBe(true);
 		expect(document.getElementById('ffGalleryCounter').textContent).toBe('2 / 2');
+	});
+});
+
+describe('gallery content published without JavaScript', function () {
+	const context = {window: {}};
+	vm.runInNewContext(fs.readFileSync(path.join(root, 'js/ff-gallery-data.js'), 'utf8'), context);
+	const data = context.window.ffGalleryItems;
+	const pages = ['gallery.html', 'gallery-home-dungeon.html', 'gallery-criss-cross.html', 'gallery-versahorse.html', 'gallery-pandoras-chest.html', 'gallery-powerpole.html'];
+
+	it.each(pages)('%s contains its heading, existing images, and ordinary links', function (file) {
+		const html = fs.readFileSync(path.join(root, file), 'utf8');
+		const page = new DOMParser().parseFromString(html, 'text/html');
+		expect(page.querySelectorAll('h1')).toHaveLength(1);
+		expect(page.querySelector('h1').textContent).toContain('Gallery');
+		expect(page.querySelector('script[src*="ff-gallery-data"]')).toBeNull();
+		const list = page.querySelector('[data-gallery], [data-gallery-index]');
+		const key = list.dataset.gallery || 'index';
+		const images = Array.from(list.querySelectorAll('img'));
+		const links = Array.from(list.querySelectorAll('a'));
+		expect(images.map(function (img) { return {src: img.getAttribute('src'), alt: img.alt}; })).toEqual(data[key].map(function (item) { return {src: item.src, alt: item.alt}; }));
+		expect(links.map(function (link) { return link.getAttribute('href'); })).toEqual(data[key].map(function (item) { return item.href || item.src; }));
+		images.forEach(function (img) { expect(fs.existsSync(path.join(root, img.getAttribute('src')))).toBe(true); });
+		if (key !== 'index') {
+			expect(list.classList.contains('ff-gallery-grid')).toBe(true);
+			images.forEach(function (img) { expect(img.getAttribute('loading')).toBe('lazy'); });
+		} else {
+			expect(Array.from(list.querySelectorAll('p'), function (p) { return p.textContent; })).toEqual(data.index.map(function (item) { return item.title; }));
+		}
 	});
 });
 

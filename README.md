@@ -28,10 +28,11 @@ Supporting files are grouped by purpose:
   download links.
 - `js/ff-product-data.js` contains the home page and product page carousel
   image paths, alt text, captions, and per-slide display options.
-- `js/ff-gallery-data.js` contains the Gallery landing page and Gallery detail
-  page image data.
-- `js/ff-gallery.js` renders Gallery pages into responsive CSS grids and
-  provides the custom lightbox behavior.
+- `js/ff-gallery-data.js` is the editing source for the Gallery image data.
+  Run `npm run sync:gallery` after editing it to publish that data into the six
+  Gallery HTML pages. It is not downloaded by visitors.
+- `js/ff-gallery.js` enhances the existing Gallery image links with the custom
+  lightbox behavior. The responsive grids are present in the HTML.
 - `js/ff-videoplayer.js` handles the home page video play/pause overlay.
 - `js/shared/header.html` is the source for navigation embedded in every page.
   Run `npm run sync:header` after editing it; `sync-ff-header` copies it into the
@@ -48,8 +49,8 @@ Most pages share the same basic structure:
 1. Load Bootstrap from a CDN.
 2. Load `css/ff-styles.css`.
 3. Load Bootstrap's JavaScript bundle.
-4. Load any page-specific data files, such as `js/ff-product-data.js` or
-   `js/ff-gallery-data.js`.
+4. Load any page-specific data files, such as `js/ff-product-data.js` for
+   carousels. Gallery data is already published in HTML.
 5. Load page behavior, such as `js/ff-scripts.js`, `js/ff-gallery.js`, or
    `js/ff-videoplayer.js`.
 6. Include the shared navigation HTML inside `<div id="header">` and an empty
@@ -85,10 +86,9 @@ JavaScript behavior:
 - `data-download-plans="crissCross"` identifies a product's static download panel.
 - `data-download-event="download_cc_build_pack"` tells `js/ff-scripts.js` which
   Simple Analytics event to send when an existing download link is clicked.
-- `data-gallery-index` tells `js/ff-gallery.js` to render the Gallery landing
-  page categories.
-- `data-gallery="pandorasChest"` tells `js/ff-gallery.js` which Gallery detail
-  images to render from `js/ff-gallery-data.js`.
+- `data-gallery-index` identifies the static Gallery category grid.
+- `data-gallery="pandorasChest"` identifies a static Gallery image list for
+  lightbox enhancement by `js/ff-gallery.js`.
 
 Prefer `data-*` hooks for behavior and data keys. Use classes for styling and
 layout.
@@ -225,24 +225,45 @@ share follows future model versions automatically.
 
 The Gallery has two layers:
 
-- `gallery.html` contains a `data-gallery-index` placeholder for the main
-  Gallery categories.
-- Each `gallery-*.html` page contains a plain
-  `<ul class="ff-gallery-list" data-gallery="..."></ul>` placeholder for one
-  category.
+- `gallery.html` contains a heading and ordinary links to the five categories,
+  each with an existing preview image.
+- Each `gallery-*.html` page contains a heading and a responsive image grid.
+  Every image is inside an ordinary link to its original file. Images, alt text,
+  image order, and grid classes are available before JavaScript runs.
 
-`js/ff-gallery.js` renders the images from `js/ff-gallery-data.js`, applies a
-CSS grid class, and turns each image into a lightbox trigger. The lightbox
-itself is created by JavaScript only when needed. It supports:
+`js/ff-gallery-data.js` remains the editing source for image paths, alt text,
+category titles, and category links. After editing it, run:
 
-- Responsive image sizing.
-- Previous/next controls.
-- Keyboard navigation with the left and right arrow keys.
-- Touch swipe navigation on mobile.
-- A visible image counter.
+```sh
+npm run sync:gallery
+node sync-ff-gallery --check
+```
+
+The helper uses only built-in Node modules. It copies the data into the
+`ff-gallery:start` / `ff-gallery:end` comment blocks of the six Gallery HTML
+pages and checks that referenced images exist. Commit the generated HTML with
+the source changes. The `--check` command reports stale pages without writing.
+Tests compare the published image paths, alt text, order, and links with the
+source. No server-side rendering or deployment build step is required.
+
+With JavaScript disabled, visitors see the same image grids and can open the
+original images directly. With JavaScript available, `js/ff-gallery.js` enhances
+those links without replacing images or duplicating content. It retains a small
+fallback renderer for empty gallery containers supplied with browser-side data;
+the published pages no longer need that data script.
+
+The lightbox is created only when opened and supports:
+
+- Responsive image sizing and previous/next controls.
+- Enter or Space to open an image, arrow keys to move, and Escape to close.
+- Touch swipe navigation and a visible image counter.
+- Focus returned to the opening link on close.
+- Ordinary direct-image navigation if Bootstrap is unavailable; modified clicks
+  keep the browser's normal behavior.
 
 The Gallery intentionally uses the existing large images directly rather than
-maintaining separate thumbnail directories.
+maintaining separate thumbnails. Detail-grid images use lazy loading and async
+decoding in the initial HTML.
 
 ## Home Page Video
 
@@ -308,8 +329,9 @@ Current test files:
 - `test/ff-navigation.test.js` checks navigation embedded in every HTML page,
   essential links available before JavaScript, keyboard/dismissal behavior, and
   resilience to footer loading failures.
-- `test/ff-gallery.test.js` covers Gallery data rendering, modal behavior,
-  keyboard navigation, touch swipes, guard clauses, and image-size calculation.
+- `test/ff-gallery.test.js` covers published Gallery HTML, fallback data rendering,
+  modal behavior, keyboard navigation, touch swipes, focus restoration,
+  reinitialization, guard clauses, and image-size calculation.
 - `test/ff-videoplayer.test.js` covers the home page video play button,
   play/pause behavior, and end-of-video reset behavior.
 

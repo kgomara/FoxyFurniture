@@ -1,6 +1,6 @@
 /*global bootstrap, document, window: false */
 
-const SHARED_LAYOUT_VERSION = 'v3.3.2a2';
+const SHARED_LAYOUT_VERSION = 'v3.4.0.a3';
 
 window.addEventListener('load', function() {
 	initSharedLayout().catch(function (error) { console.error(error); });

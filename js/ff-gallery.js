@@ -73,6 +73,7 @@ function initGallery() {
 	let currentIndex 		= 0;
 	let touchStartX 		= 0;
 	let touchStartY 		= 0;
+	let lastTrigger;
 
 	if (!galleryLists.length) {
 		return;
@@ -90,6 +91,7 @@ function initGallery() {
 		modal.id 				= 'ffGalleryModal';
 		modal.tabIndex 	= -1;
 		modal.setAttribute('aria-hidden', 'true');
+		modal.setAttribute('aria-label', 'Image gallery');
 		modal.innerHTML = `
 			<div class="modal-dialog ff-gallery-modal-dialog">
 				<div class="modal-content ff-gallery-modal-content">
@@ -104,6 +106,9 @@ function initGallery() {
 			</div>
 		`;
 		document.body.appendChild(modal);
+		modal.addEventListener('hidden.bs.modal', function () {
+			if (lastTrigger && lastTrigger.isConnected) lastTrigger.focus();
+		});
 
 		document.getElementById('ffGalleryPrev').addEventListener('click', function () {
 			showImage(currentIndex - 1);
@@ -206,13 +211,15 @@ function initGallery() {
 	}
 
 	galleryLists.forEach(function (galleryList) {
+		if (galleryList.dataset.galleryInitialized) return;
+		galleryList.dataset.galleryInitialized = 'true';
 		renderGalleryItems(galleryList);
 
 		const items = Array.from(galleryList.querySelectorAll('li'));
 
 		galleryList.classList.add('ff-gallery-grid');
 
-		items.forEach(function (item, index) {
+		items.forEach(function (item) {
 			const img = item.querySelector('img');
 
 			item.classList.add('ff-gallery-grid-item');
@@ -225,10 +232,21 @@ function initGallery() {
 			img.classList.add('ff-gallery-thumb');
 			img.loading		= 'lazy';
 			img.decoding	= 'async';
-			img.setAttribute('role', 'button');
-			img.tabIndex	= 0;
+			let link = item.querySelector('a');
+			if (!link) {
+				link = document.createElement('a');
+				link.href = img.getAttribute('src');
+				img.replaceWith(link);
+				link.appendChild(img);
+			}
+			link.classList.add('ff-gallery-link');
+			if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+				link.setAttribute('role', 'button');
+				link.setAttribute('aria-haspopup', 'dialog');
+			}
 
 			function openGallery() {
+				lastTrigger = link;
 				const modal	= ensureModal();
 				currentItems = items.map(function (galleryItem) {
 					return galleryItem.querySelector('img');
@@ -238,9 +256,15 @@ function initGallery() {
 				bootstrap.Modal.getOrCreateInstance(modal).show();
 			}
 
-			img.addEventListener('click', openGallery);
-			img.addEventListener('keydown', function (event) {
-				if (event.key === 'Enter' || event.key === ' ') {
+			link.addEventListener('click', function (event) {
+				if (event.button || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+				if (typeof bootstrap === 'undefined' || !bootstrap.Modal) return;
+				event.preventDefault();
+				openGallery();
+			});
+			link.addEventListener('keydown', function (event) {
+				if (typeof bootstrap === 'undefined' || !bootstrap.Modal) return;
+				if ((event.key === 'Enter' || event.key === ' ') && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey) {
 					event.preventDefault();
 					openGallery();
 				}

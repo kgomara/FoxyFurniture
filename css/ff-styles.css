@@ -485,7 +485,12 @@ h4 {
 	width:						100%;
 }
 
-.ff-gallery-thumb:focus {
+.ff-gallery-link {
+	display: block;
+	height: 100%;
+}
+
+.ff-gallery-link:focus-visible {
 	outline:					3px solid var(--ff-color-accent);
 	outline-offset:		3px;
 }

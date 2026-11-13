@@ -91,3 +91,10 @@ simplicity, and long-term maintainability.
 - The Gallery is open for experimentation with Bootstrap or lightweight
   alternatives, provided the result is mobile-friendly, accessible, simple, and
   maintainable.
+
+## Commit Messages
+
+- Automatically reference the relevant GitHub issue in issue-related commits.
+- Use `Fixes #nn` when the commit completes the issue; use a plain `#nn`
+  reference for partial work or work that should not close the issue.
+- Follow an exact commit message when the user supplies one.

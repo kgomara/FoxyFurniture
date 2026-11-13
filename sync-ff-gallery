@@ -1,0 +1,59 @@
+#!/usr/bin/env node
+
+// Publish the existing gallery data as HTML before deployment.
+const fs = require('node:fs');
+const path = require('node:path');
+const vm = require('node:vm');
+const root = __dirname;
+const context = {window: {}};
+vm.runInNewContext(fs.readFileSync(path.join(root, 'js/ff-gallery-data.js'), 'utf8'), context);
+const data = context.window.ffGalleryItems;
+const pages = {
+	'gallery.html': ['index', 'Gallery'],
+	'gallery-home-dungeon.html': ['homeDungeon', 'Home Dungeon Gallery'],
+	'gallery-criss-cross.html': ['crissCross', 'Criss Cross Gallery'],
+	'gallery-versahorse.html': ['versaHorse', 'VersaHorse Gallery'],
+	'gallery-pandoras-chest.html': ['pandorasChest', "Pandora's Chest Gallery"],
+	'gallery-powerpole.html': ['powerPole', 'Power Pole Gallery']
+};
+const escape = function (value) {
+	return value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+};
+const check = process.argv.includes('--check');
+let stale = false;
+
+for (const [file, [key, heading]] of Object.entries(pages)) {
+	const items = data[key];
+	for (const item of items) {
+		if (!fs.existsSync(path.join(root, item.src))) throw new Error('Missing image: ' + item.src);
+	}
+	const lines = ['<!-- ff-gallery:start -->', '<h1 class="h3 mb-3">' + escape(heading) + '</h1>'];
+	if (key === 'index') {
+		lines.push('<div class="ff-gallery-index" data-gallery-index>');
+		items.forEach(function (item) {
+			lines.push('\t<div class="ff-gallery-img"><a href="' + escape(item.href) + '"><img src="' + escape(item.src) + '" class="img-fluid col-12" alt="' + escape(item.alt) + '" decoding="async"><p class="text-center">' + escape(item.title) + '</p></a></div>');
+		});
+		lines.push('</div>');
+	} else {
+		lines.push('<ul class="ff-gallery-list ff-gallery-grid" data-gallery="' + key + '">');
+		items.forEach(function (item) {
+			lines.push('\t<li class="ff-gallery-grid-item"><a class="ff-gallery-link" href="' + escape(item.src) + '"><img src="' + escape(item.src) + '" alt="' + escape(item.alt) + '" class="ff-gallery-thumb" loading="lazy" decoding="async"></a></li>');
+		});
+		lines.push('</ul>');
+	}
+	lines.push('<!-- ff-gallery:end -->');
+	const filename = path.join(root, file);
+	const html = fs.readFileSync(filename, 'utf8');
+	const pattern = /<!-- ff-gallery:start -->[\s\S]*?<!-- ff-gallery:end -->/;
+	if (!pattern.test(html)) throw new Error('Missing gallery markers in ' + file);
+	const updated = html.replace(pattern, function () { return lines.join('\n'); });
+	if (html === updated) continue;
+	if (check) {
+		console.error('Gallery needs updating: ' + file);
+		stale = true;
+	} else {
+		fs.writeFileSync(filename, updated);
+	}
+}
+
+if (stale) process.exitCode = 1;
