@@ -352,7 +352,22 @@ all ten unsuccessful ClaudeBot requests as HTTP 404 responses for
 `/sitemap.xml`. Adding this file addresses that missing resource; the observed
 failures did not require changing Cloudflare security policies. After publishing,
 verify the live sitemap returns HTTP 200 and watch subsequent crawler requests.
-The separate robots.txt work (#80) should advertise the sitemap URL.
+
+## Crawler Policy
+
+The repository-owned `robots.txt` allows all crawlers and advertises the canonical
+sitemap URL. The owner approved conventional search indexing, AI search and
+answer retrieval, personal AI agents, and model-training crawlers on November 13,
+2026 (#80). No page or asset paths are excluded.
+
+Keep Cloudflare's Search, Agents, and Training policies set to Allow and Bot
+Preference Sync off for this policy. No Content-Signal extensions are needed.
+The file expresses crawl access preferences; it does not enforce access or
+guarantee indexing or inclusion in AI answers.
+
+After deployment, check `https://www.foxyfurniture.net/robots.txt` returns HTTP 200
+with the intended allow rule and sitemap URL, without conflicting Cloudflare
+directives. Also verify the sitemap still responds successfully.
 
 ## Contact Form
 
