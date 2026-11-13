@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+
+// Copy the shared header into the published HTML; no server-side build needed.
+const fs = require('node:fs');
+const path = require('node:path');
+const root = __dirname;
+const check = process.argv.includes('--check');
+const header = fs.readFileSync(path.join(root, 'js/shared/header.html'), 'utf8').trim();
+const block = '<!-- ff-header:start -->\n' + header + '\n<!-- ff-header:end -->';
+let stale = false;
+
+for (const file of fs.readdirSync(root).filter(function (name) { return name.endsWith('.html'); })) {
+	const filename = path.join(root, file);
+	const html = fs.readFileSync(filename, 'utf8');
+	const pattern = /<!-- ff-header:start -->[\s\S]*?<!-- ff-header:end -->/;
+	if (!pattern.test(html)) throw new Error('Missing shared header markers in ' + file);
+	const updated = html.replace(pattern, block);
+	if (html === updated) continue;
+	if (check) {
+		console.error('Shared header needs updating: ' + file);
+		stale = true;
+	} else {
+		fs.writeFileSync(filename, updated);
+	}
+}
+
+if (stale) process.exitCode = 1;

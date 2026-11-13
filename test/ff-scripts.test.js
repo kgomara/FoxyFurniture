@@ -1,3 +1,6 @@
+const fs = require('node:fs');
+const path = require('node:path');
+
 const {
 	SHARED_LAYOUT_VERSION,
 	createCarouselControl,
@@ -47,8 +50,14 @@ function arrangeCarousel(html) {
 	return document.getElementById('carousel-hm') || document.querySelector('.carousel');
 }
 
+function getDownloadPlansMarkup(productKey) {
+	const files = {crissCross: 'criss-cross.html', pandorasChest: 'pandoras-chest.html', powerPole: 'powerpole.html', versaHorse: 'versahorse.html'};
+	const html = fs.readFileSync(path.join(__dirname, '..', files[productKey]), 'utf8');
+	return new DOMParser().parseFromString(html, 'text/html').querySelector('.ff-download-plans').outerHTML;
+}
+
 function arrangeDownloadPlans(productKey) {
-	document.body.innerHTML = '<div class="ff-download-plans" data-download-plans="' + productKey + '"></div>';
+	document.body.innerHTML = getDownloadPlansMarkup(productKey);
 
 	// Arrange helper: hide repeated setup so each test can focus on behavior.
 	initDownloadPlans();
@@ -384,7 +393,7 @@ describe('renderCarouselSlides', function () {
 });
 
 describe('initDownloadPlans', function () {
-	it('renders the VersaHorse Build-Pack and three labeled model previews', function () {
+	it('preserves the VersaHorse Build-Pack and three labeled model previews', function () {
 		const container = arrangeDownloadPlans('versaHorse');
 		expect(container.querySelector('h4').textContent).toBe('Download Free Plans!');
 		expect(container.textContent).toContain('Use the Build-Pack button to download Instructions, BOM, cutting diagrams and original dimensioned drawings.');
@@ -418,7 +427,7 @@ describe('initDownloadPlans', function () {
 		expect(document.querySelectorAll('iframe[name="ffDownloadFrame"]')).toHaveLength(1);
 	});
 
-	it('renders the CrissCross Build-Pack, shared-scene preview and existing buy link', function () {
+	it('preserves the CrissCross Build-Pack, shared-scene preview and existing buy link', function () {
 		const container			= arrangeDownloadPlans('crissCross');
 		const links					= container.querySelectorAll('a');
 		const downloadFrame	= document.querySelector('iframe[name="ffDownloadFrame"]');
@@ -456,7 +465,7 @@ describe('initDownloadPlans', function () {
 		expect(document.querySelectorAll('iframe[name="ffDownloadFrame"]')).toHaveLength(1);
 	});
 
-	it('renders the PandorasChest Build-Pack and two-style model without a purchase link', function () {
+	it('preserves the PandorasChest Build-Pack and two-style model without a purchase link', function () {
 		const container	= arrangeDownloadPlans('pandorasChest');
 		const links			= container.querySelectorAll('a');
 
@@ -485,7 +494,7 @@ describe('initDownloadPlans', function () {
 		expect(document.querySelectorAll('iframe[name="ffDownloadFrame"]')).toHaveLength(1);
 	});
 
-	it('renders the PowerPole Build-Pack and seven-scene viewer without a purchase link', function () {
+	it('preserves the PowerPole Build-Pack and seven-scene viewer without a purchase link', function () {
 		const container = arrangeDownloadPlans('powerPole');
 		const links = container.querySelectorAll('a');
 		expect(container.querySelector('h4').textContent).toBe('Download Free Plans!');
@@ -509,8 +518,8 @@ describe('initDownloadPlans', function () {
 
 	it('creates one hidden download frame for multiple download-plan sections', function () {
 		document.body.innerHTML = `
-			<div class="ff-download-plans" data-download-plans="crissCross"></div>
-			<div class="ff-download-plans" data-download-plans="powerPole"></div>
+			${getDownloadPlansMarkup('crissCross')}
+			${getDownloadPlansMarkup('powerPole')}
 		`;
 
 		// Shared-support test: many download links can target the same hidden iframe.

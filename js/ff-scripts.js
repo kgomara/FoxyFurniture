@@ -1,11 +1,11 @@
 /*global bootstrap, document, window: false */
 
-const SHARED_LAYOUT_VERSION = 'v3.3.1';
+const SHARED_LAYOUT_VERSION = 'v3.3.2a2';
 
-window.addEventListener('load', async function() {
-	await initSharedLayout();
-	initCarousels();
+window.addEventListener('load', function() {
+	initSharedLayout().catch(function (error) { console.error(error); });
 	initDownloadPlans();
+	initCarousels();
 });
 
 async function initSharedLayout() {
@@ -13,7 +13,7 @@ async function initSharedLayout() {
 	const mainFooter 	= document.querySelector('#footer');
 
 	const injectSharedHtml = async function (container, href) {
-		if (!container) {
+		if (!container || container.children.length) {
 			return;
 		}
 
@@ -164,184 +164,70 @@ if (typeof module !== 'undefined') {
 }
 
 function initDownloadPlans() {
-	const downloadPlansByKey = {
-		crissCross: {
-			buyHref: 			'https://fetishfurniture.org/',
-			buildPackHref: 'plans/crisscross-build-pack.zip',
-			revisionDate: '2026-11-11',
-			revisionLabel: 'November 11, 2026',
-			models: [
-				{
-					label: 'Working & Playing',
-					image: 'img/cc/models/working.png',
-					href: 'https://app.sketchup.com/share/tc/northAmerica/kdVacVyOuW4?source=desktop&stoken=gADJmRdy1rPqoQNS2yn9pYWdgP-mHICtdfLEyZAXI0tr2vh1jedfCiUHs7eTF5e_&rtc-engine-version=21'
-				}
-			],
-			prodAbbr: 		'cc'
-		},
-		pandorasChest: {
-			buildPackHref: 'plans/pandoraschest-build-pack.zip',
-			revisionDate: '2026-11-10',
-			revisionLabel: 'November 10, 2026',
-			models: [
-				{
-					label: 'Mission & Raised Panel',
-					image: 'img/pc/models/working.png',
-					href: 'https://app.sketchup.com/share/tc/northAmerica/FyczaFLqji4?source=desktop&stoken=MPUxwvvLdJBYxHjqfug-8oUMy8tdhpTFoCPd_twQVDj3pKoFRQBQ9BDSG83UKSJm&rtc-engine-version=21'
-				}
-			],
-			prodAbbr: 		'pc'
-		},
-		powerPole: {
-			buildPackHref: 'plans/powerpole-build-pack.zip',
-			revisionDate: '2026-11-11',
-			revisionLabel: 'November 11, 2026',
-			models: [
-				{
-					label: 'Working & Playing',
-					image: 'img/pp/models/working.png',
-					href: 'https://app.sketchup.com/share/tc/northAmerica/Vb7BGKdCiW8?source=desktop&stoken=RW78NZpfmejqIiYNSIh0yMCP01x-fS1EzGzV7iROXPY2U12fKWyPFOQ6QOtcnPLD&rtc-engine-version=21'
-				}
-			],
-			prodAbbr: 		'pp'
-		},
-		versaHorse: {
-			buyHref: 				'https://fetishfurniture.org/',
-			buildPackHref: 	'plans/versahorse-build-pack.zip',
-			revisionDate: 	'2026-11-11',
-			revisionLabel: 	'November 11, 2026',
-			models: [
-				{
-					label: 	'Chest Rest',
-					image: 	'img/vh/models/chest-rest-working.png',
-					href: 	'https://app.sketchup.com/share/tc/northAmerica/VLbDbSqafpw?source=desktop&stoken=T9fbZ8R4D_X6TJH-T51qa3JNjvm05vV12HwA2yQZbsEWLfGQL_kIHcSR28EQh0Xf&rtc-engine-version=21'
-				},
-				{
-					label: 	'Pegasus Bench',
-					image: 	'img/vh/models/pegasus-bench-working.png',
-					href: 	'https://app.sketchup.com/share/tc/northAmerica/Qh_9RlPO-hY?source=desktop&stoken=FRRL7hCPxDwaHeXDjecbcW6wkao6KG8z1PDfzD4uolOKokz-2EpliWIgM9WaY_DZ&rtc-engine-version=21'
-				},
-				{
-					label: 	'Pillory & Stock',
-					image: 	'img/vh/models/pillory-stock-working.png',
-					href: 	'https://app.sketchup.com/share/tc/northAmerica/iG_kwpRfIMc?source=desktop&stoken=EvpO3aYyuqlya8IN6wYIYrmyElDulm3h5OGp_udoPWebQFr70cZXWefj6re3s3gs&rtc-engine-version=21'
-				}
-			],
-			prodAbbr: 	'vh'
-		}
-	};
-
-	document.querySelectorAll('.ff-download-plans').forEach(function (container) {
-		const downloadPlans = downloadPlansByKey[container.dataset.downloadPlans];
-
-		const trackDownload = function (href) {
-			const eventName 	= 'download_' + downloadPlans.prodAbbr + '_build_pack';
-
+	document.querySelectorAll('[data-download-event]').forEach(function (link) {
+		if (link.dataset.downloadInitialized) return;
+		link.dataset.downloadInitialized = 'true';
+		link.addEventListener('click', function () {
 			if (typeof window.sa_event === 'function') {
-				window.sa_event(eventName, {
-					filename: href.split('/').pop()
+				window.sa_event(link.dataset.downloadEvent, {
+					filename: link.getAttribute('href').split('/').pop()
 				});
 			}
-		};
-
-		const createDownloadButton = function (href, label) {
-			const wrapper = document.createElement('div');
-			const link = document.createElement('a');
-
-			wrapper.className = 'text-center';
-			link.className 		= 'btn btn-primary btn-lg d-block w-100 mx-auto ff-download-btn';
-			link.href 				= href;
-			link.download 		= '';
-			link.target 			= 'ffDownloadFrame';
-			link.textContent 	= label;
-			link.addEventListener('click', function () {
-				trackDownload(href);
-			});
-			wrapper.appendChild(link);
-
-			return wrapper;
-		};
-
-		if (!downloadPlans) {
-			return;
-		}
-
-		container.replaceChildren();
-
-		const heading 				= document.createElement('h4');
-		const introText 			= document.createElement('p');
-		const introStrong 		= document.createElement('strong');
-		const buySpacer				= document.createElement('br');
-
-		heading.textContent = 'Download Free Plans!';
-
-		introText.textContent 	= 'Use the ';
-		introStrong.textContent	= 'Build-Pack';
-		introText.append(introStrong, ' button to download Instructions, BOM, cutting diagrams and original dimensioned drawings.');
-
-		const revision 						= document.createElement('p');
-		const date 								= document.createElement('time');
-		revision.className 				= 'ff-build-pack-revision';
-		date.dateTime 						= downloadPlans.revisionDate;
-		date.textContent 					= downloadPlans.revisionLabel;
-		revision.append('Revised ', date);
-
-		const modelHeading 				= document.createElement('h4');
-		modelHeading.className 		= 'ff-model-heading';
-		modelHeading.textContent	= 'Explore in 3D';
-		const models 							= document.createElement('ul');
-		models.className 					= 'ff-model-links';
-
-		downloadPlans.models.forEach(function (model) {
-			const item 	= document.createElement('li');
-			const link 	= document.createElement('a');
-			const image = document.createElement('img');
-			const label = document.createElement('span');
-
-			link.href 	= model.href;
-			link.target = '_blank';
-			link.rel 		= 'noopener';
-			link.setAttribute('aria-label', 'View ' + model.label + ' model in 3D (opens in a new tab)');
-
-			image.src 				= model.image;
-			image.alt 				= '';
-			image.width 			= 100;
-			image.height 			= 100;
-			image.decoding 		= 'async';
-
-			label.textContent = model.label;
-			link.append(image, label);
-			item.appendChild(link);
-			models.appendChild(item);
 		});
-
-		const modelText 			= document.createElement('p');
-		modelText.className 	= 'ff-model-description';
-		modelText.textContent = 'View in your browser. No account required. Models supplement the build documents.';
-		container.append(heading, introText, createDownloadButton(downloadPlans.buildPackHref, 'Build-Pack'), revision, modelHeading, models, modelText);
-
-		if (downloadPlans.buyHref) {
-			const buyHeading 	= document.createElement('h2');
-			const buyText 		= document.createElement('p');
-			const buyLink 		= document.createElement('a');
-
-			buyHeading.textContent 	= "If you'd rather buy...";
-			buyLink.href 						= downloadPlans.buyHref;
-			buyLink.target					= '_blank';
-			buyLink.rel 						= 'noopener';
-			buyLink.textContent 		= 'Fetish Furniture';
-			buyText.append(buyLink, ' builds the VersaHorse and Criss-Cross designs.');
-
-			container.append(buySpacer, buyHeading, buyText);
-		}
 	});
 
 	if (document.querySelector('a[target="ffDownloadFrame"]') && !document.querySelector('iframe[name="ffDownloadFrame"]')) {
 		const downloadFrame = document.createElement('iframe');
-
-		downloadFrame.name 		= 'ffDownloadFrame';
-		downloadFrame.title 	= 'Download';
-		downloadFrame.hidden 	= true;
+		downloadFrame.name = 'ffDownloadFrame';
+		downloadFrame.title = 'Download';
+		downloadFrame.hidden = true;
 		document.body.appendChild(downloadFrame);
 	}
 }
+
+// Native details/summary works without JavaScript. Add the familiar dropdown
+// keyboard shortcuts and outside-click dismissal when JavaScript is available.
+// Back/Forward can restore the whole page, including an open details element.
+window.addEventListener('pageshow', function () {
+	document.querySelectorAll('[data-site-menu][open]').forEach(function (menu) {
+		menu.open = false;
+	});
+});
+
+document.addEventListener('click', function (event) {
+	const link = event.target.closest && event.target.closest('a[href]');
+	document.querySelectorAll('[data-site-menu][open]').forEach(function (menu) {
+		if (!menu.contains(event.target) || (link && menu.contains(link))) menu.open = false;
+	});
+});
+
+document.addEventListener('keydown', function (event) {
+	const menu = event.target.closest && event.target.closest('[data-site-menu]');
+	if (!menu) return;
+	const summary = menu.querySelector('summary');
+	if (event.key === 'Escape' && menu.open) {
+		event.preventDefault();
+		menu.open = false;
+		summary.focus();
+		return;
+	}
+	if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
+	if (event.target !== summary && !event.target.closest('.dropdown-item')) return;
+	event.preventDefault();
+	menu.open = true;
+	const links = Array.from(menu.querySelectorAll('.dropdown-item'));
+	const current = links.indexOf(document.activeElement);
+	let index;
+	if (event.key === 'Home') index = 0;
+	else if (event.key === 'End') index = links.length - 1;
+	else if (current === -1) index = event.key === 'ArrowUp' ? links.length - 1 : 0;
+	else index = Math.max(0, Math.min(links.length - 1, current + (event.key === 'ArrowDown' ? 1 : -1)));
+	if (links[index]) links[index].focus();
+});
+
+document.addEventListener('keyup', function (event) {
+	if (event.key !== 'Tab') return;
+	document.querySelectorAll('[data-site-menu][open]').forEach(function (menu) {
+		if (!menu.contains(document.activeElement)) menu.open = false;
+	});
+});

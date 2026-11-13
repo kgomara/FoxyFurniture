@@ -1,5 +1,6 @@
 {
 	"scripts": {
+		"sync:header": "node sync-ff-header",
 		"test": "vitest run --environment jsdom --globals"
 	},
 	"devDependencies": {

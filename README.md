@@ -23,9 +23,9 @@ Supporting files are grouped by purpose:
 
 - `css/ff-styles.css` contains the site-specific layout, responsive behavior,
   carousel styling, Gallery grid, lightbox styling, and other visual rules.
-- `js/ff-scripts.js` loads shared header/footer markup, initializes Bootstrap
-  carousels, renders carousel slides from data, and builds the product-page
-  download panels.
+- `js/ff-scripts.js` loads any empty shared-layout placeholders, initializes Bootstrap
+  carousels, renders carousel slides from data, and adds analytics to product-page
+  download links.
 - `js/ff-product-data.js` contains the home page and product page carousel
   image paths, alt text, captions, and per-slide display options.
 - `js/ff-gallery-data.js` contains the Gallery landing page and Gallery detail
@@ -33,8 +33,10 @@ Supporting files are grouped by purpose:
 - `js/ff-gallery.js` renders Gallery pages into responsive CSS grids and
   provides the custom lightbox behavior.
 - `js/ff-videoplayer.js` handles the home page video play/pause overlay.
-- `js/shared/header.html` and `js/shared/footer.html` contain repeated page
-  markup that is fetched into each page at runtime.
+- `js/shared/header.html` is the source for navigation embedded in every page.
+  Run `npm run sync:header` after editing it; `sync-ff-header` copies it into the
+  marked sections of the top-level HTML files. Commit the updated pages too.
+- `js/shared/footer.html` contains footer markup fetched at runtime.
 - `img/` contains the existing image, icon, carousel, and Gallery assets.
 - `plans/` contains downloadable plan archives, including the current
   `versahorse-build-pack.zip`. These ZIPs are included in version control.
@@ -50,18 +52,28 @@ Most pages share the same basic structure:
    `js/ff-gallery-data.js`.
 5. Load page behavior, such as `js/ff-scripts.js`, `js/ff-gallery.js`, or
    `js/ff-videoplayer.js`.
-6. Include empty `<div id="header"></div>` and `<div id="footer"></div>`
-   placeholders in the page body.
+6. Include the shared navigation HTML inside `<div id="header">` and an empty
+   `<div id="footer"></div>` placeholder.
 
-When the page loads, `js/ff-scripts.js` fetches `js/shared/header.html` and
-`js/shared/footer.html` and inserts them into those placeholders. This keeps the
-navigation and footer in one place instead of duplicating that markup across
-every page. The shared header/footer fetches also use an asset version query
-string so browsers pick up header/footer changes during releases.
+Navigation is present in the initial response, so crawlers and visitors without
+JavaScript can follow its links. Its native `details`/`summary` menu opens without
+JavaScript; `js/ff-scripts.js` adds arrow-key navigation, Escape, and outside-click
+and Tab dismissal. The existing header source remains the editing location:
 
-Because the shared header and footer are fetched by the browser, local preview
-should be done through a local web server rather than by opening the HTML files
-directly from Finder.
+```sh
+npm run sync:header
+node sync-ff-header --check
+```
+
+The second command checks for stale copies without writing files. Tests also
+check every page's embedded header against the source. There is no deployment
+build step or new dependency. New pages need the `ff-header:start` and
+`ff-header:end` HTML comment markers before running the command.
+
+`js/ff-scripts.js` fetches the footer at runtime, with an asset-version query
+string for cache updates. It preserves already populated layout sections, and a
+footer failure does not prevent navigation or download enhancement. Local
+preview should still use a web server rather than opening HTML from Finder.
 
 ## Data Hooks
 
@@ -70,8 +82,9 @@ JavaScript behavior:
 
 - `data-product-carousel="home"` or `data-product-carousel="powerPole"` tells
   `js/ff-scripts.js` which carousel data to render from `js/ff-product-data.js`.
-- `data-download-plans="crissCross"` tells `js/ff-scripts.js` which plan
-  download buttons to render.
+- `data-download-plans="crissCross"` identifies a product's static download panel.
+- `data-download-event="download_cc_build_pack"` tells `js/ff-scripts.js` which
+  Simple Analytics event to send when an existing download link is clicked.
 - `data-gallery-index` tells `js/ff-gallery.js` to render the Gallery landing
   page categories.
 - `data-gallery="pandorasChest"` tells `js/ff-gallery.js` which Gallery detail
@@ -89,14 +102,15 @@ Each product page includes:
 
 - A Bootstrap carousel placeholder using `data-product-carousel`.
 - A product description section written directly in the page HTML.
-- A `<div class="ff-download-plans" data-download-plans="..."></div>`
-  placeholder.
+- A complete `.ff-download-plans` section containing ordinary Build-Pack and
+  3D viewer links, previews, and the package revision date.
+- A hidden `ffDownloadFrame` iframe, available with or without JavaScript.
 
 `js/ff-scripts.js` renders the carousel slides from `js/ff-product-data.js`,
-generates the Bootstrap carousel indicators and previous/next controls, and
-replaces the download placeholder with the correct plan download buttons. The
-same script also sends Simple Analytics download events when those buttons are
-clicked.
+generates the Bootstrap carousel indicators and previous/next controls, and adds
+Simple Analytics events to the existing download links. It does not construct
+or replace the download panels. Their content and links are available without
+JavaScript.
 
 The VersaHorse page follows the same general pattern, but has additional
 component-description content and local links because it is a more complex
@@ -175,7 +189,8 @@ sibling `FoxyFurniturePlans/` folder:
 
 Only the prepared website assets and download ZIP belong in this repository.
 The product viewer URLs, preview image paths, download paths, and displayed
-revision date are configured in `initDownloadPlans()` in `js/ff-scripts.js`.
+revision date are written directly in each product page's `.ff-download-plans`
+section.
 Preview images are in `img/vh/models/`, `img/cc/models/`, `img/pc/models/` and
 `img/pp/models/`. Keep their full-resolution source
 pixels; CSS controls their displayed size.
@@ -190,9 +205,10 @@ pixels; CSS controls their displayed size.
 3. Keep the prepared ZIP in `ReleaseModels/`, then copy the same ZIP to this
    repository as `plans/versahorse-build-pack.zip`. Do not keep an unpacked
    `plans/VHPlans/` copy.
-4. Update `revisionDate` and `revisionLabel` in `js/ff-scripts.js`, along with
-   the corresponding date assertion in `test/ff-scripts.test.js`. This is the
-   package revision date, separate from the website's release version.
+4. Update the revision `<time datetime="...">` and its displayed text in the
+   product page's `.ff-download-plans` section, along with the corresponding
+   date assertion in `test/ff-scripts.test.js`. This is the package revision
+   date, separate from the website's release version.
 5. Extract the ZIP into a temporary folder and open the included documents.
    Check its integrity, filenames, completeness, and START-HERE links. Confirm
    that the website downloads exactly the prepared ZIP.
@@ -287,8 +303,11 @@ globals such as `window.sa_event`.
 Current test files:
 
 - `test/ff-scripts.test.js` covers shared layout loading, carousel rendering and
-  setup, product download panels, Simple Analytics download events, and
+  setup, actual product download markup, Simple Analytics download events, and
   repeated initialization behavior.
+- `test/ff-navigation.test.js` checks navigation embedded in every HTML page,
+  essential links available before JavaScript, keyboard/dismissal behavior, and
+  resilience to footer loading failures.
 - `test/ff-gallery.test.js` covers Gallery data rendering, modal behavior,
   keyboard navigation, touch swipes, guard clauses, and image-size calculation.
 - `test/ff-videoplayer.test.js` covers the home page video play button,

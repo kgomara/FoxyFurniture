@@ -67,6 +67,16 @@ h4 {
 	background-color:	var(--ff-color-hover);
 }
 
+.ff-header-menu-btn::-webkit-details-marker {
+	display: none;
+}
+
+.ff-site-menu[open] > .dropdown-menu {
+	display: block;
+	max-height: calc(100dvh - 60px);
+	overflow-y: auto;
+}
+
 .ff-header-title {
 	font-size:				1rem;
 	line-height:			1.15;
@@ -286,6 +296,11 @@ h4 {
 
 .ff-video-play.is-hidden {
 	display:					none;
+}
+
+/* Do not reserve an empty carousel's height when its script is unavailable. */
+.carousel:has(.carousel-inner:empty) {
+	display: none !important;
 }
 
 .ff-product-carousel {
