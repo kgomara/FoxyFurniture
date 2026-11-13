@@ -299,6 +299,20 @@ adding tests near the behavior being changed, and keep the production code's
 browser-safe CommonJS export guards in place so Vitest can import the functions
 without changing how the scripts run in the browser.
 
+## Sitemap
+
+`sitemap.xml` lists the public HTML pages using HTTPS and the `www` hostname.
+Keep it in sync when adding, removing, or renaming pages. The homepage uses `/`
+instead of listing `/index.html` a second time. It intentionally omits optional
+modification dates rather than estimating when each page's content changed.
+
+During the November 12, 2026 crawler investigation (#79), Cloudflare reported
+all ten unsuccessful ClaudeBot requests as HTTP 404 responses for
+`/sitemap.xml`. Adding this file addresses that missing resource; the observed
+failures did not require changing Cloudflare security policies. After publishing,
+verify the live sitemap returns HTTP 200 and watch subsequent crawler requests.
+The separate robots.txt work (#80) should advertise the sitemap URL.
+
 ## Contact Form
 
 `contact.html` posts to Formspree using the small, dependency-free
