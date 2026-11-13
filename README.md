@@ -353,6 +353,20 @@ all ten unsuccessful ClaudeBot requests as HTTP 404 responses for
 failures did not require changing Cloudflare security policies. After publishing,
 verify the live sitemap returns HTTP 200 and watch subsequent crawler requests.
 
+## Page Headings and Sharing Previews
+
+Each public page has one main `h1`. Bootstrap heading classes preserve the
+existing visual sizes independently of the semantic heading levels; `ff-heading`
+retains the brand color when those classes override the element's color. The shared
+header tagline and menu label are ordinary text, outside the page heading outline.
+
+Open Graph and Twitter/X summary metadata live directly in each HTML head.
+When editing a page title or description, update its sharing equivalents too;
+keep `og:url` equal to the canonical URL. Preview images reuse existing furniture
+photos or model renders, with the logo for About and Contact. Keep the absolute
+image URL, actual dimensions, and descriptive image alt text accurate.
+`test/ff-metadata.test.js` checks the heading outline and metadata consistency.
+
 ## Crawler Policy
 
 The repository-owned `robots.txt` allows all crawlers and advertises the canonical

@@ -43,6 +43,10 @@ h4 {
 	color:						var(--ff-color-brand);
 }
 
+.ff-heading {
+	color:						var(--ff-color-brand);
+}
+
 .ff-site-header {
 	--bs-gutter-x:		0;
 	column-gap:				0.75rem;
@@ -78,6 +82,7 @@ h4 {
 }
 
 .ff-header-title {
+	color:						var(--ff-color-brand);
 	font-size:				1rem;
 	line-height:			1.15;
 }

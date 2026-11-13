@@ -395,7 +395,7 @@ describe('renderCarouselSlides', function () {
 describe('initDownloadPlans', function () {
 	it('preserves the VersaHorse Build-Pack and three labeled model previews', function () {
 		const container = arrangeDownloadPlans('versaHorse');
-		expect(container.querySelector('h4').textContent).toBe('Download Free Plans!');
+		expect(container.querySelector('h2.h4').textContent).toBe('Download Free Plans!');
 		expect(container.textContent).toContain('Use the Build-Pack button to download Instructions, BOM, cutting diagrams and original dimensioned drawings.');
 		const button = container.querySelector('.ff-download-btn');
 		expect(button.textContent).toBe('Build-Pack');
@@ -413,7 +413,7 @@ describe('initDownloadPlans', function () {
 			expect(link.querySelector('img').src).toContain('/img/vh/models/');
 		});
 		expect(container.textContent).toContain('View in your browser. No account required. Models supplement the build documents.');
-		expect(container.querySelector('h2').textContent).toBe("If you'd rather buy...");
+		expect(container.querySelector('h2:not(.h4)').textContent).toBe("If you'd rather buy...");
 		expect(container.querySelectorAll('.ff-download-btn')).toHaveLength(1);
 	});
 
@@ -432,7 +432,7 @@ describe('initDownloadPlans', function () {
 		const links					= container.querySelectorAll('a');
 		const downloadFrame	= document.querySelector('iframe[name="ffDownloadFrame"]');
 
-		expect(container.querySelector('h4').textContent).toBe('Download Free Plans!');
+		expect(container.querySelector('h2.h4').textContent).toBe('Download Free Plans!');
 		expect(links).toHaveLength(3);
 		expect(links[0].getAttribute('href')).toBe('plans/crisscross-build-pack.zip');
 		expect(links[0].textContent).toBe('Build-Pack');
@@ -497,7 +497,7 @@ describe('initDownloadPlans', function () {
 	it('preserves the PowerPole Build-Pack and seven-scene viewer without a purchase link', function () {
 		const container = arrangeDownloadPlans('powerPole');
 		const links = container.querySelectorAll('a');
-		expect(container.querySelector('h4').textContent).toBe('Download Free Plans!');
+		expect(container.querySelector('h2.h4').textContent).toBe('Download Free Plans!');
 		expect(links).toHaveLength(2);
 		expect(links[0].getAttribute('href')).toBe('plans/powerpole-build-pack.zip');
 		expect(links[0].textContent).toBe('Build-Pack');
