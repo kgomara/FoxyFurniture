@@ -138,15 +138,18 @@ describe('initCarousels', function () {
 
 	it('announces the position and caption after a slide changes', function () {
 		installFakeBootstrapCarousel();
-		const carousel = arrangeCarousel(`
-			<div class="carousel">
-				<div class="carousel-item active"></div>
-				<div class="carousel-item"><div class="carousel-caption">Second caption</div></div>
-			</div>
-		`);
+		arrangeHomeCarouselData();
+		const home = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+		const page = new DOMParser().parseFromString(home, 'text/html');
+		const carousel = arrangeCarousel(page.querySelector('[data-product-carousel]').outerHTML);
+		const status = carousel.querySelector('[role="status"]');
+		expect(status.getAttribute('aria-live')).toBe('polite');
+		expect(status.getAttribute('aria-atomic')).toBe('true');
+		expect(status.textContent).toBe('');
+
 		initCarousels();
 
-		const status = carousel.querySelector('[role="status"]');
+		expect(carousel.querySelector('[role="status"]')).toBe(status);
 		expect(status.textContent).toBe('');
 		const event = new Event('slid.bs.carousel');
 		Object.assign(event, {to: 1, relatedTarget: carousel.querySelectorAll('.carousel-item')[1]});

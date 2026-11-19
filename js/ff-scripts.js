@@ -1,6 +1,6 @@
 /*global bootstrap, document, window: false */
 
-const SHARED_LAYOUT_VERSION = 'v3.4.1a2';
+const SHARED_LAYOUT_VERSION = 'v3.4.1a3';
 
 window.addEventListener('load', function() {
 	initSharedLayout().catch(function (error) { console.error(error); });
@@ -50,17 +50,7 @@ function initCarousels() {
 		renderCarouselSlides(carousel);
 		initCarouselIndicators(carousel);
 		initCarouselControls(carousel);
-		const slides = carousel.querySelectorAll('.carousel-item');
-		if (slides.length && !carousel.querySelector('.ff-carousel-status')) {
-			const status 			= document.createElement('div');
-			status.className 	= 'visually-hidden ff-carousel-status';
-			status.setAttribute('role', 'status');
-			carousel.append(status);
-			carousel.addEventListener('slid.bs.carousel', function (event) {
-				const caption = event.relatedTarget.querySelector('.carousel-caption');
-				status.textContent = 'Slide ' + (event.to + 1) + ' of ' + slides.length + (caption ? '. ' + caption.textContent.trim() : '');
-			});
-		}
+		carousel.addEventListener('slid.bs.carousel', announceCarouselSlide);
 
 		/*
 			Work-around for a bug in the Bootstrap 5 carousel. Controls are "lazy loaded", hence swipe gestures don't initially work.
@@ -71,6 +61,16 @@ function initCarousels() {
 			touch: true
 		});
 	});
+}
+
+function announceCarouselSlide(event) {
+	const carousel = event.currentTarget;
+	const status = carousel.querySelector('.ff-carousel-status');
+	if (!status) return;
+
+	const slides = carousel.querySelectorAll('.carousel-item');
+	const caption = event.relatedTarget.querySelector('.carousel-caption');
+	status.textContent = 'Slide ' + (event.to + 1) + ' of ' + slides.length + (caption ? '. ' + caption.textContent.trim() : '');
 }
 
 function renderCarouselSlides(carousel) {
