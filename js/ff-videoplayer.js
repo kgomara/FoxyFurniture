@@ -12,37 +12,37 @@ function initVideoPlayer() {
 		return;
 	}
 
-	function playVideo() {
-		video.play();
-	}
-
-	function resetVideo() {
-		video.pause();
-		video.currentTime = 0;
-		playBtn.classList.remove('is-hidden');
-	}
-
-	video.addEventListener('click', function () {
+	const icon = playBtn.querySelector('img');
+	function togglePlayback() {
 		if (video.paused) {
-			playVideo();
+			video.play()?.catch(function () {});
 		} else {
 			video.pause();
 		}
-	});
+	}
 
-	playBtn.addEventListener('click', playVideo);
+	function updateButton(playing) {
+		playBtn.classList.toggle('is-playing', playing);
+		playBtn.setAttribute('aria-label', playing ? 'Pause video' : 'Play video');
+		if (icon) icon.src = playing ? './img/icons/pause.svg' : './img/icons/play.svg';
+	}
 
-	video.addEventListener('play', function () {
-		playBtn.classList.add('is-hidden');
-	});
-
+	video.addEventListener('click', togglePlayback);
+	playBtn.addEventListener('click', togglePlayback);
+	video.addEventListener('play', function () { updateButton(true); });
 	video.addEventListener('pause', function () {
 		if (video.currentTime < video.duration) {
-			playBtn.classList.remove('is-hidden');
+			updateButton(false);
 		}
 	});
+	video.addEventListener('ended', function () {
+		video.pause();
+		video.currentTime = 0;
+		updateButton(false);
+	});
 
-	video.addEventListener('ended', resetVideo);
+	video.controls = false;
+	playBtn.hidden = false;
 }
 
 if (typeof module !== 'undefined') {

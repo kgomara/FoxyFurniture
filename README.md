@@ -267,9 +267,9 @@ decoding in the initial HTML.
 
 ## Home Page Video
 
-The home page video is controlled by `js/ff-videoplayer.js`. The page contains
-the video element and a custom play button. The script hides the button while
-the movie is playing and shows it again when the movie is paused or ends.
+The home page video starts with native playback controls. When
+`js/ff-videoplayer.js` loads, a custom button toggles between Play and Pause
+while keeping keyboard focus through playback changes.
 
 The `ThisBecomesThis.mov` file is tricky to edit. The iMovie project on Mac
 won't save in portrait. The workaround is to use Photos:

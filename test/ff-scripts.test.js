@@ -135,6 +135,25 @@ describe('initCarousels', function () {
 			touch: true
 		});
 	});
+
+	it('announces the position and caption after a slide changes', function () {
+		installFakeBootstrapCarousel();
+		const carousel = arrangeCarousel(`
+			<div class="carousel">
+				<div class="carousel-item active"></div>
+				<div class="carousel-item"><div class="carousel-caption">Second caption</div></div>
+			</div>
+		`);
+		initCarousels();
+
+		const status = carousel.querySelector('[role="status"]');
+		expect(status.textContent).toBe('');
+		const event = new Event('slid.bs.carousel');
+		Object.assign(event, {to: 1, relatedTarget: carousel.querySelectorAll('.carousel-item')[1]});
+		carousel.dispatchEvent(event);
+
+		expect(status.textContent).toBe('Slide 2 of 2. Second caption');
+	});
 });
 
 describe('initSharedLayout', function () {

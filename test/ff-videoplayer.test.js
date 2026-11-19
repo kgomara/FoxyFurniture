@@ -73,27 +73,36 @@ describe('initVideoPlayer', function () {
 		expect(video.pause).toHaveBeenCalled();
 	});
 
-	it('hides and shows the play button when video playback changes', function () {
+	it('keeps the focused button available to pause and resume the video', function () {
 		const { video, playBtn } = arrangeVideoPlayer();
 
 		setVideoProperty(video, 'duration', 10);
-		video.play = vi.fn();
+		setVideoProperty(video, 'paused', false);
+		video.pause = vi.fn();
 
 		initVideoPlayer();
+		playBtn.focus();
 
 		// Event-driven test: dispatch the same events the browser would fire during playback.
 		video.dispatchEvent(new Event('play'));
 
-		expect(playBtn.classList.contains('is-hidden')).toBe(true);
+		expect(playBtn.classList.contains('is-playing')).toBe(true);
+		expect(playBtn.getAttribute('aria-label')).toBe('Pause video');
+		expect(playBtn.hidden).toBe(false);
+		expect(document.activeElement).toBe(playBtn);
+		playBtn.click();
+		expect(video.pause).toHaveBeenCalled();
 
 		video.currentTime = 4;
 		video.dispatchEvent(new Event('pause'));
 
-		expect(playBtn.classList.contains('is-hidden')).toBe(false);
+		expect(playBtn.classList.contains('is-playing')).toBe(false);
+		expect(playBtn.getAttribute('aria-label')).toBe('Play video');
+		expect(document.activeElement).toBe(playBtn);
 	});
 
-	it('does not show the play button from a pause event at the end', function () {
-		const { video, playBtn } = arrangeVideoPlayer('is-hidden');
+	it('leaves the button in its playing state until the ended event resets it', function () {
+		const { video, playBtn } = arrangeVideoPlayer('is-playing');
 
 		setVideoProperty(video, 'duration', 10);
 		video.currentTime = 10;
@@ -103,11 +112,11 @@ describe('initVideoPlayer', function () {
 		// Edge-case event test: an end-of-video pause should not look like an ordinary mid-video pause.
 		video.dispatchEvent(new Event('pause'));
 
-		expect(playBtn.classList.contains('is-hidden')).toBe(true);
+		expect(playBtn.classList.contains('is-playing')).toBe(true);
 	});
 
 	it('resets the video and play button when playback ends', function () {
-		const { video, playBtn } = arrangeVideoPlayer('is-hidden');
+		const { video, playBtn } = arrangeVideoPlayer('is-playing');
 
 		video.pause				= vi.fn();
 		video.currentTime	= 7;
@@ -118,6 +127,7 @@ describe('initVideoPlayer', function () {
 
 		expect(video.pause).toHaveBeenCalled();
 		expect(video.currentTime).toBe(0);
-		expect(playBtn.classList.contains('is-hidden')).toBe(false);
+		expect(playBtn.classList.contains('is-playing')).toBe(false);
+		expect(playBtn.getAttribute('aria-label')).toBe('Play video');
 	});
 });

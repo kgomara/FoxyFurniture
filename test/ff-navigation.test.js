@@ -16,7 +16,12 @@ describe('published HTML without JavaScript', function () {
 		expect(html).toContain('<!-- ff-header:start -->\n' + header + '\n<!-- ff-header:end -->');
 		const page = new DOMParser().parseFromString(html, 'text/html');
 		const menu = page.querySelector('nav[aria-label="Main navigation"] details');
-		expect(menu.querySelector('summary').getAttribute('aria-label')).toBe('Open navigation menu');
+		expect(menu.querySelector('summary').getAttribute('aria-label')).toBe('Navigation menu');
+		const skipLink = page.querySelector('header a');
+		const main = page.querySelector('main');
+		expect(skipLink.textContent).toBe('Skip to main content');
+		expect(skipLink.getAttribute('href')).toBe('#' + main.id);
+		expect(main.getAttribute('tabindex')).toBe('-1');
 		const hrefs = Array.from(menu.querySelectorAll('a'), function (a) { return a.getAttribute('href'); });
 		expect(hrefs.sort()).toEqual(pages.map(function (name) { return name === 'index.html' ? './' : name; }).sort());
 		expect(menu.querySelector('[data-bs-toggle]')).toBeNull();

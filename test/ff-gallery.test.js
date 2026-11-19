@@ -317,6 +317,31 @@ describe('initGallery', function () {
 		expect(document.getElementById('ffGalleryCounter').textContent).toBe('2 / 2');
 	});
 
+	it('announces image changes and keeps focus in the dialog at both ends', function () {
+		installFakeBootstrapModal();
+		const { thumbs } = arrangeCrissCrossGallery();
+		const trigger = thumbs[0].closest('a');
+		trigger.click();
+
+		const modal = document.getElementById('ffGalleryModal');
+		const status = modal.querySelector('[role="status"]');
+		const next = document.getElementById('ffGalleryNext');
+		const previous = document.getElementById('ffGalleryPrev');
+		modal.dispatchEvent(new Event('shown.bs.modal'));
+		expect(document.activeElement).toBe(modal.querySelector('.ff-gallery-close'));
+		expect(status.textContent).toBe('Image 1 of 2. First Criss Cross');
+
+		next.focus();
+		next.click();
+		expect(status.textContent).toBe('Image 2 of 2. Second Criss Cross');
+		expect(document.activeElement).toBe(previous);
+
+		previous.click();
+		expect(document.activeElement).toBe(next);
+		modal.dispatchEvent(new Event('hidden.bs.modal'));
+		expect(document.activeElement).toBe(trigger);
+	});
+
 	it('moves between modal images with arrow keys', function () {
 		installFakeBootstrapModal();
 		arrangeCrissCrossGallery();

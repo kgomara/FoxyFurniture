@@ -92,6 +92,7 @@ function initGallery() {
 		modal.tabIndex 	= -1;
 		modal.setAttribute('aria-hidden', 'true');
 		modal.setAttribute('aria-label', 'Image gallery');
+		modal.setAttribute('aria-describedby', 'ffGalleryStatus');
 		modal.innerHTML = `
 			<div class="modal-dialog ff-gallery-modal-dialog">
 				<div class="modal-content ff-gallery-modal-content">
@@ -100,12 +101,17 @@ function initGallery() {
 						<button type="button" id="ffGalleryPrev" class="ff-gallery-nav ff-gallery-prev" aria-label="Previous image"><span aria-hidden="true">&lsaquo;</span></button>
 						<img id="ffGalleryImage" class="ff-gallery-modal-img" alt="">
 						<button type="button" id="ffGalleryNext" class="ff-gallery-nav ff-gallery-next" aria-label="Next image"><span aria-hidden="true">&rsaquo;</span></button>
-						<div id="ffGalleryCounter" class="ff-gallery-counter" aria-live="polite"></div>
+						<div id="ffGalleryCounter" class="ff-gallery-counter" aria-hidden="true"></div>
+						<div id="ffGalleryStatus" class="visually-hidden" role="status"></div>
 					</div>
 				</div>
 			</div>
 		`;
 		document.body.appendChild(modal);
+		const closeButton = modal.querySelector('.ff-gallery-close');
+		modal.addEventListener('shown.bs.modal', function () {
+			closeButton.focus();
+		});
 		modal.addEventListener('hidden.bs.modal', function () {
 			if (lastTrigger && lastTrigger.isConnected) lastTrigger.focus();
 		});
@@ -127,11 +133,14 @@ function initGallery() {
 		});
 
 		modal.addEventListener('keydown', function (event) {
+			if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
 			if (event.key === 'ArrowLeft') {
+				event.preventDefault();
 				showImage(currentIndex - 1);
 			}
 
 			if (event.key === 'ArrowRight') {
+				event.preventDefault();
 				showImage(currentIndex + 1);
 			}
 		});
@@ -146,9 +155,9 @@ function initGallery() {
 		});
 
 		modal.addEventListener('touchend', function (event) {
-			const touch = event.changedTouches[0];
-			const deltaX = touch.clientX - touchStartX;
-			const deltaY = touch.clientY - touchStartY;
+			const touch 	= event.changedTouches[0];
+			const deltaX 	= touch.clientX - touchStartX;
+			const deltaY 	= touch.clientY - touchStartY;
 
 			// check the scroll, and ignore short swipes and mostly vertical gestures
 			if (Math.abs(deltaX) < 50 || Math.abs(deltaX) < Math.abs(deltaY)) {
@@ -188,13 +197,14 @@ function initGallery() {
 		const prevBtn		= document.getElementById('ffGalleryPrev');
 		const nextBtn 	= document.getElementById('ffGalleryNext');
 		const counter 	= document.getElementById('ffGalleryCounter');
+		const status    = document.getElementById('ffGalleryStatus');
 		const img 			= currentItems[index];
 
 		if (!img) {
 			return;
 		}
 
-		currentIndex = index;
+		currentIndex 					= index;
 		modalImg.style.width	= '';
 		modalImg.style.height	= '';
 		modalImg.onload				= function () {
@@ -205,9 +215,21 @@ function initGallery() {
 		if (modalImg.complete) {
 			sizeModalImage(modalImg);
 		}
-		prevBtn.disabled = currentIndex === 0;
-		nextBtn.disabled = currentIndex === currentItems.length - 1;
+		const atFirst = currentIndex === 0;
+		const atLast = currentIndex === currentItems.length - 1;
+		// Move focus before disabling a control that currently holds it.
+		if (atFirst && document.activeElement === prevBtn) {
+			nextBtn.disabled = false;
+			nextBtn.focus();
+		}
+		if (atLast && document.activeElement === nextBtn) {
+			prevBtn.disabled = false;
+			prevBtn.focus();
+		}
+		prevBtn.disabled = atFirst;
+		nextBtn.disabled = atLast;
 		counter.textContent = (currentIndex + 1) + ' / ' + currentItems.length;
+		status.textContent = 'Image ' + (currentIndex + 1) + ' of ' + currentItems.length + (modalImg.alt ? '. ' + modalImg.alt : '');
 	}
 
 	galleryLists.forEach(function (galleryList) {
@@ -234,7 +256,7 @@ function initGallery() {
 			img.decoding	= 'async';
 			let link = item.querySelector('a');
 			if (!link) {
-				link = document.createElement('a');
+				link 			= document.createElement('a');
 				link.href = img.getAttribute('src');
 				img.replaceWith(link);
 				link.appendChild(img);
@@ -246,9 +268,9 @@ function initGallery() {
 			}
 
 			function openGallery() {
-				lastTrigger = link;
-				const modal	= ensureModal();
-				currentItems = items.map(function (galleryItem) {
+				lastTrigger 	= link;
+				const modal		= ensureModal();
+				currentItems 	= items.map(function (galleryItem) {
 					return galleryItem.querySelector('img');
 				}).filter(Boolean);
 				currentIndex = currentItems.indexOf(img);

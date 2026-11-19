@@ -6,25 +6,22 @@
 	--ff-color-brand:								#491710;
 	--ff-color-accent:							#996600;
 	--ff-color-hover:								#eeeeee;
-	--ff-color-overlay-subtle:			rgba(255, 253, 234, 0.38);
-	--ff-color-overlay-medium:			rgba(255, 253, 234, 0.6);
-	--ff-color-overlay-strong:			rgba(255, 253, 234, 0.72);
 	--ff-color-overlay-solid:				rgba(255, 253, 234, 0.9);
-	--ff-color-overlay-hover:				rgba(255, 253, 234, 0.96);
-	--ff-color-overlay-caption:			rgba(255, 253, 234, 0.48);
-	--ff-color-brand-border-light:	rgba(73, 23, 16, 0.45);
-	--ff-color-brand-border:				rgba(73, 23, 16, 0.75);
 	--ff-space-xs:									4px;
 	--ff-space-sm:									8px;
 	--ff-space-md:									10px;
 	--ff-radius-md:									8px;
 	--ff-control-size:							44px;
 	--ff-carousel-width:						300px;
-	--ff-carousel-height:						450px;
 }
 
 body { 
 	background:				var(--ff-color-page) !important; 	 /* Adding !important forces the browser to overwrite the default style applied by Bootstrap */
+}
+
+main {
+	--bs-link-color-rgb: 10, 88, 202;
+	--bs-link-hover-color-rgb: 8, 66, 152;
 }
 
 h1 {
@@ -47,6 +44,31 @@ h4 {
 	color:						var(--ff-color-brand);
 }
 
+:is(a, button, summary, .btn, .form-control, .form-select):focus-visible {
+	outline: 2px solid var(--ff-color-brand);
+	outline-offset: 2px;
+	box-shadow: 0 0 0 6px var(--ff-color-page);
+}
+
+.ff-skip-link {
+	position: absolute;
+	inset-block-start: .5rem;
+	inset-inline-start: .5rem;
+	z-index: 1050;
+	padding: .5rem 1rem;
+	background: var(--ff-color-page);
+	color: var(--ff-color-brand);
+}
+
+.ff-skip-link:not(:focus) {
+	clip-path: inset(50%);
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	padding: 0;
+	white-space: nowrap;
+}
+
 .ff-site-header {
 	--bs-gutter-x:		0;
 	column-gap:				0.75rem;
@@ -60,10 +82,10 @@ h4 {
 	align-items:			center;
 	border:						0;
 	display:					flex;
-	height:						32px;
+	height:						var(--ff-control-size);
 	justify-content:	center;
 	padding:					2px 4px;
-	width:						32px;
+	width:						var(--ff-control-size);
 }
 
 .ff-header-menu-btn:focus,
@@ -79,6 +101,17 @@ h4 {
 	display: block;
 	max-height: calc(100dvh - 60px);
 	overflow-y: auto;
+}
+
+.ff-site-menu .dropdown-item {
+	min-height: var(--ff-control-size);
+	display: flex;
+	align-items: center;
+	gap: .375rem;
+}
+
+.ff-site-menu .dropdown-item:focus-visible {
+	outline-offset: -3px;
 }
 
 .ff-header-title {
@@ -252,6 +285,10 @@ h4 {
 	width:						100%;
 }
 
+.ff-video-description {
+	max-width: var(--ff-carousel-width);
+}
+
 .ff-video-container {
 	width:						100%;
 	max-width:				var(--ff-carousel-width);
@@ -299,8 +336,13 @@ h4 {
 	cursor:						pointer;
 }
 
-.ff-video-play.is-hidden {
+.ff-video-play[hidden] {
 	display:					none;
+}
+
+.ff-video-play.is-playing {
+	inset: .5rem .5rem auto auto;
+	transform: none;
 }
 
 /* Do not reserve an empty carousel's height when its script is unavailable. */
@@ -310,81 +352,82 @@ h4 {
 
 .ff-product-carousel {
 	margin-bottom:		1rem;
-	max-width:				var(--ff-carousel-width);
 }
 
-#carousel-hm,
-#carousel-cc,
-#carousel-pc,
-#carousel-pp,
-#carousel-vh {
-	width:	 					var(--ff-carousel-width);
-	height: 					var(--ff-carousel-height);
-	max-width: 				var(--ff-carousel-width);
+.ff-carousel-os-controls {
+	width: 100%;
+	max-width: var(--ff-carousel-width);
+	padding-inline: 0;
+}
+
+.ff-carousel-os-controls .carousel-inner,
+.ff-carousel-os-controls [data-carousel-controls] {
+	aspect-ratio: 2 / 3;
+}
+
+.ff-carousel-os-controls .carousel-item img {
+	display: block;
+	width: 100%;
+	aspect-ratio: 2 / 3;
+	object-fit: contain;
+}
+
+.ff-carousel-os-controls [data-carousel-controls] {
+	position: absolute;
+	inset: 0 0 auto;
+	pointer-events: none;
 }
 
 .ff-carousel-os-controls .carousel-indicators {
-	bottom:						var(--ff-space-sm);
-	gap:							7px;
-	margin-bottom:		0;
-}
-
-@media (min-width: 768px) and (max-width: 991.98px) {
-	#carousel-vh,
-	#carousel-cc,
-	#carousel-pc {
-		width: 100%;
-		height: auto;
-		aspect-ratio: 2 / 3;
-	}
-
-	#carousel-vh .carousel-item img,
-	#carousel-cc .carousel-item img,
-	#carousel-pc .carousel-item img {
-		width: 100%;
-		height: auto;
-	}
-
-	#carousel-vh .carousel-indicators,
-	#carousel-cc .carousel-indicators,
-	#carousel-pc .carousel-indicators {
-		flex-wrap: wrap;
-	}
-
-	#carousel-vh .carousel-indicators button,
-	#carousel-cc .carousel-indicators button,
-	#carousel-pc .carousel-indicators button {
-		flex-shrink: 0;
-	}
+	position: static;
+	flex-wrap: wrap;
+	margin: .25rem 0 0;
 }
 
 .ff-carousel-os-controls .carousel-indicators button {
-	width:						10px;
-	height:						10px;
-	margin:						0;
-	border:						1px solid var(--ff-color-brand-border);
-	border-radius:		50%;
-	background-color:	var(--ff-color-overlay-strong);
-	opacity:					1;
+	box-sizing: border-box;
+	flex: 0 0 24px;
+	width: 24px;
+	height: 24px;
+	margin: 0;
+	border: 0;
+	border-radius: 50%;
+	background: transparent;
+	opacity: 1;
 }
 
-.ff-carousel-os-controls .carousel-indicators button.active {
-	background-color:	var(--ff-color-brand);
+.ff-carousel-os-controls .carousel-indicators button::before {
+	display: block;
+	width: 10px;
+	height: 10px;
+	margin: auto;
+	border: 1px solid var(--ff-color-brand);
+	border-radius: 50%;
+	content: "";
+}
+
+.ff-carousel-os-controls .carousel-indicators button.active::before {
+	background-color: var(--ff-color-brand);
 }
 
 .ff-carousel-os-controls .carousel-control-prev,
 .ff-carousel-os-controls .carousel-control-next {
+	top: 50%;
+	bottom: auto;
 	width:						var(--ff-control-size);
+	height: var(--ff-control-size);
+	pointer-events: auto;
 	opacity:					1;
+	transform: translateY(-50%);
 }
 
 .ff-carousel-os-controls .carousel-control-prev-icon,
 .ff-carousel-os-controls .carousel-control-next-icon {
 	width:						36px;
 	height:						36px;
-	border:						1px solid var(--ff-color-brand-border-light);
+	border:						1px solid var(--ff-color-brand);
 	border-radius:		50%;
-	background-color:	var(--ff-color-overlay-subtle);
+	background-color:	var(--ff-color-page);
 	background-image:	none;
 	color:						var(--ff-color-brand);
 	display:					flex;
@@ -396,7 +439,7 @@ h4 {
 .ff-carousel-os-controls .carousel-control-prev:hover .carousel-control-prev-icon,
 .ff-carousel-os-controls .carousel-control-next:focus .carousel-control-next-icon,
 .ff-carousel-os-controls .carousel-control-next:hover .carousel-control-next-icon {
-	background-color:	var(--ff-color-overlay-hover);
+	background-color:	var(--ff-color-hover);
 	border-color:			var(--ff-color-brand);
 }
 
@@ -422,7 +465,7 @@ h4 {
 }
 
 .carousel-caption p {
-	background-color:	var(--ff-color-overlay-caption);
+	background-color:	var(--ff-color-page);
 	border-radius:		var(--ff-radius-md);
 	display:					inline-block;
 	margin-bottom:		0;
@@ -495,11 +538,6 @@ h4 {
 	height: 100%;
 }
 
-.ff-gallery-link:focus-visible {
-	outline:					3px solid var(--ff-color-accent);
-	outline-offset:		3px;
-}
-
 #ffGalleryModal.show {
 	align-items:			center;
 	display:					flex !important;
@@ -553,8 +591,12 @@ h4 {
 }
 
 #ffGalleryModal .ff-gallery-close {
-	background-color:	var(--ff-color-overlay-strong);
+	background-color:	var(--ff-color-page);
 	border-radius:		50%;
+	box-sizing: border-box;
+	width: var(--ff-control-size);
+	height: var(--ff-control-size);
+	opacity: 1;
 	position:					absolute;
 	right:						0.75rem;
 	top:							0.75rem;
@@ -563,8 +605,8 @@ h4 {
 
 .ff-gallery-nav {
 	align-items:			center;
-	background-color:	var(--ff-color-overlay-subtle);
-	border:						1px solid var(--ff-color-brand-border-light);
+	background-color:	var(--ff-color-page);
+	border:						1px solid var(--ff-color-brand);
 	border-radius:		50%;
 	color:						var(--ff-color-brand);
 	display:					flex;
@@ -599,7 +641,7 @@ h4 {
 }
 
 .ff-gallery-counter {
-	background-color:	var(--ff-color-overlay-medium);
+	background-color:	var(--ff-color-page);
 	border-radius:		999px;
 	bottom:						0.75rem;
 	color:						var(--ff-color-brand);
