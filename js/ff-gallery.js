@@ -133,7 +133,21 @@ function initGallery() {
 		});
 
 		modal.addEventListener('keydown', function (event) {
-			if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+			if (event.altKey || event.ctrlKey || event.metaKey) return;
+
+			if (event.key === 'Tab') {
+				// Safari can skip native buttons in its default Tab order.
+				const buttons = Array.from(modal.querySelectorAll('button:not(:disabled)'));
+				const focused = buttons.indexOf(document.activeElement);
+				const next = event.shiftKey
+					? (focused <= 0 ? buttons.length - 1 : focused - 1)
+					: (focused + 1) % buttons.length;
+				event.preventDefault();
+				buttons[next].focus();
+				return;
+			}
+
+			if (event.shiftKey) return;
 			if (event.key === 'ArrowLeft') {
 				event.preventDefault();
 				showImage(currentIndex - 1);

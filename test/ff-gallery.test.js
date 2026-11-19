@@ -342,6 +342,37 @@ describe('initGallery', function () {
 		expect(document.activeElement).toBe(trigger);
 	});
 
+	it('cycles Tab and Shift+Tab through only the enabled lightbox controls', function () {
+		installFakeBootstrapModal();
+		const { thumbs } = arrangeCrissCrossGallery();
+		thumbs[0].closest('a').click();
+
+		const modal = document.getElementById('ffGalleryModal');
+		const close = modal.querySelector('.ff-gallery-close');
+		const next = document.getElementById('ffGalleryNext');
+		const previous = document.getElementById('ffGalleryPrev');
+		modal.dispatchEvent(new Event('shown.bs.modal'));
+
+		function tab(shiftKey = false) {
+			const event = new KeyboardEvent('keydown', {key: 'Tab', shiftKey, bubbles: true, cancelable: true});
+			document.activeElement.dispatchEvent(event);
+			expect(event.defaultPrevented).toBe(true);
+		}
+
+		tab();
+		expect(document.activeElement).toBe(next);
+		tab();
+		expect(document.activeElement).toBe(close);
+		tab(true);
+		expect(document.activeElement).toBe(next);
+		next.click();
+		expect(document.activeElement).toBe(previous);
+		tab();
+		expect(document.activeElement).toBe(close);
+		tab(true);
+		expect(document.activeElement).toBe(previous);
+	});
+
 	it('moves between modal images with arrow keys', function () {
 		installFakeBootstrapModal();
 		arrangeCrissCrossGallery();
